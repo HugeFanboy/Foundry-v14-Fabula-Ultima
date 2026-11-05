@@ -24,6 +24,7 @@ import { ConsumablesTableRenderer } from '../helpers/tables/consumables-table-re
 import { OtherItemsTableRenderer } from '../helpers/tables/other-items-table-renderer.mjs';
 import { TechnospheresTableRenderer } from '../helpers/tables/technospheres-table-renderer.mjs';
 import FoundryUtils from '../helpers/foundry-utils.mjs';
+import { TextEditor } from '../helpers/text-editor.mjs';
 import { ProgressPipeline } from '../pipelines/progress-pipeline.mjs';
 import { FUBondChart } from '../ui/bond-chart.mjs';
 import { CodexBrowser } from '../ui/codex-browser.mjs';
@@ -721,7 +722,7 @@ export class FUPartySheet extends FUActorSheet {
 	 * @returns {Promise<unknown>}
 	 */
 	async _onDrop(event) {
-		const data = foundry.applications.ux.TextEditor.implementation.getDragEventData(event);
+		const data = TextEditor.getDragEventData(event);
 		if (this.#isCodexDropZone(event) && data?.type === 'Folder') {
 			const folderFromUuid = data.uuid ? await fromUuid(data.uuid) : null;
 			if (folderFromUuid) {

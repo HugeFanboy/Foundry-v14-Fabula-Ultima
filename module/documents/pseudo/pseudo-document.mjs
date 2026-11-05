@@ -1,3 +1,4 @@
+import { TextEditor } from '../../helpers/text-editor.mjs';
 import { BasePseudoDocument } from './base-pseudo-document.mjs';
 
 /**
@@ -793,7 +794,7 @@ export class PseudoDocument extends BasePseudoDocument {
 		}
 
 		name ??= this.name;
-		return foundry.applications.ux.TextEditor.implementation.createAnchor({ attrs, dataset, name, classes, icon: anchorIcon });
+		return TextEditor.createAnchor({ attrs, dataset, name, classes, icon: anchorIcon });
 	}
 
 	/**

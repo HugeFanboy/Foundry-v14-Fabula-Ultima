@@ -217,21 +217,8 @@ export class ItemSelectionDialog {
 								const page = fromUuidSync(pageUuid);
 
 								if (journal && page) {
-									const jSheet = journal.sheet;
-									const goToPage = () => {
-										if (typeof jSheet.goToPage === 'function') return jSheet.goToPage(page.id);
-										if (typeof jSheet.navigatePage === 'function') return jSheet.navigatePage(page.id);
-									};
-
-									if (jSheet.rendered) {
-										goToPage();
-										return;
-									}
-
-									Hooks.once('renderJournalEntrySheet', (sheet) => {
-										if (sheet === jSheet) goToPage();
-									});
-									jSheet.render({ force: true, pageId: page.id });
+									// Opens the sheet (or brings it to front) already turned to the requested page
+									journal.sheet.render({ force: true, pageId: page.id });
 								}
 							}
 						}

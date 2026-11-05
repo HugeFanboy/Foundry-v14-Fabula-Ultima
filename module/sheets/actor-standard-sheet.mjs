@@ -671,12 +671,7 @@ export class FUStandardActorSheet extends FUActorSheet {
 						event.preventDefault();
 						const src = event.currentTarget.getAttribute('src');
 						if (src) {
-							const popout = new foundry.applications.apps.ImagePopout({
-								src,
-								window: { title: this.actor.name },
-								uuid: this.actor.uuid,
-							});
-							popout.render({ force: true });
+							FoundryUtils.popoutImage(src, this.actor.name, this.actor.uuid);
 						}
 					});
 				}

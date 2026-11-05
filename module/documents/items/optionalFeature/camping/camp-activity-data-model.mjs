@@ -1,3 +1,4 @@
+import { TextEditor } from '../../../../helpers/text-editor.mjs';
 import { OptionalFeatureDataModel } from '../optional-feature-data-model.mjs';
 
 /**
@@ -26,7 +27,7 @@ export class CampActivityDataModel extends OptionalFeatureDataModel {
 
 	static async getAdditionalData(model) {
 		return {
-			enrichedDescription: await foundry.applications.ux.TextEditor.implementation.enrichHTML(model.description),
+			enrichedDescription: await TextEditor.enrichHTML(model.description),
 		};
 	}
 }

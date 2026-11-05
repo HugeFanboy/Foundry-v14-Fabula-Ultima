@@ -628,12 +628,7 @@ export default class FoundryUtils {
 	 * @param {String} uuid
 	 */
 	static popoutImage(src, title, uuid = undefined) {
-		const popout = new foundry.applications.apps.ImagePopout({
-			src,
-			window: { title: title },
-			uuid: uuid,
-		});
-		popout.render({ force: true });
+		new foundry.applications.apps.ImagePopout({ src, uuid, window: { title } }).render({ force: true });
 	}
 
 	/**
