@@ -1,0 +1,14 @@
+<p>{{localize 'FU.FultimatorImportReview'}}</p>
+{{#each results as |result|}}
+	<section>
+		<h4>{{#if result.uuid}}@UUID[{{result.uuid}}]{ {{~result.name~}} }{{else}}{{result.name}}{{/if}}</h4>
+		{{#if result.error}}<p class="notification error">{{result.error}}</p>{{/if}}
+		{{#if result.warnings.length}}
+			<ul>
+				{{#each result.warnings as |warning|}}
+					<li>{{warning}}</li>
+				{{/each}}
+			</ul>
+		{{/if}}
+	</section>
+{{/each}}
