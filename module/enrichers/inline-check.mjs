@@ -36,7 +36,7 @@ const inlineCheckEnricher = {
 		InlineHelper.documentPropertyGroup.concat(InlineHelper.propertyPattern('increment', 'increment', '(true|false)', true), InlineHelper.propertyPattern('type', 't', '\\w+')),
 	),
 	enricher: checkEnricher,
-	onRender: onRender,
+	onRender,
 };
 
 /**
@@ -45,8 +45,8 @@ const inlineCheckEnricher = {
  * @returns A formatted html element
  */
 function checkEnricher(match, options) {
-	let first = match[1];
-	let second = match[2];
+	const first = match[1];
+	const second = match[2];
 	const label = match.groups.label;
 	const type = match.groups.type ?? DEFAULT_CHECK_TYPE;
 
@@ -67,7 +67,7 @@ function checkEnricher(match, options) {
 			anchor.dataset.label = label;
 		}
 		// [OPTIONAL] Modifier
-		let modifier = (match.groups.modifier ?? '').slice(1, -1);
+		const modifier = (match.groups.modifier ?? '').slice(1, -1);
 		if (modifier) {
 			if (label) {
 				anchor.dataset.modifier = modifier;
@@ -83,7 +83,7 @@ function checkEnricher(match, options) {
 			anchor.dataset.modifier = 0;
 		}
 		// [OPTIONAL] DIFFICULTY
-		let level = match.groups.level;
+		const level = match.groups.level;
 		if (level !== undefined) {
 			appendDifficulty(level, anchor, label === undefined);
 		}
@@ -112,10 +112,10 @@ function appendDifficulty(level, anchor, show) {
 	}
 	// Or a direct value
 	else {
-		let value = parseInt(level);
+		const value = parseInt(level);
 		if (typeof value === `number`) {
 			anchor.dataset.difficulty = value;
-			let level = DifficultyLevel.fromValue(value);
+			const level = DifficultyLevel.fromValue(value);
 			anchor.dataset.level = level;
 		}
 	}
@@ -148,7 +148,7 @@ async function onRender(element) {
 		const prompt = event.shiftKey;
 		const attributes = { primary: first, secondary: second };
 		const targets = await targetHandler();
-		let type = dataset.type;
+		const type = dataset.type;
 
 		/** @type CheckResultCallback **/
 		const onResult = async (check) => {
@@ -195,12 +195,12 @@ async function onRender(element) {
 							initialConfig: {
 								primary: attributes.primary,
 								secondary: attributes.secondary,
-								difficulty: difficulty,
-								modifier: modifier,
+								difficulty,
+								modifier,
 								label: dataset.label,
 							},
 							checkCallback: (check) => {
-								let config = CheckConfiguration.configure(check);
+								const config = CheckConfiguration.configure(check);
 								config.setLabel(dataset.label);
 							},
 							resultCallback: onResult,
@@ -212,11 +212,11 @@ async function onRender(element) {
 							initialConfig: {
 								primary: attributes.primary,
 								secondary: attributes.secondary,
-								modifier: modifier,
+								modifier,
 								label: dataset.label,
 							},
 							checkCallback: (check) => {
-								let config = CheckConfiguration.configure(check);
+								const config = CheckConfiguration.configure(check);
 								config.setLabel(dataset.label);
 							},
 						});
@@ -227,11 +227,11 @@ async function onRender(element) {
 							initialConfig: {
 								primary: attributes.primary,
 								secondary: attributes.secondary,
-								modifier: modifier,
+								modifier,
 								label: dataset.label,
 							},
 							checkCallback: (check) => {
-								let config = CheckConfiguration.configure(check);
+								const config = CheckConfiguration.configure(check);
 								config.setLabel(dataset.label);
 							},
 						});
@@ -245,7 +245,7 @@ async function onRender(element) {
 							attributes,
 							null,
 							async (check) => {
-								let config = CheckConfiguration.configure(check);
+								const config = CheckConfiguration.configure(check);
 								config.setLabel(dataset.label);
 								let modifier = 0;
 
@@ -272,7 +272,7 @@ async function onRender(element) {
 
 					case 'open':
 						await Checks.openCheck(actor, attributes, async (check) => {
-							let config = CheckConfiguration.configure(check);
+							const config = CheckConfiguration.configure(check);
 							config.setLabel(dataset.label);
 							let modifier = 0;
 
@@ -293,7 +293,7 @@ async function onRender(element) {
 
 					case 'opposed':
 						await Checks.opposedCheckV2(actor, attributes, {}, async (check) => {
-							let config = CheckConfiguration.configure(check);
+							const config = CheckConfiguration.configure(check);
 							if (item) {
 								config.setItemReference(item);
 							}

@@ -72,9 +72,9 @@ export class InvocationSelectionApplication extends FUApplication {
 		return {
 			invocations: this.#invocations,
 			wellspring: this.#wellspring,
-			targets: targets,
+			targets,
 			buttons: [{ type: 'submit', icon: 'fa-solid fa-times', label: 'Close' }],
-			wellsprings: wellsprings,
+			wellsprings,
 		};
 	}
 

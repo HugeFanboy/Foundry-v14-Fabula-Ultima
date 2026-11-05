@@ -103,7 +103,7 @@ export class KeyDataModel extends RollableClassFeatureDataModel {
 			resourceOptions: KeyDataModel.resourceOptions[model.resource],
 		};
 
-		const speaker = ChatMessage.implementation.getSpeaker({ actor: actor });
+		const speaker = ChatMessage.implementation.getSpeaker({ actor });
 		const chatMessage = {
 			speaker,
 			flavor: await FoundryUtils.renderTemplate('chat-check-flavor-item-v2', {

@@ -198,7 +198,7 @@ export class InfusionsDataModel extends ClassFeatureDataModel {
 
 	static processUpdateData(data) {
 		for (const rank of ['basicInfusions', 'advancedInfusions', 'superiorInfusions']) {
-			let value = data[rank];
+			const value = data[rank];
 			if (value && !Array.isArray(value)) {
 				data[rank] = Array.from(Object.values(value));
 			}

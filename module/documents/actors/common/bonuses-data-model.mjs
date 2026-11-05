@@ -57,7 +57,7 @@ export class BonusesDataModel extends foundry.abstract.DataModel {
 		}
 
 		/** @type CheckModifier[] **/
-		let modifiers = [];
+		const modifiers = [];
 
 		if (bonuses.accuracy.all) {
 			modifiers.push({
@@ -111,7 +111,7 @@ export class BonusesDataModel extends foundry.abstract.DataModel {
 	 */
 	static collectDamageBonuses(bonuses, type, weaponTraits = undefined, traits = []) {
 		/** @type DamageModifier[] **/
-		let modifiers = [];
+		const modifiers = [];
 
 		// Global Bonus
 		const globalBonus = bonuses.damage.all;

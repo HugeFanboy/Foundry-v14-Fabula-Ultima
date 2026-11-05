@@ -138,7 +138,7 @@ export class PartyDataModel extends foundry.abstract.TypeDataModel {
 	 */
 	async getActors(propertyPath) {
 		const actorIds = this[propertyPath];
-		let deletedActorIds = [];
+		const deletedActorIds = [];
 
 		let actors = [];
 		for (const id of [...actorIds]) {
@@ -171,7 +171,7 @@ export class PartyDataModel extends foundry.abstract.TypeDataModel {
 
 		const characters = this.characters;
 		characters.add(actor.uuid);
-		await this.parent.update({ ['system.characters']: characters });
+		await this.parent.update({ 'system.characters': characters });
 		console.debug(`${actor.name} was added to the party`);
 	}
 
@@ -219,7 +219,7 @@ export class PartyDataModel extends foundry.abstract.TypeDataModel {
 			{},
 		);
 
-		let equipment = [];
+		const equipment = [];
 		if (system.equipped) {
 			const itemIds = system.equipped.getDefaultItems();
 			for (const id of itemIds) {
@@ -230,7 +230,7 @@ export class PartyDataModel extends foundry.abstract.TypeDataModel {
 			}
 		}
 
-		let skills = [];
+		const skills = [];
 		skills.push(...actor.getItemsByType('skill'));
 		skills.push(...actor.getItemsByType('classFeature'));
 		skills.push(...actor.getItemsByType('heroic'));
@@ -249,19 +249,19 @@ export class PartyDataModel extends foundry.abstract.TypeDataModel {
 		const name = actor.name.split(' ')[0];
 
 		return {
-			actor: actor,
-			name: name,
+			actor,
+			name,
 			attributes: attributeValues,
 			level: actor.system.level.value,
-			identity: identity,
-			classes: classes,
-			equipment: equipment,
-			skills: skills,
+			identity,
+			classes,
+			equipment,
+			skills,
 			resources: [hp, mp, ip],
 			fp: actor.system.resources.fp.value,
 			zenit: actor.system.resources.zenit.value,
 			role: deduceCharacterRole(actor, classes),
-			statusClass: statusClass,
+			statusClass,
 		};
 	}
 
@@ -282,7 +282,7 @@ export class PartyDataModel extends foundry.abstract.TypeDataModel {
 	 */
 	async addOrUpdateAdversary(actor, studyResult) {
 		// Resolve the source actor uuid
-		let uuid = actor.resolveUuid();
+		const uuid = actor.resolveUuid();
 		// Already exists
 		let entry = this.getAdversary(uuid);
 		if (entry) {
@@ -294,7 +294,7 @@ export class PartyDataModel extends foundry.abstract.TypeDataModel {
 		}
 
 		entry = /** @type NpcProfileData **/ {
-			uuid: uuid,
+			uuid,
 			name: actor.name,
 			img: actor.img,
 			rank: actor.system.rank.value,
@@ -303,7 +303,7 @@ export class PartyDataModel extends foundry.abstract.TypeDataModel {
 		};
 		const adversaries = this.adversaries;
 		adversaries.push(entry);
-		await this.parent.update({ ['system.adversaries']: adversaries });
+		await this.parent.update({ 'system.adversaries': adversaries });
 		console.debug(`${actor.name} was registered as an adversary`);
 		return entry;
 	}
@@ -314,8 +314,7 @@ export class PartyDataModel extends foundry.abstract.TypeDataModel {
 	 */
 	async updateAdversary(existing) {
 		const adversaries = this.adversaries;
-		await this.parent.update({ ['system.adversaries']: adversaries });
-		//ui.notifications.info(`Updated information for adversary ${existing.name}`);
+		await this.parent.update({ 'system.adversaries': adversaries });
 		console.debug(`${existing.name} was updated: ${JSON.stringify(existing)}`);
 	}
 
@@ -340,20 +339,20 @@ export class PartyDataModel extends foundry.abstract.TypeDataModel {
 	 * @return {Promise<NpcProfileData[]>}
 	 */
 	async getAdversaryData() {
-		let current = this.adversaries;
+		const current = this.adversaries;
 		const maxStudyValue = StudyRollHandler.getMaxValue();
 
-		let result = [];
+		const result = [];
 		for (const adversary of current) {
 			const studyResult = StudyRollHandler.resolveStudyResult(adversary.study);
-			let percent = Math.round(Math.min(1, adversary.study / maxStudyValue) * 100);
+			const percent = Math.round(Math.min(1, adversary.study / maxStudyValue) * 100);
 			result.push({
 				...adversary,
 				species: FU.species[adversary.species],
 				rank: FU.rank[adversary.rank],
 				_rank: adversary.rank,
 				studyPercent: percent,
-				studyResult: studyResult,
+				studyResult,
 				isRevealed: Object.keys(adversary.revealed).length > 0,
 			});
 		}
@@ -368,7 +367,7 @@ export class PartyDataModel extends foundry.abstract.TypeDataModel {
 	async addCompanion(actor) {
 		const companions = this.companions;
 		companions.add(actor.uuid);
-		await this.parent.update({ ['system.companions']: companions });
+		await this.parent.update({ 'system.companions': companions });
 		console.debug(`${actor.name} was added to the party`);
 	}
 
@@ -401,11 +400,11 @@ export class PartyDataModel extends foundry.abstract.TypeDataModel {
 				identity = StringUtils.localize('FU.Companion');
 			}
 			return {
-				actor: actor,
+				actor,
 				name: actor.name,
 				img: parentActor ? parentActor.img : '',
 				level: actor.system.level.value,
-				identity: identity,
+				identity,
 				resources: [hp, mp],
 			};
 		});
@@ -437,7 +436,7 @@ export class PartyDataModel extends foundry.abstract.TypeDataModel {
 	 */
 	async computeBondData() {
 		/** @type BondChartData **/
-		let data = {
+		const data = {
 			bonds: [],
 			characters: [],
 		};
@@ -518,7 +517,7 @@ export class PartyDataModel extends foundry.abstract.TypeDataModel {
 	 * @returns {Promise<string[]>}
 	 */
 	async getBondOptions() {
-		let options = [];
+		const options = [];
 		const characters = await this.getCharacterData();
 		options.push(...characters.map((a) => a.name));
 		const adversaries = await this.getAdversaryData();
@@ -537,7 +536,7 @@ export class PartyDataModel extends foundry.abstract.TypeDataModel {
 			spentFabula: xp.fp,
 			fabulaExp: xp.fxp,
 			totalExp: xp.total,
-			activeCharacters: activeCharacters,
+			activeCharacters,
 			characterSectionTitle: automaticallyDistributeExp ? 'FU.ChatExpAwardExpAwardedTo' : 'FU.ChatExpAwardActiveCharacters',
 		};
 
@@ -621,7 +620,8 @@ function deduceCharacterRole(actor, classes) {
 	// Always prio tank
 	if (tankCount > 0) {
 		return 'tank';
-	} else if (supportCount > Math.round(damageCount / 2)) {
+	}
+	if (supportCount > Math.round(damageCount / 2)) {
 		return 'support';
 	}
 	return 'damage';

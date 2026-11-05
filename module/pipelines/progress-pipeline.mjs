@@ -29,9 +29,9 @@ function getAdvanceTargetedAction(actor, id, increment, source) {
 		name: progress.name,
 	});
 	return new ChatAction('advanceProgress', icon, tooltip, {
-		id: id,
-		increment: increment,
-		source: source,
+		id,
+		increment,
+		source,
 	})
 		.setFlag(Flags.ChatMessage.Progress)
 		.forActor(actor)
@@ -108,11 +108,11 @@ async function promptCheckAtIndexForDocument(document, propertyPath, index) {
 			ChatMessage.create({
 				speaker: ChatMessage.getSpeaker(),
 				content: await FoundryUtils.renderTemplate('chat/chat-prompt-check', {
-					document: document,
+					document,
 					uuid: document.uuid,
-					propertyPath: propertyPath,
-					index: index,
-					track: track,
+					propertyPath,
+					index,
+					track,
 					segments: this.generateProgressArray(track),
 					label: prompt.label,
 					primary: prompt.primary,
@@ -145,7 +145,7 @@ async function openTrackMenuAtIndex(event, document, propertyPath, index) {
 	const track = tracks[index];
 	// TODO: Render a modal popup menu now with the given options
 
-	let content = await ProgressDataModel.renderDetails(track);
+	const content = await ProgressDataModel.renderDetails(track);
 
 	const buttons = [
 		{
@@ -184,7 +184,7 @@ async function openTrackMenuAtIndex(event, document, propertyPath, index) {
 
 	return FoundryUtils.promptActionChoice({
 		title: `${StringUtils.localize('FU.Progress')}: ${track.name ?? track.id}`,
-		content: content,
+		content,
 		buttons,
 	});
 }
@@ -198,7 +198,7 @@ async function openTrackMenuAtIndex(event, document, propertyPath, index) {
 async function promptAddToDocument(document, propertyPath, selectStyle = false) {
 	const title = StringUtils.localize('FU.ClockAdd');
 	const content = await foundry.applications.handlebars.renderTemplate(systemPath('templates/dialog/dialog-add-track.hbs'), {
-		selectStyle: selectStyle,
+		selectStyle,
 	});
 	const result = await FoundryUtils.input(title, content, {});
 

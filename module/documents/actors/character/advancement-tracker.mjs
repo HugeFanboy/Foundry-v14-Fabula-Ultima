@@ -81,7 +81,7 @@ const CLASS_IP_BENEFITS = 2;
  * @param {AdvancementDataModel} advancement
  */
 function getAdvancementIds(advancement) {
-	let ids = [];
+	const ids = [];
 	ids.push(advancement.class.id, advancement.skill.id);
 	for (const [, entry] of Object.entries(advancement.entries)) {
 		for (const [key, value] of Object.entries(entry)) {
@@ -263,27 +263,27 @@ export class AdvancementTracker {
 		 * @type {Record<string, AdvancementClassInfo>}
 		 * @remarks CLASS FUID: LEVEL
 		 **/
-		let classes = {};
+		const classes = {};
 		/**
 		 * @type {Record<string, string[]>}
 		 * @remarks CLASS FUID: SKILL FUID
 		 **/
-		let classSkills = {};
+		const classSkills = {};
 		/**
 		 * @type {Record<string, Number>}
 		 * @remarks SKILL FUID : SKILL SL
 		 **/
-		let skillLevels = {};
+		const skillLevels = {};
 		/**
 		 * @type {Set<String>} The ids that have been referenced so far.
 		 */
-		let ids = new Set();
+		const ids = new Set();
 		/**
 		 * @type {number}
 		 */
 		let unmasteredClasses = 0;
 		/** @type {AdvancementBenefits} **/
-		let benefits = {
+		const benefits = {
 			hp: 0,
 			ip: 0,
 			mp: 0,
@@ -307,7 +307,7 @@ export class AdvancementTracker {
 		let patched = false;
 
 		/** @type {AdvancementEntry[]} **/
-		let entries = [];
+		const entries = [];
 
 		let [advancements] = AdvancementTracker.removeUnresolvedItems(actor, system.advancements);
 		advancements = targetLevel ? advancements.slice(0, targetLevel) : advancements;
@@ -406,11 +406,9 @@ export class AdvancementTracker {
 									};
 									patched = true;
 								}
-							} else {
-								if (data.entries.spell) {
-									delete data.entries.spell;
-									patched = true;
-								}
+							} else if (data.entries.spell) {
+								delete data.entries.spell;
+								patched = true;
 							}
 
 							// A. Add skill for the first time
@@ -435,11 +433,9 @@ export class AdvancementTracker {
 									};
 									patched = true;
 								}
-							} else {
-								if (data.entries.heroic) {
-									delete data.entries.heroic;
-									patched = true;
-								}
+							} else if (data.entries.heroic) {
+								delete data.entries.heroic;
+								patched = true;
 							}
 						}
 
@@ -465,11 +461,9 @@ export class AdvancementTracker {
 								};
 								patched = true;
 							}
-						} else {
-							if (data.entries.extraSpells) {
-								delete data.entries.extraSpells;
-								patched = true;
-							}
+						} else if (data.entries.extraSpells) {
+							delete data.entries.extraSpells;
+							patched = true;
 						}
 						ids.add(data.entries.heroic.id);
 					}
@@ -480,14 +474,12 @@ export class AdvancementTracker {
 					if (!grantedExtraSpells) {
 						delete data.entries.extraSpells;
 						patched = true;
-					} else {
-						if (data.entries.extraSpells.ids.length === data.entries.extraSpells.required) {
-							if (data.entries.extraSpells.ids.some((id) => ids.has(id))) {
-								state = 'invalid';
-								message = 'FU.AdvancementTrackerDuplicateEntry';
-							} else {
-								resolvedExtraSpells = true;
-							}
+					} else if (data.entries.extraSpells.ids.length === data.entries.extraSpells.required) {
+						if (data.entries.extraSpells.ids.some((id) => ids.has(id))) {
+							state = 'invalid';
+							message = 'FU.AdvancementTrackerDuplicateEntry';
+						} else {
+							resolvedExtraSpells = true;
 						}
 					}
 				}
@@ -500,15 +492,13 @@ export class AdvancementTracker {
 					} else if (ids.has(data.entries.spell.id)) {
 						state = 'invalid';
 						message = 'FU.AdvancementTrackerDuplicateEntry';
+					} else if (resolvedSkill) {
+						resolvedSpell = true;
+						benefits.spell++;
+						ids.add(data.entries.spell.id);
 					} else {
-						if (resolvedSkill) {
-							resolvedSpell = true;
-							benefits.spell++;
-							ids.add(data.entries.spell.id);
-						} else {
-							state = 'invalid';
-							message = 'FU.AdvancementMissingSkill';
-						}
+						state = 'invalid';
+						message = 'FU.AdvancementMissingSkill';
 					}
 				}
 
@@ -542,11 +532,8 @@ export class AdvancementTracker {
 			lockClasses = unmasteredClasses === UNMASTERED_CLASS_LIMIT;
 		}
 
-		// Only return entries up to the current level
-		//entries = entries.slice(0, level);
-
 		/** @type AdvancementNotifications[]  **/
-		let notifications = [];
+		const notifications = [];
 
 		// Let's record items (class, skill, spell) not yet being tracked
 		const entryItemIds = new Set(entries.flatMap((adv) => getAdvancementIds(adv.data)));
@@ -582,7 +569,7 @@ export class AdvancementTracker {
 
 		// Let's record skills which levels are not synchronized
 		/** @type AdvancementSkillUpdate[] **/
-		let pendingSkillUpdates = [];
+		const pendingSkillUpdates = [];
 		for (const [skillId, value] of Object.entries(skillLevels)) {
 			const item = actor.items.get(skillId);
 			if (!item) continue;
@@ -648,7 +635,7 @@ export class AdvancementTracker {
 
 		const items = summary.pendingSkillUpdates.map((u) => u.item);
 		const dialog = new ItemSelectionDialog({
-			items: items,
+			items,
 			initial: items,
 			payload: summary.pendingSkillUpdates,
 			columns: [
@@ -683,7 +670,7 @@ export class AdvancementTracker {
 			return;
 		}
 		const dialog = new ItemSelectionDialog({
-			items: items,
+			items,
 			initial: items,
 			style: 'list',
 			getDescription: (item) => item.system.description,

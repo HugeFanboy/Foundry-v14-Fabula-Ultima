@@ -120,14 +120,14 @@ export class RuleElementDataModel extends foundry.abstract.DataModel {
 			}
 		}
 		if (source.predicates) {
-			for (let [, predicate] of Object.entries(source.predicates)) {
+			for (const [, predicate] of Object.entries(source.predicates)) {
 				if (predicate.type && predicate.type.indexOf('.') < 0) {
 					predicate.type = RulePredicateRegistry.instance.qualifiedChoices.find((el) => el.endsWith(predicate.type));
 				}
 			}
 		}
 		if (source.actions) {
-			for (let [, action] of Object.entries(source.actions)) {
+			for (const [, action] of Object.entries(source.actions)) {
 				if (action.type && action.type.indexOf('.') < 0) {
 					action.type = RuleActionRegistry.instance.qualifiedChoices.find((el) => el.endsWith(action.type));
 				}

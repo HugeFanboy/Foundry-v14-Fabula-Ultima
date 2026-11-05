@@ -52,7 +52,7 @@ export class PerformCheckRuleAction extends RuleActionDataModel {
 		let action;
 
 		/** @type CheckConfig **/
-		let config = {
+		const config = {
 			primary: this.attributes.primary.value,
 			secondary: this.attributes.secondary.value,
 			modifier: 0,

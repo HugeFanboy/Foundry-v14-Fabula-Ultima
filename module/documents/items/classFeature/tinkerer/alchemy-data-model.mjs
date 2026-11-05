@@ -183,7 +183,7 @@ export class AlchemyDataModel extends RollableClassFeatureDataModel {
 			if (model.config.targetRollTable && model.config.effectRollTable) {
 				const data = {
 					rank: alchemyRanks[rank],
-					description: description,
+					description,
 					alwaysAvailableEffects: [...model.config.alwaysAvailableEffects],
 					results: [],
 				};

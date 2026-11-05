@@ -193,12 +193,12 @@ async function promptForConfigurationV2(document, type, initialConfig = {}) {
 
 	let context = {
 		actor: document,
-		type: type,
+		type,
 		typeLabel: StringUtils.localize(FU.checkTypes[type]),
 		label: initialConfig.label,
 		increment: initialConfig.increment !== undefined,
 		attributes: FU.attributes,
-		attributeValues: attributeValues,
+		attributeValues,
 		attributeAbbr: FU.attributeAbbreviations,
 		attributeOptions: FoundryUtils.generateConfigIconOptions(Object.keys(FU.attributes), FU.attributes, FU.attributeIcons),
 		attributeIcons: FU.attributeIcons,
@@ -224,11 +224,11 @@ async function promptForConfigurationV2(document, type, initialConfig = {}) {
 				const potency = potencyList[0];
 				const area = areaList[0];
 				context = Object.assign(context, {
-					potency: potency,
-					area: area,
+					potency,
+					area,
 					cost: potency.cost * area.multiplier,
-					potencyList: potencyList,
-					areaList: areaList,
+					potencyList,
+					areaList,
 				});
 			}
 			break;

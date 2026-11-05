@@ -57,7 +57,7 @@ export class ChatAction {
 	setFlag(flag, value = true) {
 		this.flag = {
 			key: flag,
-			value: value,
+			value,
 		};
 		return this;
 	}
@@ -77,8 +77,8 @@ export class ChatAction {
 	 */
 	forActor(actor) {
 		return this.withDataset({
-			['actor-id']: actor.uuid,
-			['actor-img']: actor.img,
+			'actor-id': actor.uuid,
+			'actor-img': actor.img,
 		}).notTargeted();
 	}
 
@@ -160,9 +160,9 @@ export class ChatAction {
 	 */
 	static async renderToChat(actions, targetData = [], retarget = true) {
 		const html = await FoundryUtils.renderTemplate('chat/partials/chat-actions', {
-			retarget: retarget,
+			retarget,
 			targets: targetData,
-			actions: actions,
+			actions,
 			targetedActions: actions.filter((a) => a.targeted),
 			selectedActions: actions.filter((a) => a.selected),
 		});

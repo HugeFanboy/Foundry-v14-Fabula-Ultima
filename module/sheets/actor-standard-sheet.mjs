@@ -584,16 +584,14 @@ export class FUStandardActorSheet extends FUActorSheet {
 				if (activeEditor) {
 					// Handle effect drop into ProseMirror editor
 					return await this._handleEditorEffectDrop(item, event, activeEditor);
-				} else {
-					// Handle effect drop into actor sheet
-					return await this._importEffectData(item);
 				}
-			} else {
-				// Handle other item drops
-				const existingItem = this.actor.items.find((i) => i.name === item.name && i.type === item.type);
-				if (existingItem) {
-					return await config.update(item, existingItem);
-				}
+				// Handle effect drop into actor sheet
+				return await this._importEffectData(item);
+			}
+			// Handle other item drops
+			const existingItem = this.actor.items.find((i) => i.name === item.name && i.type === item.type);
+			if (existingItem) {
+				return await config.update(item, existingItem);
 			}
 		}
 
@@ -607,8 +605,8 @@ export class FUStandardActorSheet extends FUActorSheet {
 
 		const items = [];
 		const effectItems = [];
-		for (let folder of allFolders) {
-			let pack = folder.pack ? game.packs.get(folder.pack) : null;
+		for (const folder of allFolders) {
+			const pack = folder.pack ? game.packs.get(folder.pack) : null;
 			for (let item of folder.contents) {
 				if (pack) {
 					item = await pack.getDocument(item._id);
@@ -815,12 +813,11 @@ export class FUStandardActorSheet extends FUActorSheet {
 			if (item) {
 				if (modifiers.ctrl) {
 					return new ItemCustomizer(this.actor, item).render(true);
-				} else {
-					if (settingPriority && this.actor?.type === 'npc') {
-						BehaviorRoll.targetPriority(this.actor);
-					}
-					return item.roll(modifiers);
 				}
+				if (settingPriority && this.actor?.type === 'npc') {
+					BehaviorRoll.targetPriority(this.actor);
+				}
+				return item.roll(modifiers);
 			}
 		}
 
@@ -1085,8 +1082,8 @@ export class FUStandardActorSheet extends FUActorSheet {
 				{
 					const browser = new AdvancementBrowser({
 						actor: this.actor,
-						type: type,
-						path: path,
+						type,
+						path,
 						index: Number.parseInt(index),
 						collectionIndex: Number.parseInt(collectionIndex),
 						unlock,
@@ -1269,7 +1266,7 @@ export class FUStandardActorSheet extends FUActorSheet {
 			types = types.filter((item) => !dontShowCharacter.includes(item.type));
 
 			// Optional Features
-			let optionalFeatures = optionalFeatureTypes.map(([key, optional]) => ({
+			const optionalFeatures = optionalFeatureTypes.map(([key, optional]) => ({
 				type: 'optionalFeature',
 				subtype: key,
 				label: game.i18n.localize(optional.translation),
@@ -1296,7 +1293,7 @@ export class FUStandardActorSheet extends FUActorSheet {
 			window: { title: 'Select Item Type', contentClasses: ['dialog-buttons-grid'] },
 			position: { width: 400 },
 			content: `<p>Select the type of item you want to create:</p>`,
-			buttons: buttons,
+			buttons,
 		});
 
 		if (choice) {
@@ -1323,7 +1320,7 @@ export class FUStandardActorSheet extends FUActorSheet {
 
 		if (isCharacter) {
 			types = ['miscAbility', 'ritual'].map((type) => ({
-				type: type,
+				type,
 				label: game.i18n.localize(CONFIG.Item.typeLabels[type]),
 			}));
 			// Check if the optionZeroPower setting is false, then add the zeroPower feature
@@ -1336,7 +1333,7 @@ export class FUStandardActorSheet extends FUActorSheet {
 			}
 		} else if (isNPC) {
 			types = ['miscAbility', 'rule'].map((type) => ({
-				type: type,
+				type,
 				label: game.i18n.localize(CONFIG.Item.typeLabels[type]),
 			}));
 		}
@@ -1355,7 +1352,7 @@ export class FUStandardActorSheet extends FUActorSheet {
 			window: { title: 'Select Item Type', contentClasses: ['dialog-buttons-grid'] },
 			position: { width: 400 },
 			content: `<p>Select the type of item you want to create:</p>`,
-			buttons: buttons,
+			buttons,
 		});
 
 		if (choice) {
@@ -1411,7 +1408,7 @@ export class FUStandardActorSheet extends FUActorSheet {
 			position: { width: 400 },
 			rejectClose: false,
 			content: `<p>Select the type of item you want to create:</p>`,
-			buttons: buttons,
+			buttons,
 		});
 
 		if (choice) {

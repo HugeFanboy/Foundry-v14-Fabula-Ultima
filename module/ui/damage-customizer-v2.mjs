@@ -11,7 +11,7 @@ export class DamageCustomizerV2 {
 	 */
 	static async open(damageData, item) {
 		const context = {
-			item: item,
+			item,
 			damage: damageData,
 			/** @type FormSelectOption[] **/
 			types: FoundryUtils.generateConfigIconOptions(Object.keys(FU.damageTypes), FU.damageTypes, FU.affIcon),
@@ -58,7 +58,7 @@ export class DamageCustomizerV2 {
 			classes: ['projectfu', 'backgroundstyle', 'fu-dialog'],
 			content: await FoundryUtils.renderTemplate('dialog/dialog-damage-customizer-v2', {
 				FU,
-				context: context,
+				context,
 			}),
 			rejectClose: false,
 			ok: {
@@ -75,7 +75,7 @@ export class DamageCustomizerV2 {
 				const typeButtons = dialog.element.querySelectorAll('.fu-dialog__icon-option');
 				function updateTypeOptions() {
 					/** @type Set<DamageType> **/
-					let available = context.damage.getAvailableTypes();
+					const available = context.damage.getAvailableTypes();
 
 					if (!available.has(context.selectedType)) {
 						context.selectedType = context.initialType;
@@ -96,7 +96,7 @@ export class DamageCustomizerV2 {
 				// Function to update total damage and icons based on HR Zero status, and extra damage
 				const totalDamageSpan = dialog.element.querySelector('#total-damage');
 				function updateTotalDamage() {
-					let components = [];
+					const components = [];
 					// HR (Not always available)
 					if (hrInput && context.damage.hr > 0 && hrInput.checked) {
 						components.push(`? (${StringUtils.localize('FU.HighRollAbbr')})`);
@@ -137,7 +137,6 @@ export class DamageCustomizerV2 {
 			},
 		});
 		if (result) {
-			// const expanded = foundry.utils.expandObject(result);
 			damageData.type = context.selectedType;
 			if (result.hr === false) {
 				damageData.hrZero = true;

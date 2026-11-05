@@ -93,14 +93,13 @@ async function prompt(actor, includeWeaponModules = false) {
 		const item = actor.items.get(result.selected) ?? null;
 		if (item) {
 			return {
-				item: item,
+				item,
 				data: normalizeData(item),
 			};
 		}
 		return null;
-	} else {
-		return null;
 	}
+	return null;
 }
 
 /**

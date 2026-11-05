@@ -25,7 +25,7 @@ const onRenderCheck = (data, check, actor, item, additionalFlags) => {
 
 		switch (action) {
 			case 'effect': {
-				let floralistData = actor?.system?.floralist;
+				const floralistData = actor?.system?.floralist;
 				if (!floralistData?.garden) {
 					data.sections.push({
 						partial: 'systems/projectfu/templates/feature/floralist/magiseed-chat-message.hbs',

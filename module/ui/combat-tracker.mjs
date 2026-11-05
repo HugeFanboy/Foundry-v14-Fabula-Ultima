@@ -138,7 +138,7 @@ export class FUCombatTracker extends foundry.applications.sidebar.tabs.CombatTra
 			tracksContainer.style.background = 'unset';
 			header.append(tracksContainer);
 
-			for (let [id, track] of tracks) {
+			for (const [id, track] of tracks) {
 				const wrapper = document.createElement('div');
 				wrapper.innerHTML = renderProgress(track, this.viewed, 'system.tracks', { displayName: true, controls: this.viewed.isOwner }, id);
 				tracksContainer.append(wrapper);
@@ -354,7 +354,6 @@ export class FUCombatTracker extends foundry.applications.sidebar.tabs.CombatTra
 	 * @returns {Promise<void>}
 	 */
 	static async #onUpdateTrack(event, target) {
-		//const rightClick = event.which === 3 || event.button === 2;
 		const { updateAmount, index, alternate } = target.dataset;
 		let increment = parseInt(updateAmount);
 		if (alternate && event.button === 2) {

@@ -130,7 +130,7 @@ async function spendMetaCurrency(actor, force = false) {
 		if (confirmed && actor.system.resources.fp.value > 0) {
 			/** @type ChatMessageData */
 			const data = {
-				speaker: ChatMessage.implementation.getSpeaker({ actor: actor }),
+				speaker: ChatMessage.implementation.getSpeaker({ actor }),
 				flavor: game.i18n.format('FU.UseMetaCurrencyChatFlavor', { type: metaCurrency }),
 				content: game.i18n.format('FU.UseMetaCurrencyChatMessage', { actor: actor.name, type: metaCurrency }),
 				flags: {

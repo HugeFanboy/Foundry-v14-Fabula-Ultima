@@ -40,12 +40,10 @@ Hooks.once('setup', () => {
 					buttonData.onClick(e, active);
 				}
 			});
-		} else {
-			if (buttonData.onClick) {
-				button.addEventListener('click', (e) => {
-					buttonData.onClick(e, false);
-				});
-			}
+		} else if (buttonData.onClick) {
+			button.addEventListener('click', (e) => {
+				buttonData.onClick(e, false);
+			});
 		}
 
 		containerElement.appendChild(button);
@@ -223,7 +221,6 @@ export class CombatHUD extends foundry.applications.api.HandlebarsApplicationMix
 
 		this.#hooks.push({ hook: 'deleteCombat', func: this._onCombatEnd.bind(this) });
 
-		//this.#hooks.push({ hook: 'updateSettings', func: this._onUpdateHUD.bind(this) });
 		this.#hooks.push({ hook: FUHooks.ROLL_STUDY, func: this._onStudyRoll.bind(this) });
 
 		this.#hooks.forEach(({ hook, func }) => Hooks.on(hook, func));
@@ -307,8 +304,6 @@ export class CombatHUD extends foundry.applications.api.HandlebarsApplicationMix
 	}
 
 	_getDragPositionBoundaries() {
-		// if (newLeft >= 0 && newLeft < window.innerWidth - buttonRect.width ) elem.style.left = `${newLeft}px`;
-
 		const elem = this.element.querySelector(`#combat-hud`);
 
 		const elemRect = elem.getBoundingClientRect();
@@ -396,11 +391,11 @@ export class CombatHUD extends foundry.applications.api.HandlebarsApplicationMix
 				faction: combatant.faction,
 				effects: activeEffects,
 				img: game.settings.get(SYSTEM, SETTINGS.optionCombatHudPortrait) === 'token' ? await this._getCombatantThumbnail(combatant) : combatant.actor.img,
-				trackedResourcePart1: trackedResourcePart1,
-				trackedResourcePart2: trackedResourcePart2,
-				trackedResourcePart3: trackedResourcePart3,
-				trackedResourcePart4: trackedResourcePart4,
-				opacity: opacity,
+				trackedResourcePart1,
+				trackedResourcePart2,
+				trackedResourcePart3,
+				trackedResourcePart4,
+				opacity,
 				zeropower: {
 					progress: {
 						current: 0,
@@ -455,7 +450,7 @@ export class CombatHUD extends foundry.applications.api.HandlebarsApplicationMix
 
 				ordering.push({
 					tokenId: combatant.token.id,
-					order: order,
+					order,
 				});
 			}
 
@@ -642,7 +637,7 @@ export class CombatHUD extends foundry.applications.api.HandlebarsApplicationMix
 			hudWidth = minWidth;
 		}
 
-		let uiRightWidth = uiRight ? uiRight.clientWidth : 0;
+		const uiRightWidth = uiRight ? uiRight.clientWidth : 0;
 		hudWidth -= uiRightWidth * 0.5;
 
 		const alpha = game.settings.get(SYSTEM, SETTINGS.optionCombatHudWidth) / 100;
@@ -879,7 +874,6 @@ export class CombatHUD extends foundry.applications.api.HandlebarsApplicationMix
 			return;
 		}
 
-		// const faction = actorTypeOver === 'character' ? '.characters' : '.npcs';
 		const combatRowDragged = this.element.querySelector(`.combat-row[data-token-id="${data.token}"]`);
 
 		const orderOver = parseInt(combatRowOver.dataset.order);
@@ -993,8 +987,6 @@ export class CombatHUD extends foundry.applications.api.HandlebarsApplicationMix
 	_onCombatantDoubleClick(event, elem) {
 		event.preventDefault();
 
-		// const combatRow = event.currentTarget.closest('.combat-row');
-		// const token = canvas.tokens.get(combatRow.dataset.tokenId);
 		const token = canvas.tokens.get(elem.dataset.tokenId);
 
 		if (token) {
@@ -1035,20 +1027,15 @@ export class CombatHUD extends foundry.applications.api.HandlebarsApplicationMix
 	_getPosition() {
 		const draggedPosition = game.settings.get(SYSTEM, SETTINGS.optionCombatHudDraggedPosition);
 		const positionFromTop = game.settings.get(SYSTEM, SETTINGS.optionCombatHudPosition) === 'top';
-		// const uiLeft = $('#ui-left');
 		const uiMiddle = $('#ui-middle');
 
 		const position = {};
 
 		// Handle main element position
-		// position.left = draggedPosition && draggedPosition.x ? draggedPosition.x : uiMiddle.position().left - uiLeft.width() * 0.5;
 		position.left = draggedPosition && draggedPosition.x ? draggedPosition.x : uiMiddle.position().left;
 		if (positionFromTop) {
-			// const uiTop = $('#ui-top');
-			// position.top = draggedPosition && draggedPosition.y ? draggedPosition.y : uiTop.height() + 20;
 			position.top = draggedPosition && draggedPosition.y ? draggedPosition.y : 48;
 		} else {
-			// const uiBottom = $('#ui-bottom');
 			const uiBottom = $('#hotbar');
 			position.bottom = draggedPosition && draggedPosition.y ? draggedPosition.y : uiBottom.height() + 35;
 		}

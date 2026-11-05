@@ -87,7 +87,7 @@ export function ActiveEffectBehaviourMixin(BaseDocument) {
 		 */
 		prepareBaseData() {
 			super.prepareBaseData();
-			for (let change of this.system.changes) {
+			for (const change of this.system.changes) {
 				if (HIGH_PRIORITY_CHANGES.has(change.key)) {
 					change.phase = 'initial';
 				} else if (LOW_PRIORITY_CHANGES.has(change.key)) {
@@ -163,9 +163,8 @@ export function ActiveEffectBehaviourMixin(BaseDocument) {
 				if (flag && flag !== 'none') {
 					if (this.target.effects.find((e) => e.statuses.has('crisis')) != null) {
 						return flag === 'inactive';
-					} else {
-						return flag === 'active';
 					}
+					return flag === 'active';
 				}
 			}
 			if (this.target instanceof FUItem && this.target.parent instanceof FUActor) {
@@ -173,9 +172,8 @@ export function ActiveEffectBehaviourMixin(BaseDocument) {
 				if (flag && flag !== 'none') {
 					if (this.target.parent.effects.find((e) => e.statuses.has('crisis')) != null) {
 						return flag === 'inactive';
-					} else {
-						return flag === 'active';
 					}
+					return flag === 'active';
 				}
 			}
 			if (this.target instanceof PseudoItem && this.target.parentFoundryDocument?.parent instanceof FUActor) {
@@ -183,9 +181,8 @@ export function ActiveEffectBehaviourMixin(BaseDocument) {
 				if (flag && flag !== 'none') {
 					if (this.target.parent.effects.find((e) => e.statuses.has('crisis')) != null) {
 						return flag === 'inactive';
-					} else {
-						return flag === 'active';
 					}
+					return flag === 'active';
 				}
 			}
 			return false;
@@ -277,7 +274,7 @@ export function ActiveEffectBehaviourMixin(BaseDocument) {
 		async addStack() {
 			if (this.stackable) {
 				console.debug(`Incrementing stack of ${this.name}`);
-				let changes = {};
+				const changes = {};
 				const increment = this.system.rules.stacking.increment;
 				let message;
 				let progressUpdated;
@@ -335,7 +332,7 @@ export function ActiveEffectBehaviourMixin(BaseDocument) {
 		 * @returns {Promise<void>}
 		 */
 		async sendToChat() {
-			let flags = Pipeline.initializedFlags(Flags.ChatMessage.Effect, this.uuid);
+			const flags = Pipeline.initializedFlags(Flags.ChatMessage.Effect, this.uuid);
 			let item;
 			let actor;
 

@@ -368,9 +368,8 @@ export class CustomWeaponDataModel extends WeaponBehaviourMixin(PseudoDocumentEn
 				promises.push(technosphere.delete());
 			}
 			return Promise.all(promises);
-		} else {
-			ui.notifications.error('FU.TechnospheresSlottingErrorNotTechnosphere', { localize: true });
 		}
+		ui.notifications.error('FU.TechnospheresSlottingErrorNotTechnosphere', { localize: true });
 	}
 
 	removeTechnosphere(technosphere) {

@@ -31,7 +31,8 @@ export function EnablePseudoDocumentsMixin(ClientDocument) {
 			if (!collectionName) {
 				if (this.system && this.system.getEmbeddedCollection) {
 					return this.system.getEmbeddedCollection(embeddedName);
-				} else if (embeddedName in this.nestedCollections) {
+				}
+				if (embeddedName in this.nestedCollections) {
 					return this.nestedCollections[embeddedName];
 				}
 			}

@@ -106,7 +106,7 @@ export class Theme {
 		const blob = new Blob([data], { type: 'text/json' });
 
 		// Create an element to trigger the download
-		let a = document.createElement('a');
+		const a = document.createElement('a');
 		a.href = window.URL.createObjectURL(blob);
 		a.download = filename;
 

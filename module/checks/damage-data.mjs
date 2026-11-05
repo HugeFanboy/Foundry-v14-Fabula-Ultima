@@ -96,7 +96,7 @@ export class DamageData {
 			return new Set(Object.keys(FU.damageTypes));
 		}
 
-		let available = new Set([this.type]);
+		const available = new Set([this.type]);
 		for (const modifier of this._modifiers) {
 			if (!modifier.enabled) {
 				continue;
@@ -167,11 +167,11 @@ export class DamageData {
 	addModifier(label, amount, types = [], data = {}) {
 		/** @type DamageModifier **/
 		const modifier = {
-			label: label,
-			amount: amount,
+			label,
+			amount,
 			value: amount, // legacy
 			multiplier: 1,
-			types: types,
+			types,
 			enabled: true,
 			...data,
 		};
@@ -187,11 +187,11 @@ export class DamageData {
 	addMultiplier(label, multiplier, types = [], data = {}) {
 		/** @type DamageModifier **/
 		const modifier = {
-			label: label,
+			label,
 			amount: 0,
 			value: 0, // legacy
-			multiplier: multiplier,
-			types: types,
+			multiplier,
+			types,
 			enabled: true,
 			...data,
 		};

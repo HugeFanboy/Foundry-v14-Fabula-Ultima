@@ -60,7 +60,6 @@ export class HoplosphereSheet extends FUItemSheet {
 	static async #removeEffect(event, element) {
 		if (!this.isEditable) return;
 		await this.item.system.removeEffect(element.dataset.index);
-		('FU.HoplosphereIdLine1');
 	}
 
 	static #toggleSheetLock() {

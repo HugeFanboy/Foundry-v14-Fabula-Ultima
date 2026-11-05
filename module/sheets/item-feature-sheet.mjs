@@ -72,7 +72,7 @@ export class FUFeatureSheet extends FUItemSheet {
 						path.pop(); // remove actual field name
 						let enrichedHtml = context.enrichedHtml;
 						let modelData = context.system.data;
-						for (let pathFragment of path) {
+						for (const pathFragment of path) {
 							enrichedHtml[pathFragment] ??= {};
 							enrichedHtml = enrichedHtml[pathFragment];
 							modelData = modelData[pathFragment];
@@ -82,7 +82,7 @@ export class FUFeatureSheet extends FUItemSheet {
 				});
 
 				async function enrichRecursively(obj, { rollData, secrets, actor }) {
-					for (let [key, value] of Object.entries(obj)) {
+					for (const [key, value] of Object.entries(obj)) {
 						if (typeof value === 'object') {
 							await enrichRecursively(value, { rollData, secrets, actor });
 						} else {
@@ -195,7 +195,8 @@ export class FUFeatureSheet extends FUItemSheet {
 		const type = this.item.system.data.type;
 		if (this.item.type === 'optionalFeature') {
 			return OptionalFeatureRegistry.instance.localize(type);
-		} else if (this.item.type === 'classFeature') {
+		}
+		if (this.item.type === 'classFeature') {
 			return ClassFeatureRegistry.instance.localize(type);
 		}
 		return null;

@@ -18,11 +18,11 @@ export class SheetExtensions {
 	 */
 	registerTab(id, tab, part, prepareContext) {
 		this.#parts[id] = {
-			id: id,
+			id,
 			...part,
 		};
 		this.#tabs[id] = {
-			id: id,
+			id,
 			...tab,
 		};
 		this.#prepareContext[id] = prepareContext;

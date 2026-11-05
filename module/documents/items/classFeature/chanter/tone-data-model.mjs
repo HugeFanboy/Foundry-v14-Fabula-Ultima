@@ -54,7 +54,7 @@ export class ToneDataModel extends RollableClassFeatureDataModel {
 		};
 		return {
 			enrichedDescription: await TextEditor.enrichHTML(model.description, { rollData }),
-			rollData: rollData,
+			rollData,
 		};
 	}
 

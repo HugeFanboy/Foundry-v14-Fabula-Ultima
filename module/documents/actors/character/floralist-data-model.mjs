@@ -34,16 +34,14 @@ export class FloralistDataModel extends foundry.abstract.DataModel {
 					'system.floralist.planted': null,
 				});
 				return magiseed.system.data.postRemoved();
-			} else {
-				await this.parent.actor.update({
-					'system.floralist.planted': magiseed.uuid,
-				});
-				return magiseed.system.data.postPlanted();
 			}
-		} else {
-			ui.notifications.error('Could not plant.');
-			console.error('Could not plant.', magiseed);
+			await this.parent.actor.update({
+				'system.floralist.planted': magiseed.uuid,
+			});
+			return magiseed.system.data.postPlanted();
 		}
+		ui.notifications.error('Could not plant.');
+		console.error('Could not plant.', magiseed);
 	}
 
 	#isMagiseed(magiseed) {

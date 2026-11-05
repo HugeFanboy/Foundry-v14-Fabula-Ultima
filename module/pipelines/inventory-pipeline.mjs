@@ -67,7 +67,7 @@ async function tradeItem(actor, item, type) {
 		speaker: ChatMessage.getSpeaker({ actor }),
 		flags: Pipeline.initializedFlags(Flags.ChatMessage.Inventory, true),
 		content: await foundry.applications.handlebars.renderTemplate('systems/projectfu/templates/chat/chat-trade-item.hbs', {
-			message: message,
+			message,
 			actorName: actor.name,
 			actorId: actor.uuid,
 			itemName: item.name,
@@ -76,9 +76,9 @@ async function tradeItem(actor, item, type) {
 			itemDescription: item.system.description,
 			currency: getCurrencyString(),
 			sale: type === 'sell',
-			cost: cost,
-			action: action,
-			actionLabel: actionLabel,
+			cost,
+			action,
+			actionLabel,
 		}),
 	});
 }
@@ -125,7 +125,7 @@ async function distributeZenit(actor, targets) {
 
 	// Start with one unit
 	const base = 1;
-	let remaining = zenit - characterCount;
+	const remaining = zenit - characterCount;
 	// Distribute remaining evenly
 	const bonus = Math.floor(remaining / characterCount);
 	const share = base + bonus;
@@ -139,7 +139,7 @@ async function distributeZenit(actor, targets) {
 		StringUtils.localize('FU.ChatInventoryDistributeZenit', {
 			actor: actor.name,
 			zenit: distributed,
-			share: share,
+			share,
 			targets: targetString,
 			currency: getCurrencyString(),
 		}),
@@ -165,7 +165,7 @@ async function distributeZenit(actor, targets) {
 }
 
 async function updateResources(actor, zenitIncrement, ipIncrement) {
-	let updates = {};
+	const updates = {};
 
 	if (zenitIncrement) {
 		const current = actor.system.resources.zenit.value;
@@ -228,7 +228,7 @@ async function rechargeIP(actor, recharge) {
 	const confirmed = await FoundryUtils.confirmDialog(
 		StringUtils.localize('FU.InventoryRechargeIP'),
 		StringUtils.localize('FU.ChatInventoryRechargePrompt', {
-			cost: cost,
+			cost,
 			ip: missingIP,
 			currency: getCurrencyString(),
 		}),
@@ -272,7 +272,7 @@ async function requestZenitTransfer(sourceActorId, targetActorId, amount) {
 				content: game.i18n.format('FU.ChatZenitTransfer', {
 					source: sourceActor.name,
 					target: targetActor.name,
-					amount: amount,
+					amount,
 					currency: getCurrencyString(),
 				}),
 			});
@@ -301,7 +301,7 @@ async function promptPartyZenitTransfer(actor, mode) {
 	}
 
 	const result = await foundry.applications.api.DialogV2.input({
-		window: { title: game.i18n.format(label, { currency: currency }) },
+		window: { title: game.i18n.format(label, { currency }) },
 		classes: ['projectfu', 'unique-dialog', 'backgroundstyle'],
 		content: `<form>
       <div class="form-group">        
@@ -365,10 +365,9 @@ async function requestTrade(actorId, itemId, sale, targetId = undefined, modifie
 	// Now execute directly on GM or request as user
 	if (game.user?.isGM) {
 		return handleTrade(actorId, itemId, sale, targetId, modifiers, socketMessage);
-	} else {
-		await game.projectfu.socket.requestTrade(actorId, itemId, sale, targetId, modifiers);
-		return false;
 	}
+	await game.projectfu.socket.requestTrade(actorId, itemId, sale, targetId, modifiers);
+	return false;
 }
 
 async function handleTrade(actorId, itemId, sale, targetId, modifiers = {}, socketMessage) {
@@ -503,9 +502,8 @@ async function onHandleTrade(actor, item, sale, target, modifiers = {}, socketMe
 
 			if (!result || result === 'cancel') {
 				return false;
-			} else {
-				action = result;
 			}
+			action = result;
 		}
 
 		console.debug(`${target.name} is looting ${item.name} from ${actor.name}`);
@@ -520,20 +518,20 @@ async function onHandleTrade(actor, item, sale, target, modifiers = {}, socketMe
 	} else {
 		await item.delete();
 	}
-	let message = sale ? 'FU.ChatItemPurchased' : 'FU.ChatItemLooted';
+	const message = sale ? 'FU.ChatItemPurchased' : 'FU.ChatItemLooted';
 
 	// Post message
 	ChatMessage.create({
 		speaker: ChatMessage.getSpeaker({ actor }),
 		flags: Pipeline.initializedFlags(Flags.ChatMessage.Inventory, true),
 		content: await foundry.applications.handlebars.renderTemplate('systems/projectfu/templates/chat/chat-item-acquired.hbs', {
-			message: message,
+			message,
 			actorName: actor.name,
 			itemName: item.name,
 			targetName: target.name,
 			currency: getCurrencyString(),
-			sale: sale,
-			cost: cost,
+			sale,
+			cost,
 		}),
 	});
 	return true;

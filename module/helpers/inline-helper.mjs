@@ -37,7 +37,8 @@ export class InlineSourceInfo {
 				return new InlineSourceInfo(name ?? item.name, actor.uuid, item.uuid);
 			}
 			return new InlineSourceInfo(name ?? actor.name, actor.uuid, null);
-		} else if (item) {
+		}
+		if (item) {
 			return new InlineSourceInfo(name ?? item.name, null, item.uuid);
 		}
 	}
@@ -312,7 +313,6 @@ function appendVariableToAnchor(anchor, key, expression, localization = 'FU.Vari
 	const content = dynamicAmount ? game.i18n.localize(localization) : expression;
 	const span = document.createElement('span');
 	span.textContent = content;
-	//span.style.marginLeft = span.style.marginRight = '2px';
 	anchor.appendChild(span);
 }
 
@@ -325,7 +325,7 @@ function appendVariableToAnchor(anchor, key, expression, localization = 'FU.Vari
 /**
  * @type {FUInlineCommand[]}
  */
-let inlineCommands = [];
+const inlineCommands = [];
 
 /**
  * @typedef FUInlineCommand
@@ -390,21 +390,21 @@ function resolveDocument(element) {
 		const messageId = chatMessage.dataset.messageId;
 		const message = ChatMessageHelper.fromId(messageId);
 		return message;
+	}
+	let sheet;
+	const framev2 = element.closest('.application');
+	if (framev2) {
+		sheet = foundry.applications.instances.get(framev2.id);
 	} else {
-		let sheet;
-		const framev2 = element.closest('.application');
-		if (framev2) {
-			sheet = foundry.applications.instances.get(framev2.id);
-		} else {
-			const framev1 = element.closest('.app');
-			if (framev1) {
-				sheet = ui.windows[framev1.dataset.appid];
-			}
-		}
-		if (sheet) {
-			return sheet.document ?? sheet.element;
+		const framev1 = element.closest('.app');
+		if (framev1) {
+			sheet = ui.windows[framev1.dataset.appid];
 		}
 	}
+	if (sheet) {
+		return sheet.document ?? sheet.element;
+	}
+
 	console.debug(`Failed to resolve the document from ${element.toString()}`);
 }
 

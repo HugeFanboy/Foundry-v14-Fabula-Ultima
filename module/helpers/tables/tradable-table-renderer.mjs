@@ -25,7 +25,8 @@ export class TradableTableRenderer extends FUTableRenderer {
 				}
 				if (item.actor.type === 'stash') {
 					return !!item.actor.system.merchant;
-				} else if (item.actor.type === 'party') {
+				}
+				if (item.actor.type === 'party') {
 					return game.user.isGM;
 				}
 				return false;

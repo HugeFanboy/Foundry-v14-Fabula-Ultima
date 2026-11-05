@@ -218,7 +218,7 @@ function onGetProseMirrorMenuDropDowns(menu, config) {
 		icon: `<i class="star-label fus-star2-border" data-tooltip="FU.TextEditorTextCommands"></i>`,
 		cssClass: 'right',
 		weight: 250,
-		entries: entries,
+		entries,
 	};
 }
 

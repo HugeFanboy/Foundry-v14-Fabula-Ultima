@@ -16,11 +16,11 @@ const alreadyPrinted = new Set();
  * @return void
  */
 export const deprecationNotice = (root, key, replacementKey, once = true) => {
-	let parentKeys = key.split('.');
-	let propertyKey = parentKeys.pop();
+	const parentKeys = key.split('.');
+	const propertyKey = parentKeys.pop();
 
 	let currentObject = root.prototype;
-	for (let parentKey of parentKeys) {
+	for (const parentKey of parentKeys) {
 		if (!(parentKey in currentObject)) {
 			const obj = {
 				get root() {
@@ -41,7 +41,7 @@ export const deprecationNotice = (root, key, replacementKey, once = true) => {
 		currentObject = currentObject[parentKey];
 	}
 
-	let fqn = `${root.name}.${key}`;
+	const fqn = `${root.name}.${key}`;
 	if (replacementKey) {
 		Object.defineProperty(currentObject, propertyKey, {
 			get() {

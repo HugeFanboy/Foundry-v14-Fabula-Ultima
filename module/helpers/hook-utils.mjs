@@ -17,7 +17,7 @@ export async function callHookWithCallbacks(hook, ...args) {
 
 	foundry.helpers.Hooks.callAll(hook, ...args, registerCallback);
 
-	for (let callback of callbacks) {
+	for (const callback of callbacks) {
 		try {
 			await callback(...args);
 		} catch (err) {

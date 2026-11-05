@@ -61,7 +61,7 @@ export class UpdateResourceData {
 		/** @type ResourceModifier **/
 		const modifier = {
 			label: label ?? 'FU.Unknown',
-			amount: amount,
+			amount,
 			multiplier: 1,
 			enabled: true,
 		};
@@ -77,7 +77,7 @@ export class UpdateResourceData {
 		const modifier = {
 			label: label ?? 'FU.Unknown',
 			amount: 0,
-			multiplier: multiplier,
+			multiplier,
 			enabled: true,
 		};
 		this.modifiers.push(modifier);
@@ -98,7 +98,7 @@ export class UpdateResourceData {
 		}
 		for (const mod of this.modifiers) {
 			if (mod.enabled) {
-				let multiplier = mod.multiplier;
+				const multiplier = mod.multiplier;
 				if (Number.isFinite(multiplier) && multiplier !== 1) {
 					result *= mod.amount;
 				}
@@ -224,10 +224,10 @@ async function createChatMessage(request, actor, amount, flavor, template, messa
 		chat.sections,
 		template,
 		{
-			message: message,
+			message,
 			actor: actor.name,
 			uuid: actor.uuid,
-			amount: amount,
+			amount,
 			key: request.attributeKey,
 			resource: request.resourceType,
 			resourceLabel: request.resourceLabel,
@@ -271,7 +271,7 @@ async function processRecovery(request) {
 			updates.push(
 				actor.update(updateData).then(async (result) => {
 					/** @type FURenderData **/
-					let renderData = {
+					const renderData = {
 						sections: [],
 						postRenderActions: [],
 					};
@@ -291,7 +291,7 @@ async function processRecovery(request) {
 				updates.push(
 					actor.modifyTokenAttribute(request.attributeKey, newValue, false, false).then(async (result) => {
 						/** @type FURenderData **/
-						let renderData = {
+						const renderData = {
 							sections: [],
 							postRenderActions: [],
 						};
@@ -322,7 +322,7 @@ async function processRecovery(request) {
 				updates.push(
 					actor.modifyTokenAttribute(request.attributeKey, amountRecovered, true).then(async (result) => {
 						/** @type FURenderData **/
-						let renderData = {
+						const renderData = {
 							sections: [],
 							postRenderActions: [],
 						};
@@ -384,7 +384,7 @@ async function processLoss(request) {
 			updates.push(
 				actor.update(updateData).then(async (result) => {
 					/** @type FURenderData **/
-					let renderData = {
+					const renderData = {
 						sections: [],
 						postRenderActions: [],
 					};
@@ -400,7 +400,7 @@ async function processLoss(request) {
 			updates.push(
 				actor.modifyTokenAttribute(request.attributeKey, amountLost, true).then(async (result) => {
 					/** @type FURenderData **/
-					let renderData = {
+					const renderData = {
 						sections: [],
 						postRenderActions: [],
 					};
@@ -424,9 +424,8 @@ async function processLoss(request) {
 async function process(request) {
 	if (request.amount >= 0) {
 		return processRecovery(request);
-	} else {
-		return processLoss(request);
 	}
+	return processLoss(request);
 }
 
 /**
@@ -464,14 +463,13 @@ async function absorbResource(resource, amount, sourceInfo, targets) {
 		if (target.isOwner) {
 			const request = new ResourceRequest(sourceInfo, targets, resource, amount, false);
 			return ResourcePipeline.processRecovery(request);
-		} else {
-			return game.projectfu.socket.requestPipeline('resource', {
-				sourceInfo: sourceInfo,
-				targets: targets.map((a) => a.uuid),
-				resource: resource,
-				amount: amount,
-			});
 		}
+		return game.projectfu.socket.requestPipeline('resource', {
+			sourceInfo,
+			targets: targets.map((a) => a.uuid),
+			resource,
+			amount,
+		});
 	}
 }
 
@@ -585,14 +583,14 @@ async function prompt(request) {
 	flags = Pipeline.setFlag(flags, Flags.ChatMessage.Check, true);
 	ChatMessage.create({
 		speaker: ChatMessage.getSpeaker({ user: game.users.activeGM }),
-		flags: flags,
+		flags,
 		content: await FoundryUtils.renderTemplate('chat/chat-update-resource-prompt', {
-			message: message,
+			message,
 			amount: request.amount,
 			type: StringUtils.localize(FU.resources[request.resourceType]),
 			source: request.sourceInfo.name,
-			targets: targets,
-			actions: actions,
+			targets,
+			actions,
 		}),
 	});
 }

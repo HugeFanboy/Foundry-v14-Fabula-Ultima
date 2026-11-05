@@ -768,24 +768,22 @@ export class FUPartySheet extends FUActorSheet {
 				await this.#showJournalImportDialog(entries);
 				return folder;
 			}
-		} else {
-			if (folder?.type === 'Actor') {
-				const allFolders = [folder, ...folder.getSubfolders(true)];
-				const actors = (game.actors?.contents ?? []).filter((actor) => allFolders.some((f) => actor.folder?.id === f.id));
+		} else if (folder?.type === 'Actor') {
+			const allFolders = [folder, ...folder.getSubfolders(true)];
+			const actors = (game.actors?.contents ?? []).filter((actor) => allFolders.some((f) => actor.folder?.id === f.id));
 
-				// Add dropped actors to the party in their matching section.
-				for (const actor of actors) {
-					const actorCategory = this.#classifyDroppedActor(actor);
-					if (actorCategory === 'character') {
-						await this.party.addCharacter(actor);
-					} else if (actorCategory === 'companion') {
-						await this.party.addCompanion(actor);
-					} else if (actorCategory === 'adversary') {
-						await this.party.addOrUpdateAdversary(actor, 0);
-					}
+			// Add dropped actors to the party in their matching section.
+			for (const actor of actors) {
+				const actorCategory = this.#classifyDroppedActor(actor);
+				if (actorCategory === 'character') {
+					await this.party.addCharacter(actor);
+				} else if (actorCategory === 'companion') {
+					await this.party.addCompanion(actor);
+				} else if (actorCategory === 'adversary') {
+					await this.party.addOrUpdateAdversary(actor, 0);
 				}
-				return folder;
 			}
+			return folder;
 		}
 
 		return super._onDropFolder?.(event, folder) ?? super._onDrop(event);
@@ -1241,7 +1239,7 @@ export class FUPartySheet extends FUActorSheet {
 		}
 
 		const groups = [];
-		let allPages = [];
+		const allPages = [];
 		let itemIndex = 0;
 
 		for (const journal of journals) {
@@ -1276,7 +1274,7 @@ export class FUPartySheet extends FUActorSheet {
 		const data = {
 			title: `${StringUtils.localize('CONTROLS.CommonSelect')} ${StringUtils.localize('DOCUMENT.JournalEntryPage')}`,
 			style: 'grouped-list',
-			groups: groups,
+			groups,
 			items: allPages,
 			initial: [],
 			getDescription: async () => '',
@@ -1402,8 +1400,8 @@ export class FUPartySheet extends FUActorSheet {
 		const characters = await this.party.getCharacterActors();
 		const defaultSource = StringUtils.localize('USER.RoleGamemaster');
 		const content = await FoundryUtils.renderTemplate('dialog/dialog-award-resources', {
-			defaultSource: defaultSource,
-			characters: characters,
+			defaultSource,
+			characters,
 		});
 		const result = await FoundryUtils.input('FU.AwardResources', content);
 
@@ -1435,7 +1433,7 @@ export class FUPartySheet extends FUActorSheet {
 		}
 
 		// Initialize the context menu options
-		let contextMenuOptions = [
+		const contextMenuOptions = [
 			{
 				label: StringUtils.localize('FU.Delete'),
 				icon: '<i class="fas fa-trash"></i>',
@@ -1483,7 +1481,7 @@ export class FUPartySheet extends FUActorSheet {
 	 */
 	static prepareActionHooks() {
 		/** @type PartySheetActionHook[] **/
-		let hooks = [];
+		const hooks = [];
 
 		// Built-in support
 		if (game.modules.get('lookfar')?.active) {
@@ -1704,7 +1702,7 @@ function onStudyEvent(ev, registerCallback) {
 					result: game.i18n.localize(FU.studyResult[studyResult]),
 					uuid: entry.uuid,
 				}),
-				flags: flags,
+				flags,
 			});
 		});
 	}

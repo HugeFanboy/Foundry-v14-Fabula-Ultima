@@ -110,22 +110,21 @@ export class DerivedValuesDataModel extends foundry.abstract.DataModel {
 
 			if (armorData.martial) {
 				return Number(total + data[type].bonus);
-			} else {
-				const attrKey = isMagic ? armorData.magicDefense.attribute : armorData.defense.attribute;
-				const attrVal = includeAttr ? (attributes[attrKey]?.current ?? 0) : 0;
-				return Number(attrVal + total + data[type].bonus);
 			}
-		} else if (armor) {
+			const attrKey = isMagic ? armorData.magicDefense.attribute : armorData.defense.attribute;
+			const attrVal = includeAttr ? (attributes[attrKey]?.current ?? 0) : 0;
+			return Number(attrVal + total + data[type].bonus);
+		}
+		if (armor) {
 			const armorData = armor.system;
 			total += isMagic ? armorData.mdef.value : armorData.def.value;
 			const attrKey = isMagic ? armorData.attributes.secondary.value : armorData.attributes.primary.value;
 			const attrVal = includeAttr ? (attributes[attrKey]?.current ?? 0) : 0;
 			return Number(attrVal + total + data[type].bonus);
-		} else {
-			const fallbackAttr = isMagic ? attributes.ins.current : attributes.dex.current;
-			const attrVal = includeAttr ? fallbackAttr : 0;
-			return Number(attrVal + total + data[type].bonus);
 		}
+		const fallbackAttr = isMagic ? attributes.ins.current : attributes.dex.current;
+		const attrVal = includeAttr ? fallbackAttr : 0;
+		return Number(attrVal + total + data[type].bonus);
 	}
 
 	static calculateDefense(actor, data) {

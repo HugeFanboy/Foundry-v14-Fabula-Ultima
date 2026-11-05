@@ -47,7 +47,7 @@ const onRenderCheck = (data, checkResult, actor, item) => {
 					modifier: modifierTotal,
 					total: result,
 					crit: critical,
-					fumble: fumble,
+					fumble,
 				},
 				check: {
 					attr1: {

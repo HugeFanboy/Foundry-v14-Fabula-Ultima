@@ -9,7 +9,7 @@ export class FUToken extends foundry.canvas.placeables.Token {
 	}
 
 	_createPressureGauge() {
-		let theme = game.settings.get(SYSTEM, SETTINGS.optionPressureGaugeTheme);
+		const theme = game.settings.get(SYSTEM, SETTINGS.optionPressureGaugeTheme);
 		let pressureGaugeClass = undefined;
 
 		if (theme === 'hudTheme') {

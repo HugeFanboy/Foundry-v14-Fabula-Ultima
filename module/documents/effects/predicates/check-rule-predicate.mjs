@@ -105,7 +105,8 @@ export class CheckRulePredicate extends RulePredicateDataModel {
 						// 'success' or 'failure'
 						if (this.outcome === 'success' && check.fumble) {
 							return false;
-						} else if (this.outcome === 'failure' && check.critical) {
+						}
+						if (this.outcome === 'failure' && check.critical) {
 							return false;
 						}
 
@@ -114,7 +115,8 @@ export class CheckRulePredicate extends RulePredicateDataModel {
 						if (difficulty != null) {
 							if (this.outcome === 'success' && check.result < difficulty) {
 								return false;
-							} else if (this.outcome === 'failure' && check.result >= difficulty) {
+							}
+							if (this.outcome === 'failure' && check.result >= difficulty) {
 								return false;
 							}
 						} else {

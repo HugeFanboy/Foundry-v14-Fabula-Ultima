@@ -142,9 +142,8 @@ export class ArmorDataModel extends PseudoDocumentEnabledTypeDataModel {
 	get attributePartials() {
 		if (game.settings.get(SYSTEM, SETTINGS.technospheres)) {
 			return [ItemPartialTemplates.standard, ItemPartialTemplates.slotSelectArmor, ItemPartialTemplates.costStandalone, ItemPartialTemplates.initiativeField, ItemPartialTemplates.armor];
-		} else {
-			return [ItemPartialTemplates.standard, ItemPartialTemplates.qualityCost, ItemPartialTemplates.initiativeField, ItemPartialTemplates.armor];
 		}
+		return [ItemPartialTemplates.standard, ItemPartialTemplates.qualityCost, ItemPartialTemplates.initiativeField, ItemPartialTemplates.armor];
 	}
 
 	/**
@@ -170,9 +169,8 @@ export class ArmorDataModel extends PseudoDocumentEnabledTypeDataModel {
 				promises.push(technosphere.delete());
 			}
 			return Promise.all(promises);
-		} else {
-			ui.notifications.error('FU.TechnospheresSlottingErrorNotTechnosphere', { localize: true });
 		}
+		ui.notifications.error('FU.TechnospheresSlottingErrorNotTechnosphere', { localize: true });
 	}
 
 	removeTechnosphere(technosphere) {

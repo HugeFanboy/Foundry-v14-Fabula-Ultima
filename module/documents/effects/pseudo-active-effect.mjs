@@ -369,9 +369,10 @@ class BasePseudoActiveEffect extends PseudoDocument {
 					configurable: true,
 				},
 				duration: {
-					get() {
-						foundry.utils.logCompatibilityWarning('You are accessing ActiveEffectDuration#duration, ' + 'which is now at ActiveEffectDuration#seconds.', { since: 14, until: 16, once: true });
-						return this.start ? duration.seconds - (game.time.worldtime - this.start.time) : null;
+					get: () => {
+						const message = 'You are accessing ActiveEffectDuration#duration, which is now at ActiveEffectDuration#seconds.';
+						foundry.utils.logCompatibilityWarning(message, { since: 14, until: 16, once: true });
+						return duration.seconds;
 					},
 					configurable: true,
 				},

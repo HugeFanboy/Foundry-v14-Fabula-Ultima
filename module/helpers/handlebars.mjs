@@ -108,7 +108,7 @@ export const FUHandlebars = Object.freeze({
 		});
 
 		Handlebars.registerHelper('pfuHalf', function (value) {
-			var num = Number(value);
+			const num = Number(value);
 			if (isNaN(num)) {
 				return '';
 			}
@@ -161,7 +161,8 @@ export const FUHandlebars = Object.freeze({
 		Handlebars.registerHelper('pfuFormatMod', function (value) {
 			if (value > 0) {
 				return '+' + value;
-			} else if (value < 0) {
+			}
+			if (value < 0) {
 				return value;
 			}
 			return value;
@@ -187,7 +188,7 @@ export const FUHandlebars = Object.freeze({
 		Handlebars.registerHelper('pfuFormatResource', function (resourceValue, resourceMax, resourceName) {
 			// Convert value to a string to split into 3 digits
 			const valueString = resourceValue.toString().padStart(3, '0');
-			const isCrisis = resourceValue <= resourceMax / 2 && resourceName == 'HP';
+			const isCrisis = resourceValue <= resourceMax / 2 && resourceName === 'HP';
 			const digitBoxes = valueString
 				.split('')
 				.map(
@@ -226,9 +227,8 @@ export const FUHandlebars = Object.freeze({
 		Handlebars.registerHelper('pfuImage', (src, classes, label) => {
 			if (foundry.helpers.media.VideoHelper.hasVideoExtension(src)) {
 				return new Handlebars.SafeString(`<video class="${classes}" autoplay loop muted playsinline src="${src}" data-tooltip="${label}"></video>`);
-			} else {
-				return new Handlebars.SafeString(`<img class="${classes}" src="${src}" data-tooltip="${label}" alt="${label}">`);
 			}
+			return new Handlebars.SafeString(`<img class="${classes}" src="${src}" data-tooltip="${label}" alt="${label}">`);
 		});
 
 		Handlebars.registerHelper(
@@ -240,16 +240,16 @@ export const FUHandlebars = Object.freeze({
 			function (result, difficulty) {
 				if (result.crit) {
 					return 'critical';
-				} else if (result.fumble) {
+				}
+				if (result.fumble) {
 					return 'fumble';
 				}
 
 				if (Number.isInteger(difficulty)) {
 					if (result.total >= difficulty) {
 						return 'success';
-					} else {
-						return 'failure';
 					}
+					return 'failure';
 				}
 
 				return 'default';
@@ -288,7 +288,7 @@ export const FUHandlebars = Object.freeze({
 				result =
 					result +
 					fn(this, {
-						data: data,
+						data,
 					});
 			}
 
@@ -377,13 +377,13 @@ export function renderProgress(progress, document, path, options, index = undefi
 			? template({
 					arr: progress.progressArray,
 					id: document._id,
-					index: index,
+					index,
 					isCollection: index !== undefined,
 					data: progress,
 					dataPath: path,
-					type: type,
-					controls: controls,
-					action: action,
+					type,
+					controls,
+					action,
 					prompt: options.prompt,
 					classes: options.classes ?? '',
 					compact: options.compact,
@@ -408,7 +408,7 @@ function autoComplete(context) {
 					name: dataset.name,
 					value: dataset.value,
 					placeholder: dataset.placeholder,
-					options: options,
+					options,
 				})
 			: '';
 	return new Handlebars.SafeString(html);
@@ -481,9 +481,9 @@ function badge(key, options) {
 	const html =
 		typeof template === 'function'
 			? template({
-					icon: icon,
+					icon,
 					label: options.label,
-					size: size,
+					size,
 					value: options.value,
 					compact: options.compact,
 					flexDir: options.flexDir,
@@ -526,7 +526,7 @@ function itemAnchor(item, options) {
 					id: item.id,
 					img: item.img,
 					pack: item.pack,
-					size: size,
+					size,
 					classes: options?.classes,
 				})
 			: '';
@@ -557,7 +557,7 @@ function actorProfile(actor, options) {
 					uuid: actor.uuid,
 					id: actor.id,
 					img: actor.img,
-					size: size,
+					size,
 					classes: options?.classes,
 				})
 			: '';
@@ -578,7 +578,7 @@ function compendium(tab, options) {
 	const html =
 		typeof template === 'function'
 			? template({
-					tab: tab,
+					tab,
 					...options,
 				})
 			: '';
@@ -635,7 +635,7 @@ function helpIcon(text, options) {
 	const html =
 		typeof template === 'function'
 			? template({
-					text: text,
+					text,
 					type,
 					...options,
 				})

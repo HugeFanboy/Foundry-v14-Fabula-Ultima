@@ -215,7 +215,7 @@ export class ActionHandler {
 		FoundryUtils.itemContextMenu(element, '[data-context-menu="inventory"]', consumables);
 		// SKILLS
 		/** @type {FUItem[]} **/
-		let skills = ['skill', 'miscAbility']
+		const skills = ['skill', 'miscAbility']
 			.map((t) => actor.getItemsByType(t))
 			.flat()
 			.filter((s) => {

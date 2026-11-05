@@ -221,13 +221,13 @@ export class PseudoDocument extends BasePseudoDocument {
 	 */
 	prepareEmbeddedDocuments() {
 		for (const collectionName of Object.keys(this.collections || {})) {
-			for (let e of this.collections[collectionName]) {
+			for (const e of this.collections[collectionName]) {
 				e._initialize();
 				e._safePrepareData();
 			}
 		}
 		for (const collectionName of Object.keys(this.nestedCollections || {})) {
-			for (let e of this.nestedCollections[collectionName]) {
+			for (const e of this.nestedCollections[collectionName]) {
 				e._initialize();
 				e._safePrepareData();
 			}
@@ -251,7 +251,7 @@ export class PseudoDocument extends BasePseudoDocument {
 	 * @memberof ClientDocumentMixin#
 	 */
 	render(force = false, context = {}) {
-		for (let app of Object.values(this.apps)) {
+		for (const app of Object.values(this.apps)) {
 			app.render(force, foundry.utils.deepClone(context));
 		}
 	}
@@ -816,10 +816,8 @@ export class PseudoDocument extends BasePseudoDocument {
 		const embedCls = foundry.applications.elements.HTMLDocumentEmbedElement;
 		let embed;
 		if (foundry.utils.isElementInstanceOf(content, embedCls)) embed = content;
-		else {
-			if (config.inline) embed = await this._createInlineEmbed(content, config, options);
-			else embed = await this._createFigureEmbed(content, config, options);
-		}
+		else if (config.inline) embed = await this._createInlineEmbed(content, config, options);
+		else embed = await this._createFigureEmbed(content, config, options);
 
 		// Attach required attributes
 		if (embed) {

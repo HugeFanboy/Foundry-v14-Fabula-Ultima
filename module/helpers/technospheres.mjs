@@ -67,13 +67,13 @@ export const getTechnosphereSlotInfo = (slottedTechnospheres, totalSlots, maxMne
 		}
 	}
 
-	for (let slot of slots) {
+	for (const slot of slots) {
 		if (slot.item) {
 			const item = slot.item;
 
 			if (item.type === 'hoplosphere') {
 				const tooltipParts = [`${item.name} ${item.system.coagLevel > 1 ? `<i class='fas fa-droplet'></i>${item.system.coagLevel}` : ''}`];
-				for (let effect of item.system.activeEffects) {
+				for (const effect of item.system.activeEffects) {
 					tooltipParts.push(effect.summary);
 				}
 				slot.tooltip = tooltipParts.join('<br>');
@@ -81,16 +81,16 @@ export const getTechnosphereSlotInfo = (slottedTechnospheres, totalSlots, maxMne
 
 			if (item.type === 'mnemosphere') {
 				const tooltipParts = [`${item.name} ${item.system.class?.trim() ? `(${item.system?.class})` : ''}`];
-				for (let skill of item.system.activeSkills) {
+				for (const skill of item.system.activeSkills) {
 					tooltipParts.push(`${skill.name} (${skill.system.level.value} / ${skill.system.level.max})`);
 				}
-				for (let heroic of item.system.heroics) {
+				for (const heroic of item.system.heroics) {
 					tooltipParts.push(heroic.name);
 				}
-				for (let spell of item.system.spells) {
+				for (const spell of item.system.spells) {
 					tooltipParts.push(`${spell.name} (${game.i18n.localize('FU.Spell')})`);
 				}
-				for (let classFeature of item.system.classFeatures) {
+				for (const classFeature of item.system.classFeatures) {
 					tooltipParts.push(`${classFeature.name} (${game.i18n.localize(classFeature.system.data.constructor.translation)})`);
 				}
 

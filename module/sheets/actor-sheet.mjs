@@ -187,7 +187,7 @@ export class FUActorSheet extends api.HandlebarsApplicationMixin(sheets.ActorShe
 		// Perform the sort
 		const sortUpdates = foundry.utils.performIntegerSort(source, { target, siblings });
 		sortUpdates.sort((a, b) => b.target.uuid.length - a.target.uuid.length);
-		for (let { target, update } of sortUpdates) {
+		for (const { target, update } of sortUpdates) {
 			await target.update(update);
 		}
 		return sortUpdates.map((value) => value.target);
@@ -217,11 +217,11 @@ export class FUActorSheet extends api.HandlebarsApplicationMixin(sheets.ActorShe
 			const title = 'FU.CompendiumMigrateActorItems';
 			/** @type ItemSelectionData **/
 			const data = {
-				title: title,
+				title,
 				message,
 				style: 'list',
-				items: items,
-				compendiumItems: compendiumItems,
+				items,
+				compendiumItems,
 				getDescription: async (item) => {
 					const text = item.system?.description ?? '';
 					return text;
@@ -333,7 +333,7 @@ export class FUActorSheet extends api.HandlebarsApplicationMixin(sheets.ActorShe
 		}
 
 		const itemData = {
-			type: type,
+			type,
 		};
 
 		if ((type === 'classFeature' || type === 'optionalFeature') && subType && subType.indexOf(',') >= 0) {
@@ -367,7 +367,7 @@ export class FUActorSheet extends api.HandlebarsApplicationMixin(sheets.ActorShe
 			itemData.system = { data: { type: subType } };
 			itemData.name = this._determineNewFeatureName(type, subType, this.actor);
 		} else {
-			itemData.name = foundry.documents.Item.defaultName({ type: type, parent: this.actor });
+			itemData.name = foundry.documents.Item.defaultName({ type, parent: this.actor });
 		}
 
 		foundry.documents.Item.create(itemData, { parent: this.actor });
@@ -400,7 +400,7 @@ export class FUActorSheet extends api.HandlebarsApplicationMixin(sheets.ActorShe
 	_toggleDisabled(disabled) {
 		super._toggleDisabled(disabled);
 		for (const element of this.element.querySelectorAll('.rollable, [data-action]')) {
-			let action = element.dataset.action;
+			const action = element.dataset.action;
 			if (!action || !this.options.nonOwnerAllowedActions.includes(action)) {
 				element.classList.toggle('disabled', disabled);
 			}

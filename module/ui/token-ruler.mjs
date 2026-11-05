@@ -11,10 +11,10 @@ export class FUTokenRuler extends foundry.canvas.placeables.tokens.TokenRuler {
 
 		const sceneSetting = canvas.scene.getFlag(Flags.Scope, Flags.Scene.DragRulerState);
 		if (sceneSetting === 'enabled') return true;
-		else if (sceneSetting === 'disabled') return false;
+		if (sceneSetting === 'disabled') return false;
 
 		if (canvas.scene.grid.type === 0 && game.settings.get(SYSTEM, SETTINGS.optionEnableDragRulerGridless)) return true;
-		else if (canvas.scene.grid.type !== 0 && game.settings.get(SYSTEM, SETTINGS.optionEnableDragRulerGridded)) return true;
+		if (canvas.scene.grid.type !== 0 && game.settings.get(SYSTEM, SETTINGS.optionEnableDragRulerGridded)) return true;
 
 		const binding = game.keybindings.get(SYSTEM, FUKeybindings.showTokenDragRuler);
 		if (binding?.some(({ key }) => game.keyboard.downKeys.has(key))) return true;
@@ -37,7 +37,7 @@ export class FUTokenRuler extends foundry.canvas.placeables.tokens.TokenRuler {
 
 	_getWaypointLabelContext(waypoint, state) {
 		if (!FUTokenRuler.shouldDraw) return undefined;
-		else return super._getWaypointLabelContext(waypoint, state);
+		return super._getWaypointLabelContext(waypoint, state);
 	}
 
 	_getWaypointStyle(waypoint) {

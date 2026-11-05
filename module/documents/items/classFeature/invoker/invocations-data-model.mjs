@@ -208,11 +208,10 @@ export class InvocationsDataModel extends RollableClassFeatureDataModel {
 	static async roll(model, item, isShift) {
 		if (isShift) {
 			return Checks.display(item.actor, item);
-		} else {
-			const activeWellsprings = model.actor?.wellspringManager.activeWellsprings;
-			if (!activeWellsprings) return;
-			new InvocationSelectionApplication(model).render(true);
 		}
+		const activeWellsprings = model.actor?.wellspringManager.activeWellsprings;
+		if (!activeWellsprings) return;
+		new InvocationSelectionApplication(model).render(true);
 	}
 
 	/**

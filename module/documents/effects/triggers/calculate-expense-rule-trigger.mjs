@@ -85,9 +85,8 @@ export class CalculateExpenseRuleTrigger extends RuleTriggerDataModel {
 			if (Number.isInteger(amount)) {
 				const comparisonOperation = ComparisonOperations[this.threshold.operator];
 				return comparisonOperation(amount, this.threshold.amount);
-			} else {
-				console.warn(`The given amount in the event was not an integer.`);
 			}
+			console.warn(`The given amount in the event was not an integer.`);
 		}
 		return true;
 	}

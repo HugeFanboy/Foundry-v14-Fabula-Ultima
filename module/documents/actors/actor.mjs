@@ -569,7 +569,7 @@ export class FUActor extends foundry.documents.Actor {
 	 * @returns {Record<string, ProgressDataModel>}
 	 */
 	get tracks() {
-		let result = {};
+		const result = {};
 		// Search items
 		const items = this.items.values();
 		for (const item of items) {
@@ -619,9 +619,6 @@ export class FUActor extends foundry.documents.Actor {
 		// ActiveEffect
 		else if (progress.parent instanceof FUActiveEffectModel) {
 			await progress.parent.parent.update({ [`system.rules.progress.current`]: current });
-			// if (this.sheet.rendered) {
-			// 	this.sheet.render();
-			// }
 		}
 		// Special Rule
 		else if (progress.parent instanceof RuleDataModel) {

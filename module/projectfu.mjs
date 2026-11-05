@@ -161,7 +161,7 @@ Hooks.once('init', () => {
 		RollableClassFeatureDataModel,
 		OptionalFeatureDataModel,
 		RollableOptionalFeatureDataModel,
-		Checks: Checks,
+		Checks,
 		CheckConfiguration,
 		ActionHandler,
 		ItemCustomizer,
@@ -303,7 +303,6 @@ Hooks.once('init', () => {
 		decimals: 0,
 	};
 
-	//CONFIG.ui.combat = FUCombatTracker;
 	Object.assign(CONFIG.ui, {
 		combat: FUCombatTracker,
 		chat: FUChatLog,
@@ -347,11 +346,6 @@ Hooks.once('init', () => {
 		makeDefault: true,
 		label: 'Standard Actor Sheet v1',
 	});
-	// foundry.documents.collections.Actors.registerSheet('projectfu', FUActorSheetV2, {
-	// 	types: ['character', 'npc'],
-	// 	makeDefault: false,
-	// 	label: 'Standard Actor Sheet V2',
-	// });
 	foundry.documents.collections.Actors.registerSheet('projectfu', FUPartySheet, {
 		types: ['party'],
 		makeDefault: true,
@@ -561,7 +555,7 @@ Hooks.once('ready', function () {
 		if (!actor.system || !actor.system.immunities) return;
 
 		// Iterate over the actor's active effects
-		for (let effect of actor.effects) {
+		for (const effect of actor.effects) {
 			const statusEffectId = CONFIG.statusEffects.find((e) => effect.statuses?.has(e.id))?.id;
 
 			if (statusEffectId) {
@@ -670,10 +664,8 @@ Hooks.once('diceSoNiceReady', (dice3d) => {
 				if (checkData.result >= checkData.additionalData.initialCheck.result) pfuSfx.result = game.i18n.localize('FU.Success');
 				else pfuSfx.result = game.i18n.localize('FU.Failure');
 			}
-		} else {
-			if (checkData.result >= checkData.additionalData.difficulty) pfuSfx.result = game.i18n.localize('FU.Success');
-			else pfuSfx.result = game.i18n.localize('FU.Failure');
-		}
+		} else if (checkData.result >= checkData.additionalData.difficulty) pfuSfx.result = game.i18n.localize('FU.Success');
+		else pfuSfx.result = game.i18n.localize('FU.Failure');
 
 		if (pfuSfx.result) {
 			for (const d of dice) d.options.sfx = pfuSfx;
@@ -711,7 +703,7 @@ function createItemMacro(data, slot) {
 					name: item.name,
 					type: 'script',
 					img: item.img,
-					command: command,
+					command,
 					flags: { 'projectfu.itemMacro': true },
 				})
 			);

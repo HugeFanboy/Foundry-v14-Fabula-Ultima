@@ -64,7 +64,7 @@ function rollBehavior(sheet) {
 
 function targetPriority(actor, selected = undefined) {
 	// Get the array of targeted tokens
-	let targetedTokens = Array.from(game.user.targets);
+	const targetedTokens = Array.from(game.user.targets);
 
 	// Define the content variable
 	let content;

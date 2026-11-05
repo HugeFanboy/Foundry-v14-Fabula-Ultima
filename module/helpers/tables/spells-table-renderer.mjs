@@ -95,9 +95,8 @@ export class SpellsTableRenderer extends FUTableRenderer {
 
 		if (cost.perTarget) {
 			return `${cost.amount} ${game.i18n.localize(FU.resourcesAbbr[cost.resource])} ${game.i18n.localize('FU.CostPerTargetAbbreviation')}`;
-		} else {
-			return `${cost.amount} ${game.i18n.localize(FU.resourcesAbbr[cost.resource])}`;
 		}
+		return `${cost.amount} ${game.i18n.localize(FU.resourcesAbbr[cost.resource])}`;
 	}
 
 	static #getNameCssClasses(item) {
@@ -161,6 +160,5 @@ export class SpellsTableRenderer extends FUTableRenderer {
 				}
 			}
 		}
-		return;
 	}
 }

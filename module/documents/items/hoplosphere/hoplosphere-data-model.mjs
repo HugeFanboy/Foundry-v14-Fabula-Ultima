@@ -319,7 +319,7 @@ const HOPLOSPHERE_CHANGE_TYPES = {
 		weaponOnly: true,
 		apply(item, actor) {
 			if (item.system instanceof CustomWeaponDataModel) {
-				for (let key of ['primaryForm', 'secondaryForm']) {
+				for (const key of ['primaryForm', 'secondaryForm']) {
 					const newValue = (item.system[key].damage.value += this.amount);
 					foundry.utils.setProperty(item.overrides, `system.${key}.damage.value`, newValue);
 				}
@@ -521,9 +521,8 @@ export class HoplosphereDataModel extends foundry.abstract.TypeDataModel {
 				.filter((effect) => {
 					if (effect.weaponOnly) {
 						return parentItem.system instanceof CustomWeaponDataModel;
-					} else {
-						return true;
 					}
+					return true;
 				})
 				.sort((a, b) => a.coagulationLevel - b.coagulationLevel);
 		}

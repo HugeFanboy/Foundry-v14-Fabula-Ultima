@@ -36,7 +36,7 @@ async function enrichDescription(model) {
 		return content.trim();
 	}
 
-	let rollData = {};
+	const rollData = {};
 
 	const keyData = key.system.data;
 	rollData.key = KeyDataModel.getRollData(keyData);
@@ -56,7 +56,7 @@ async function enrichDescription(model) {
 
 	// Return enriched HTML using the tone description and roll data
 	return TextEditor.enrichHTML(tone.system.data.description || '', {
-		rollData: rollData,
+		rollData,
 	});
 }
 
@@ -219,7 +219,7 @@ export class VersesApplication extends FUApplication {
 		const effects = await enrichDescription(this.#verse);
 
 		// Current key, tone, and volume selections
-		let performance = {
+		const performance = {
 			key: this.#verse.key?.uuid || '',
 			tone: this.#verse.tone?.uuid || '',
 			volume: this.#verse.volume || this.defaultVolume,
@@ -278,7 +278,7 @@ export class VersesApplication extends FUApplication {
 		};
 
 		// Prepare the data object for the chat message
-		let flags = { [SYSTEM]: { [Flags.ChatMessage.Item]: this.#verse } };
+		const flags = { [SYSTEM]: { [Flags.ChatMessage.Item]: this.#verse } };
 		const mpCost = this.#verse.config[volumeSelection];
 		const actor = this.#verse.actor;
 		const item = this.#verse.item;
@@ -322,7 +322,7 @@ export class VersesApplication extends FUApplication {
 		const renderData = {
 			sections: [],
 			postRenderActions: [],
-			tags: tags,
+			tags,
 		};
 
 		CommonSections.itemFlavor(renderData.sections, this.#verse.parent.parent);

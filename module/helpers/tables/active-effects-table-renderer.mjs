@@ -114,7 +114,7 @@ export class ActiveEffectsTableRenderer extends FUTableRenderer {
 		const notAppliedToDocument = effect.target === this.#document && !this.#applicableEffects.includes(effect);
 		const suppressed = (effect.isSuppressed && !effect.disabled) || notAppliedToDocument;
 
-		return foundry.applications.handlebars.renderTemplate('systems/projectfu/templates/table/cell/cell-effect-name.hbs', { name: effect.name, img: effect.img, suppressed: suppressed, progress: effect.system.rules.progress });
+		return foundry.applications.handlebars.renderTemplate('systems/projectfu/templates/table/cell/cell-effect-name.hbs', { name: effect.name, img: effect.img, suppressed, progress: effect.system.rules.progress });
 	}
 
 	static #getSource(effect) {
@@ -130,6 +130,6 @@ export class ActiveEffectsTableRenderer extends FUTableRenderer {
 	}
 
 	static #renderControls(effect) {
-		return foundry.applications.handlebars.renderTemplate(systemTemplatePath('table/cell/cell-effect-controls'), { active: !effect.disabled, effect: effect, system: effect.system });
+		return foundry.applications.handlebars.renderTemplate(systemTemplatePath('table/cell/cell-effect-controls'), { active: !effect.disabled, effect, system: effect.system });
 	}
 }

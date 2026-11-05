@@ -270,7 +270,7 @@ class GroupCheckApp extends FUApplication {
 				initiatingUser: game.user.id,
 				leader: actor.id,
 				type: groupCheck.type,
-				typeLabel: typeLabel,
+				typeLabel,
 				initiative: groupCheck.type === 'initiative',
 				primary: groupCheck.primary,
 				secondary: groupCheck.secondary,
@@ -284,9 +284,9 @@ class GroupCheckApp extends FUApplication {
 			Promise.all([flavorPromise, contentPromise])
 				.then(([flavor, content]) =>
 					ChatMessage.create({
-						speaker: ChatMessage.implementation.getSpeaker({ actor: actor }),
-						flavor: flavor,
-						content: content,
+						speaker: ChatMessage.implementation.getSpeaker({ actor }),
+						flavor,
+						content,
 						flags: {
 							[SYSTEM]: {
 								[Flags.ChatMessage.GroupCheckV2]: groupCheckData,
@@ -333,7 +333,7 @@ class GroupCheckApp extends FUApplication {
 	}
 
 	getData(options = {}) {
-		let groupCheck = this.groupCheckData;
+		const groupCheck = this.groupCheckData;
 		return {
 			groupCheck: {
 				...groupCheck,
@@ -500,7 +500,7 @@ const onRenderGroupCheck = (data, check, actor, item, flags) => {
 					modifier: modifierTotal,
 					total: result,
 					crit: critical,
-					fumble: fumble,
+					fumble,
 				},
 				check: {
 					attr1: {
@@ -563,7 +563,7 @@ function getRitualAction(actor, item, config) {
 		/** @type PromptCheckData **/ {
 			actorId: actor.uuid,
 			itemId: item.uuid,
-			config: config,
+			config,
 		},
 	)
 		.setFlag(Flags.ChatMessage.PromptCheck)

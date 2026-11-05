@@ -39,7 +39,7 @@ export class UpdateTrackRuleAction extends RuleActionDataModel {
 	async execute(context, selected) {
 		for (const character of selected) {
 			const actor = character.actor;
-			let id = this.identifier || context.effect.system.rules.progress.id;
+			const id = this.identifier || context.effect.system.rules.progress.id;
 			let step;
 			const progress = await actor.resolveProgress(id);
 			if (!progress) return;
@@ -70,7 +70,7 @@ export class UpdateTrackRuleAction extends RuleActionDataModel {
 				}
 				default: {
 					const chatBuilder = new FUChatBuilder(actor, null);
-					let flags = {};
+					const flags = {};
 					CommonSections.chatActions(chatBuilder.renderData.sections, [ProgressPipeline.getAdvanceTargetedAction(actor, id, step, context.label)], flags);
 					chatBuilder.withFlags(flags);
 					await chatBuilder.create();

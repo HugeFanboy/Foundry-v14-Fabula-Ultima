@@ -43,12 +43,10 @@ export const SystemControls = Object.freeze({
 									tool.onClick(e, active);
 								}
 							});
-						} else {
-							if (tool.onClick) {
-								toolButton.addEventListener('click', (e) => {
-									tool.onClick(e, false);
-								});
-							}
+						} else if (tool.onClick) {
+							toolButton.addEventListener('click', (e) => {
+								tool.onClick(e, false);
+							});
 						}
 						return toolButton;
 					});

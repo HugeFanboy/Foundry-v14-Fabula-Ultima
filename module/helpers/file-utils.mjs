@@ -72,7 +72,7 @@ async function deleteFile(storage, path) {
 			'manageFiles',
 			{
 				action: 'deleteFile',
-				storage: storage,
+				storage,
 				path,
 			},
 			(response) => {

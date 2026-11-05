@@ -38,7 +38,7 @@ async function refreshPack(pack, force = false) {
 }
 
 export async function refreshCompendiumData(force = false) {
-	for (let [key, pack] of game.packs.entries()) {
+	for (const [key, pack] of game.packs.entries()) {
 		if (key.startsWith(SYSTEM + '.') && (!pack.config.locked || force)) {
 			await refreshPack(pack, force);
 		}

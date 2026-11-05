@@ -41,17 +41,16 @@ const roll = async (item, modifiers) => {
 	if (item.system.hasRoll.value) {
 		if (item.system.useWeapon.accuracy || item.system.damage.hasDamage) {
 			return Checks.accuracyCheck(item.actor, item, initializeAccuracyCheck(modifiers));
-		} else {
-			return Checks.attributeCheck(
-				item.actor,
-				{
-					primary: item.system.attributes.primary,
-					secondary: item.system.attributes.secondary,
-				},
-				item,
-				initializeAttributeCheck(modifiers),
-			);
 		}
+		return Checks.attributeCheck(
+			item.actor,
+			{
+				primary: item.system.attributes.primary,
+				secondary: item.system.attributes.secondary,
+			},
+			item,
+			initializeAttributeCheck(modifiers),
+		);
 	}
 	return Checks.display(item.actor, item, initializeSkillDisplay(modifiers));
 };
@@ -298,7 +297,7 @@ const onRenderAccuracyCheck = (data, check, actor, item) => {
 			CommonSections.opportunity(data.sections, item.system.opportunity, CHECK_DETAILS);
 		}
 
-		let tags = item.system.getTags?.() ?? [];
+		const tags = item.system.getTags?.() ?? [];
 		if (weapon) {
 			if (item.system.useWeapon.traits && weapon.system.getTags instanceof Function) {
 				tags.push(...weapon.system.getTags());
@@ -317,7 +316,7 @@ Hooks.on(CheckHooks.renderCheck, onRenderAccuracyCheck);
 /**
  * @type RenderCheckHook
  */
-let onRenderAttributeCheck = (data, check, actor, item, flags) => {
+const onRenderAttributeCheck = (data, check, actor, item, flags) => {
 	if (check.type === 'attribute' && isRegisteredType(item) && check.additionalData[skillForAttributeCheck]) {
 		const skill = fromUuidSync(check.additionalData[skillForAttributeCheck]);
 		CommonSections.itemFlavor(data.sections, skill);

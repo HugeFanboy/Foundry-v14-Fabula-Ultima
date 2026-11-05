@@ -37,9 +37,8 @@ export class BondDataModel extends foundry.abstract.DataModel {
 			const globalBonus = this.parent?.bonuses.bondStrength ?? 0;
 			const localBonus = this.bonus ?? 0;
 			return emotions + globalBonus + localBonus;
-		} else {
-			return 0;
 		}
+		return 0;
 	}
 
 	/**

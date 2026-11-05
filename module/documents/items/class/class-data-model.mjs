@@ -104,21 +104,4 @@ export class ClassDataModel extends FUStandardItemDataModel {
 			.filter(([key]) => foundry.utils.getProperty(this, key))
 			.map(([, translation]) => ({ tag: translation }));
 	}
-
-	// TODO: Verify deprecated across the board
-	// /**
-	//  * Action definition, invoked by sheets when 'data-action' equals the method name and no action defined on the sheet matches that name.
-	//  * @param {PointerEvent} event
-	//  * @param {HTMLElement} target
-	//  */
-	// modifyClassLevel(event, target) {
-	// 	const change = target.closest('[data-level-action]')?.dataset?.levelAction === 'decrement' ? -1 : 1;
-	//
-	// 	const { value, min, max } = this.level;
-	// 	const newValue = value + change;
-	//
-	// 	return this.parent.update({
-	// 		'system.level.value': Math.clamp(newValue, min, max),
-	// 	});
-	// }
 }

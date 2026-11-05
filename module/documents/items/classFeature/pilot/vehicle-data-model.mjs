@@ -78,7 +78,7 @@ export class VehicleDataModel extends RollableClassFeatureDataModel {
 			description: await TextEditor.enrichHTML(model.description),
 		};
 
-		const speaker = ChatMessage.implementation.getSpeaker({ actor: actor });
+		const speaker = ChatMessage.implementation.getSpeaker({ actor });
 		const chatMessage = {
 			speaker,
 			flavor: await FoundryUtils.renderTemplate('chat/chat-check-flavor-item-v2', {
@@ -92,7 +92,7 @@ export class VehicleDataModel extends RollableClassFeatureDataModel {
 	}
 
 	transferEffects() {
-		let vehicleState = this.actor?.system.vehicle;
+		const vehicleState = this.actor?.system.vehicle;
 		return vehicleState?.vehicle === this.item && vehicleState?.embarked;
 	}
 }

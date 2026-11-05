@@ -49,7 +49,8 @@ export class StatusRuleTrigger extends RuleTriggerDataModel {
 		}
 		if (this.change === 'added') {
 			return context.event.enabled === true;
-		} else if (this.change === 'removed') {
+		}
+		if (this.change === 'removed') {
 			return context.event.enabled === false;
 		}
 		return true;

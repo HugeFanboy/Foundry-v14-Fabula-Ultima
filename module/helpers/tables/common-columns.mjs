@@ -23,7 +23,7 @@ function itemNameColumn(options = {}) {
 	return {
 		renderHeader: columnName instanceof Function ? columnName : () => game.i18n.localize(columnName || 'FU.Name'),
 		headerAlignment: 'start',
-		headerSpan: headerSpan,
+		headerSpan,
 		renderCell: renderNameCell(renderCaption, cssClass, {
 			rollable: true,
 		}),
@@ -39,7 +39,7 @@ function itemAnchorColumn(options = {}) {
 	return {
 		renderHeader: columnName instanceof Function ? columnName : () => game.i18n.localize(columnName || 'FU.Name'),
 		headerAlignment: 'start',
-		headerSpan: headerSpan,
+		headerSpan,
 		renderCell: renderNameCell(renderCaption, cssClass, {
 			rollable: false,
 		}),
@@ -55,7 +55,7 @@ function actorAnchorColumn(options = {}) {
 	return {
 		renderHeader: columnName instanceof Function ? columnName : () => game.i18n.localize(columnName || 'FU.Name'),
 		headerAlignment: 'start',
-		headerSpan: headerSpan,
+		headerSpan,
 		renderCell: renderNameCell(renderCaption, cssClass, {
 			rollable: false,
 			type: 'Actor',
@@ -140,30 +140,29 @@ function itemControlsColumn(headerOptions, cellOptions = {}) {
 function renderControlsHeader(headerOptions) {
 	if (headerOptions.custom) {
 		return headerOptions.custom;
-	} else {
-		return async function () {
-			const options = { ...headerOptions };
-			if (options.label instanceof Function) {
-				options.label = options.label.call(this);
-			}
-
-			if (options.type instanceof Function) {
-				options.type = options.type.call(this);
-			}
-			if (Array.isArray(options.type)) {
-				options.type = options.type.join(',');
-			}
-
-			if (options.subtype instanceof Function) {
-				options.subtype = options.subtype.call(this);
-			}
-			if (Array.isArray(options.subtype)) {
-				options.subtype = options.subtype.join(',');
-			}
-
-			return foundry.applications.handlebars.renderTemplate('systems/projectfu/templates/table/header/header-item-controls.hbs', options);
-		};
 	}
+	return async function () {
+		const options = { ...headerOptions };
+		if (options.label instanceof Function) {
+			options.label = options.label.call(this);
+		}
+
+		if (options.type instanceof Function) {
+			options.type = options.type.call(this);
+		}
+		if (Array.isArray(options.type)) {
+			options.type = options.type.join(',');
+		}
+
+		if (options.subtype instanceof Function) {
+			options.subtype = options.subtype.call(this);
+		}
+		if (Array.isArray(options.subtype)) {
+			options.subtype = options.subtype.join(',');
+		}
+
+		return foundry.applications.handlebars.renderTemplate('systems/projectfu/templates/table/header/header-item-controls.hbs', options);
+	};
 }
 
 /**
@@ -242,7 +241,7 @@ function resourceColumn(options) {
 	return {
 		hideHeader: !columnName,
 		renderHeader: () => game.i18n.localize(columnName || 'FU.Resource'),
-		headerAlignment: headerAlignment,
+		headerAlignment,
 		renderCell: renderResourceCell(getResource, action, increaseAttributes, decreaseAttributes, cellCssClass, layout),
 	};
 }
@@ -261,9 +260,9 @@ function renderResourceCell(getResource, action, increaseAttributes, decreaseAtt
 
 		return foundry.applications.handlebars.renderTemplate('systems/projectfu/templates/table/cell/cell-resource.hbs', {
 			data: getResource(item),
-			action: action,
-			increaseAttributes: increaseAttributes,
-			decreaseAttributes: decreaseAttributes,
+			action,
+			increaseAttributes,
+			decreaseAttributes,
 			cssClass: getCellCssClass(item),
 			layout: cellLayout,
 		});
@@ -309,7 +308,7 @@ function renderTextCell(getText, tooltip, alignment = 'center', importance = 'no
 			tooltip: tooltip instanceof Function ? tooltip(item) : tooltip,
 			alignment,
 			importance,
-			cssClass: cssClass,
+			cssClass,
 		});
 	};
 }
@@ -334,7 +333,7 @@ function clockColumn(options = {}) {
 	return {
 		hideHeader: !columnName,
 		renderHeader: () => game.i18n.localize(columnName),
-		headerAlignment: headerAlignment,
+		headerAlignment,
 		renderCell: renderClockCell(getClock, action, fillAttributes, eraseAttributes, clockSize),
 	};
 }
@@ -351,10 +350,10 @@ function renderClockCell(getResource, action, fillAttributes, eraseAttributes, c
 	return async (item) => {
 		return foundry.applications.handlebars.renderTemplate('systems/projectfu/templates/table/cell/cell-clock.hbs', {
 			data: getResource(item),
-			clockSize: clockSize,
-			action: action,
-			fillAttributes: fillAttributes,
-			eraseAttributes: eraseAttributes,
+			clockSize,
+			action,
+			fillAttributes,
+			eraseAttributes,
 		});
 	};
 }
@@ -375,7 +374,7 @@ function progressBarColumn(options = {}) {
 	return {
 		hideHeader: !columnName,
 		renderHeader: () => game.i18n.localize(columnName),
-		headerAlignment: headerAlignment,
+		headerAlignment,
 		renderCell: renderProgressBarCell(getProgress),
 	};
 }
@@ -407,7 +406,7 @@ function ifElseColumn(options = {}) {
 	return {
 		hideHeader: !columnName,
 		renderHeader: () => game.i18n.localize(columnName),
-		headerAlignment: headerAlignment,
+		headerAlignment,
 		renderCell: renderIfElseCell(condition, ifTrue, otherwise),
 	};
 }
@@ -416,9 +415,8 @@ function renderIfElseCell(condition, ifTrue, otherwise) {
 	return async (item) => {
 		if (condition(item)) {
 			return ifTrue(item);
-		} else {
-			return otherwise(item);
 		}
+		return otherwise(item);
 	};
 }
 
@@ -444,7 +442,7 @@ function checkColumn(options = {}) {
 	const { columnLabel, headerAlignment, getCheck } = options;
 	return {
 		renderHeader: () => game.i18n.localize(columnLabel),
-		headerAlignment: headerAlignment,
+		headerAlignment,
 		renderCell: (item) => foundry.applications.handlebars.renderTemplate(systemTemplatePath('table/cell/cell-check'), { ...getCheck(item), FU }),
 	};
 }
@@ -471,7 +469,7 @@ function damageColumn(options = {}) {
 	const { columnLabel, headerAlignment, getDamage } = options;
 	return {
 		renderHeader: () => game.i18n.localize(columnLabel),
-		headerAlignment: headerAlignment,
+		headerAlignment,
 		renderCell: (item) => foundry.applications.handlebars.renderTemplate(systemTemplatePath('table/cell/cell-damage'), { ...getDamage(item), FU }),
 	};
 }

@@ -187,9 +187,8 @@ export class FUPressureGauge extends globalThis.PIXI.Container {
 			if (!this.shouldDrawPressureGauge) {
 				this.visible = false;
 				return;
-			} else {
-				this.visible = true;
 			}
+			this.visible = true;
 
 			const { width, height } = this._getScaledSize();
 			if (force) {

@@ -2,9 +2,8 @@ function migrateLocallyEmbeddedDocumentFieldToEmbeddedItemUuidField(source) {
 	function migrate(id) {
 		if (typeof id === 'string' && !id.includes('.')) {
 			return `.Item.${id}`;
-		} else {
-			return id;
 		}
+		return id;
 	}
 
 	if ('key' in source) {

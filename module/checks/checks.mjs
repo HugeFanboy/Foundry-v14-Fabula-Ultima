@@ -219,11 +219,10 @@ const modifyCheck = async (checkId, callback) => {
 				config = CheckConfiguration.configure(result);
 				config.updateTargetResults();
 				return renderCheck(result, actor, item, message.flags);
-			} else {
-				config = CheckConfiguration.configure(oldCheck);
-				config.updateTargetResults();
-				return renderCheck(oldCheck, actor, item, message.flags);
 			}
+			config = CheckConfiguration.configure(oldCheck);
+			config.updateTargetResults();
+			return renderCheck(oldCheck, actor, item, message.flags);
 		}
 	} else {
 		throw new Error('Check to be modified not found.');
@@ -309,7 +308,7 @@ async function invokeWithCallbacks(hook, check, actor, item) {
 	Hooks.callAll(hook, check, actor, item, registerCallbacks);
 
 	callbacks.sort((a, b) => a.priority - b.priority);
-	for (let callbackObj of callbacks) {
+	for (const callbackObj of callbacks) {
 		await callbackObj.callback(check, actor, item);
 	}
 }
@@ -391,14 +390,14 @@ const extractDieResults = (term, actor) => {
 			dice: term.faces,
 			result: term.total,
 		};
-	} else if (term instanceof NumericTerm) {
+	}
+	if (term instanceof NumericTerm) {
 		return {
 			dice: term.options.faces ?? actor.system.attributes[term.flavor].current,
 			result: term.total,
 		};
-	} else {
-		throw new Error(`Unexpected formula term for primary attribute: ${term}`);
 	}
+	throw new Error(`Unexpected formula term for primary attribute: ${term}`);
 };
 
 /**
@@ -443,7 +442,7 @@ const processResult = async (check, roll, actor, item, callHook = true) => {
 		generateOpportunity: check.generateOpportunity ?? true,
 		modifiers: Object.freeze(check.modifiers.map(Object.freeze)),
 		modifierTotal: check.modifiers.reduce((agg, curr) => agg + curr.value, 0),
-		critThreshold: critThreshold,
+		critThreshold,
 		result: roll.total,
 		fumble: primary.result === 1 && secondary.result === 1,
 		critical: primary.result === secondary.result && primary.result >= Math.max(2, critThreshold),
@@ -512,14 +511,14 @@ async function renderCheck(result, actor, item, flags = {}) {
 	// Add flavor
 	let flavor;
 	if (item) {
-		let linked = [];
+		const linked = [];
 		const weaponReference = config.getWeaponReference();
 		if (weaponReference) {
 			linked.push(await fromUuid(weaponReference));
 		}
 		flavor = await FoundryUtils.renderTemplate('chat/chat-check-flavor-item-v2', {
-			item: item,
-			linked: linked,
+			item,
+			linked,
 		});
 	} else {
 		let flavorTitle = StringUtils.localize(FU.checkTypes[result.type] || 'FU.RollCheck');
@@ -644,15 +643,12 @@ const isCheck = (message, type = allExceptDisplay) => {
 			if (type) {
 				if (Array.isArray(type)) {
 					return type.includes(flag.type);
-				} else {
-					return type === flag.type;
 				}
-			} else {
-				return true;
+				return type === flag.type;
 			}
-		} else {
-			return false;
+			return true;
 		}
+		return false;
 	}
 	return false;
 };

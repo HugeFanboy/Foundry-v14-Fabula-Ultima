@@ -79,9 +79,9 @@ export class MessageRuleAction extends RuleActionDataModel {
 				text: _message,
 			});
 			ChatMessage.create({
-				flags: flags,
+				flags,
 				speaker: ChatMessage.getSpeaker({ actor }),
-				content: content,
+				content,
 			});
 		}
 	}

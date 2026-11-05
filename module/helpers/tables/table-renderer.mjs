@@ -115,12 +115,12 @@ export class FUTableRenderer {
 		}
 		config.dragDrop = (config.dragDrop ?? []).map((dragDropConfig) => {
 			dragDropConfig.permissions ??= {};
-			for (let key in dragDropConfig.permissions) {
+			for (const key in dragDropConfig.permissions) {
 				dragDropConfig.permissions[key] = dragDropConfig.permissions[key].bind(this);
 			}
 
 			dragDropConfig.callbacks ??= {};
-			for (let key in dragDropConfig.callbacks) {
+			for (const key in dragDropConfig.callbacks) {
 				dragDropConfig.callbacks[key] = dragDropConfig.callbacks[key].bind(this);
 			}
 
@@ -281,7 +281,7 @@ export class FUTableRenderer {
 		const rowCaptionRenderer = renderRowCaption instanceof Function ? renderRowCaption : () => renderRowCaption;
 		const descriptionRenderer = renderDescription instanceof Function ? renderDescription : () => renderDescription;
 
-		for (let [columnKey, columnConfig] of Object.entries(columnConfigs)) {
+		for (const [columnKey, columnConfig] of Object.entries(columnConfigs)) {
 			columns[columnKey] = {
 				hideHeader: columnConfig.hideHeader || !columnConfig.renderHeader,
 				headerSpan: columnConfig.headerSpan,
@@ -293,7 +293,7 @@ export class FUTableRenderer {
 
 		/** @type RowData[] **/
 		const rows = [];
-		for (let item of items) {
+		for (const item of items) {
 			const rowKey = advancedConfig.getKey(item);
 			const visible = options.isVisible ? options.isVisible(item) : true;
 
@@ -317,7 +317,7 @@ export class FUTableRenderer {
 				}
 			}
 
-			for (let [columnKey, columnConfig] of Object.entries(columnConfigs)) {
+			for (const [columnKey, columnConfig] of Object.entries(columnConfigs)) {
 				columns[columnKey].cells[rowKey] = columnConfig.renderCell instanceof Function ? columnConfig.renderCell(item) : columnConfig.renderCell;
 			}
 			rowCaptions[rowKey] = rowCaptionRenderer(item);
@@ -337,11 +337,11 @@ export class FUTableRenderer {
 			}
 		}
 
-		for (let [key, value] of Object.entries(rowCaptions)) {
+		for (const [key, value] of Object.entries(rowCaptions)) {
 			rowCaptions[key] = await value;
 		}
 
-		for (let [key, value] of Object.entries(descriptions)) {
+		for (const [key, value] of Object.entries(descriptions)) {
 			descriptions[key] = await value;
 		}
 

@@ -127,9 +127,8 @@ export class SpellDataModel extends FUStandardItemDataModel {
 		await CommonEvents.spell(this.parent.actor, this.parent);
 		if (this.hasRoll.value) {
 			return Checks.magicCheck(this.parent.actor, this.parent, this.#initializeMagicCheck(modifiers));
-		} else {
-			return Checks.display(this.parent.actor, this.parent, this.#initializeMagicDisplay(modifiers));
 		}
+		return Checks.display(this.parent.actor, this.parent, this.#initializeMagicDisplay(modifiers));
 	}
 
 	#initializeMagicDisplay(modifiers) {

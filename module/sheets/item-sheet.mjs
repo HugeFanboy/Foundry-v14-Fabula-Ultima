@@ -217,12 +217,12 @@ export class FUItemSheet extends api.HandlebarsApplicationMixin(sheets.ItemSheet
 		const dragDropConfigurations = this.options.dragDrop ?? [];
 		return dragDropConfigurations.map((config) => {
 			config.permissions ??= {};
-			for (let key in config.permissions) {
+			for (const key in config.permissions) {
 				config.permissions[key] = config.permissions[key].bind(this);
 			}
 
 			config.callbacks ??= {};
-			for (let key in config.callbacks) {
+			for (const key in config.callbacks) {
 				config.callbacks[key] = config.callbacks[key].bind(this);
 			}
 
@@ -307,7 +307,7 @@ export class FUItemSheet extends api.HandlebarsApplicationMixin(sheets.ItemSheet
 	_toggleDisabled(disabled) {
 		super._toggleDisabled(disabled);
 		for (const element of this.element.querySelectorAll('.rollable, [data-action]')) {
-			let action = element.dataset.action;
+			const action = element.dataset.action;
 			if (!action || !this.options.nonOwnerAllowedActions.includes(action)) {
 				element.classList.toggle('disabled', disabled);
 			}
@@ -512,11 +512,9 @@ export class FUItemSheet extends api.HandlebarsApplicationMixin(sheets.ItemSheet
 	_findItemConfig(type) {
 		const itemTypeConfigs = [
 			{
+				// Effects are handled separately
 				types: ['effect'],
-				update: async (itemData) => {
-					// Effects are handled separately
-					return;
-				},
+				update: async () => {},
 			},
 		];
 
@@ -550,8 +548,6 @@ export class FUItemSheet extends api.HandlebarsApplicationMixin(sheets.ItemSheet
 
 			// Create the new ActiveEffect documents
 			await ActiveEffect.createDocuments(effectsToCreate, { parent: this.item });
-
-			// console.log('Created New Effects:', createdEffects);
 		} else {
 			console.log('No new effects to add');
 		}
@@ -588,7 +584,7 @@ export class FUItemSheet extends api.HandlebarsApplicationMixin(sheets.ItemSheet
 		const data = super._prepareSubmitData(event, form, formData, updateData);
 		// Prevent submitting overridden values
 
-		for (let k of Object.keys(foundry.utils.flattenObject(this.item.overrides))) {
+		for (const k of Object.keys(foundry.utils.flattenObject(this.item.overrides))) {
 			foundry.utils.deleteProperty(data, k);
 		}
 		return data;
@@ -770,9 +766,8 @@ export class FUItemSheet extends api.HandlebarsApplicationMixin(sheets.ItemSheet
 		if (item) {
 			if (this.item.actor) {
 				return item.roll();
-			} else {
-				return Checks.display(null, item);
 			}
+			return Checks.display(null, item);
 		}
 	}
 }

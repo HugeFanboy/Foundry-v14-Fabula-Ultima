@@ -14,14 +14,6 @@ export function systemTemplatePath(path) {
 }
 
 /**
- * @param {String} type An identifier for a type
- * @returns {string} A system-prefixed unique identifier for the type
- */
-export function prefixType(type) {
-	return `${systemId}.${type}`;
-}
-
-/**
  * @description Translates a relative path to a system asset path
  * @param {string} path - A path relative to the root of this repository
  * @returns {string} The path relative to the Foundry data folder

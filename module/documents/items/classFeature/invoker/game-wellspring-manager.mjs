@@ -42,7 +42,7 @@ export class GameWellspringManager extends FUApplication {
 
 	/** @override */
 	async _prepareContext(options) {
-		let context = await super._prepareContext(options);
+		const context = await super._prepareContext(options);
 		context.global = GameWellspringManager.globalActiveWellsprings;
 		context.active = {
 			scene: GameWellspringManager.activeScene?.name,

@@ -96,7 +96,7 @@ export class ArmorModuleDataModel extends RollableClassFeatureDataModel {
 			description: await TextEditor.enrichHTML(model.description),
 		};
 
-		const speaker = ChatMessage.implementation.getSpeaker({ actor: actor });
+		const speaker = ChatMessage.implementation.getSpeaker({ actor });
 		const chatMessage = {
 			speaker,
 			flavor: await FoundryUtils.renderTemplate('chat/chat-check-flavor-item-v2', {

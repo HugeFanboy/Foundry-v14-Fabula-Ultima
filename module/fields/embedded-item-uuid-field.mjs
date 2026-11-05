@@ -96,9 +96,8 @@ export class EmbeddedItemUuidField extends foundry.data.fields.StringField {
 		if (this.idOnly) {
 			if (this.options.fallback || resolvedUuid) {
 				return value;
-			} else {
-				return null;
 			}
+			return null;
 		}
 
 		if (resolvedUuid && resolvedUuid.primaryType === 'Actor' && resolvedUuid.primaryId === actor.id) {
@@ -107,29 +106,28 @@ export class EmbeddedItemUuidField extends foundry.data.fields.StringField {
 				const document = foundry.utils.fromUuidSync(resolvedUuid.uuid, { relative: actor });
 				if (!document) {
 					return this.options.fallback ? value : null;
-				} else {
-					if (this.userValidate) {
-						if (valid) {
-							return document;
-						} else if (valid === null) {
-							try {
-								valid = this.userValidate(document) ?? true;
-								return valid ? document : null;
-							} catch (e) {
-								valid = false;
-								return null;
-							}
-						} else {
+				}
+				if (this.userValidate) {
+					if (valid) {
+						return document;
+					}
+					if (valid === null) {
+						try {
+							valid = this.userValidate(document) ?? true;
+							return valid ? document : null;
+						} catch (e) {
+							valid = false;
 							return null;
 						}
 					} else {
-						return document;
+						return null;
 					}
+				} else {
+					return document;
 				}
 			};
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/* -------------------------------------------- */

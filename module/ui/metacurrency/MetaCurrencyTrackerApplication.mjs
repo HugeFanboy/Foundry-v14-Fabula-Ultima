@@ -63,7 +63,7 @@ function handleMetaCurrencyUsed(document, options, userId) {
 	if (!game.settings.get(SYSTEM, SETTINGS.metaCurrencyAutomation)) {
 		return;
 	}
-	let useMetaCurrency = document.getFlag(SYSTEM, Flags.ChatMessage.UseMetaCurrency);
+	const useMetaCurrency = document.getFlag(SYSTEM, Flags.ChatMessage.UseMetaCurrency);
 	if (useMetaCurrency && game.users.activeGM?.isSelf) {
 		const amount = typeof useMetaCurrency === 'number' ? useMetaCurrency : 1;
 		const speakerActor = ChatMessage.getSpeakerActor(document.speaker);
@@ -181,12 +181,12 @@ export class MetaCurrencyTrackerApplication extends FUApplication {
 
 		const automaticallyDistributeExp = game.settings.get(SYSTEM, SETTINGS.metaCurrencyAutomaticallyDistributeExp);
 		const data = {
-			baseExp: baseExp,
+			baseExp,
 			ultimaExp: spentUltimaPoints,
 			spentFabula: spentFabulaPoints,
-			fabulaExp: fabulaExp,
+			fabulaExp,
 			totalExp: baseExp + spentUltimaPoints + fabulaExp,
-			activeCharacters: activeCharacters,
+			activeCharacters,
 			characterSectionTitle: automaticallyDistributeExp ? 'FU.ChatExpAwardExpAwardedTo' : 'FU.ChatExpAwardActiveCharacters',
 		};
 

@@ -98,7 +98,7 @@ export class ProgressDataModel extends foundry.abstract.DataModel {
 	 */
 	static construct(name, options = {}) {
 		return new this({
-			name: name,
+			name,
 			...options,
 		});
 	}
@@ -122,7 +122,7 @@ export class ProgressDataModel extends foundry.abstract.DataModel {
 	 */
 	static async sendToChat(actor, track, message = undefined) {
 		await ChatMessage.create({
-			speaker: ChatMessage.getSpeaker({ actor: actor }),
+			speaker: ChatMessage.getSpeaker({ actor }),
 			content: await this.renderDetails(track, message),
 		});
 	}
@@ -138,9 +138,9 @@ export class ProgressDataModel extends foundry.abstract.DataModel {
 		return FoundryUtils.renderTemplate('chat/partials/chat-clock-details', {
 			progress: track,
 			segments: this.generateProgressArray(track),
-			message: message,
-			img: img,
-			displayName: displayName,
+			message,
+			img,
+			displayName,
 		});
 	}
 
@@ -281,7 +281,7 @@ export class ProgressDataModel extends foundry.abstract.DataModel {
 		if (track === undefined) {
 			throw Error('Undefined track reference was given');
 		}
-		let property = ObjectUtils.getProperty(document, propertyPath);
+		const property = ObjectUtils.getProperty(document, propertyPath);
 		/** @type ProgressDataModel[] **/
 		const tracks = foundry.utils.duplicate(property);
 		const newTrack = new this(ObjectUtils.cleanObject(track));
@@ -368,10 +368,8 @@ export class ProgressDataModel extends foundry.abstract.DataModel {
 
 				if (isNaN(newValue)) {
 					newValue = this.current;
-				} else {
-					if ((event.button === 0 && newValue === this.current) || event.button === 2) {
-						newValue -= 1;
-					}
+				} else if ((event.button === 0 && newValue === this.current) || event.button === 2) {
+					newValue -= 1;
 				}
 				return {
 					current: Math.clamp(newValue, 0, this.max || Number.MAX_SAFE_INTEGER),
@@ -393,10 +391,8 @@ export class ProgressDataModel extends foundry.abstract.DataModel {
 
 				if (Number.isInteger(changeAmountOverride)) {
 					amount *= changeAmountOverride;
-				} else {
-					if (event.button === 2) {
-						amount *= this.step;
-					}
+				} else if (event.button === 2) {
+					amount *= this.step;
 				}
 
 				const newValue = this.current + amount;

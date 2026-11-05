@@ -40,7 +40,7 @@ export class HeroicsTableRenderer extends FUTableRenderer {
 			FU,
 		};
 
-		let mainWeapon = SkillLikeTableHelper.resolveMainWeapon(item);
+		const mainWeapon = SkillLikeTableHelper.resolveMainWeapon(item);
 		if (mainWeapon) {
 			data.weapon = mainWeapon.name;
 		}

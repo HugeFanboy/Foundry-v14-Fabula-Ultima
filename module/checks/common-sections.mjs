@@ -49,7 +49,7 @@ const description = (sections, description, summary = '', order = CHECK_DETAILS,
  */
 const content = (sections, content, order) => {
 	sections.push(async () => ({
-		content: content,
+		content,
 		order,
 	}));
 };
@@ -64,7 +64,7 @@ const template = (sections, template, context, order) => {
 	sections.push(async () => {
 		const content = await FoundryUtils.renderTemplate(template, context);
 		return {
-			content: content,
+			content,
 			order,
 		};
 	});
@@ -85,7 +85,7 @@ const chatActions = (sections, actions, flags = {}, order) => {
 			}
 		}
 		return {
-			content: content,
+			content,
 			order,
 		};
 	});
@@ -118,9 +118,9 @@ const itemText = (sections, text, actor, item, flags, order) => {
 	sections.push(async () => ({
 		partial: 'systems/projectfu/templates/chat/partials/chat-item-text.hbs',
 		data: {
-			actor: actor,
-			item: item,
-			flags: flags,
+			actor,
+			item,
+			flags,
 			text: await TextEditor.enrichHTML(await text),
 		},
 		order,
@@ -161,7 +161,7 @@ const clock = (sections, clock, order) => {
 			segments: clock.progressArray,
 			displayName: true,
 		},
-		order: order,
+		order,
 	}));
 };
 
@@ -186,9 +186,9 @@ const tags = (sections, tags = [], order = CHECK_DETAILS) => {
 		sections.push(async () => ({
 			partial: 'systems/projectfu/templates/chat/partials/chat-item-tags.hbs',
 			data: {
-				tags: tags,
+				tags,
 			},
-			order: order,
+			order,
 		}));
 	}
 };
@@ -221,7 +221,7 @@ const resource = (sections, resource, order) => {
 		data: {
 			data: resource,
 		},
-		order: order,
+		order,
 	}));
 };
 
@@ -233,10 +233,10 @@ const resource = (sections, resource, order) => {
  */
 const itemFlavor = (sections, item, order = CHECK_FLAVOR) => {
 	sections.push({
-		order: order,
+		order,
 		partial: 'systems/projectfu/templates/chat/chat-check-flavor-item-v2.hbs',
 		data: {
-			item: item,
+			item,
 		},
 	});
 };
@@ -249,7 +249,7 @@ const itemFlavor = (sections, item, order = CHECK_FLAVOR) => {
  */
 const genericFlavor = (sections, flavor, order = CHECK_FLAVOR) => {
 	sections.push({
-		order: order,
+		order,
 		partial: 'systems/projectfu/templates/chat/chat-check-flavor-check.hbs',
 		data: {
 			title: flavor,
@@ -267,9 +267,9 @@ const opportunity = (sections, opportunity, order) => {
 		sections.push({
 			partial: 'systems/projectfu/templates/chat/partials/chat-item-opportunity.hbs',
 			data: {
-				opportunity: opportunity,
+				opportunity,
 			},
-			order: order,
+			order,
 		});
 	}
 };
@@ -376,7 +376,7 @@ const actions = (data, actor, item, targetData, flags, inspector = undefined) =>
 			if (effectData && effectData.entries.length > 0) {
 				const effectActions = await Effects.promptEffectChoices(effectData, sourceInfo);
 				if (effectActions.length === 0) {
-					let msg = StringUtils.localize('FU.DialogSelectionMissingError');
+					const msg = StringUtils.localize('FU.DialogSelectionMissingError');
 					ui.notifications.error(msg);
 					throw Error(msg);
 				}
@@ -412,7 +412,7 @@ const actions = (data, actor, item, targetData, flags, inspector = undefined) =>
 								const sourceInfo = InlineSourceInfo.fromInstance(actor, item);
 								sourceInfo.checkId = checkData?.id;
 								game.projectfu.socket.requestPipeline('damage', {
-									sourceInfo: sourceInfo,
+									sourceInfo,
 									targets: hitTargets,
 									damageData,
 									traits,
@@ -469,9 +469,9 @@ const actions = (data, actor, item, targetData, flags, inspector = undefined) =>
 				data: {
 					retarget: true,
 					defense: inspector.getTargetedDefense(),
-					rule: rule,
+					rule,
 					targets: targetData,
-					actions: actions,
+					actions,
 				},
 			};
 		});
@@ -516,7 +516,7 @@ const expense = (data, actor, item, targets, flags, expense) => {
 				name: item.name,
 				actor: actor.uuid,
 				item: item.uuid,
-				expense: expense,
+				expense,
 				icon: FU.resourceIcons[expense.resource],
 				resourceLabel: FU.resourcesAbbr[expense.resource],
 			},

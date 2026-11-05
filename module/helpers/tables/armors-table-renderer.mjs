@@ -47,14 +47,13 @@ export class ArmorsTableRenderer extends FUTableRenderer {
 		if (attribute) {
 			if (value > 0) {
 				return `${game.i18n.localize(FU.attributeAbbreviations[attribute])} + ${value}`;
-			} else if (value < 0) {
-				return `${game.i18n.localize(FU.attributeAbbreviations[attribute])} - ${Math.abs(value)}`;
-			} else {
-				return game.i18n.localize(FU.attributeAbbreviations[attribute]);
 			}
-		} else {
-			return value;
+			if (value < 0) {
+				return `${game.i18n.localize(FU.attributeAbbreviations[attribute])} - ${Math.abs(value)}`;
+			}
+			return game.i18n.localize(FU.attributeAbbreviations[attribute]);
 		}
+		return value;
 	}
 
 	static #getMagicDefenseText(item) {
@@ -62,25 +61,24 @@ export class ArmorsTableRenderer extends FUTableRenderer {
 		if (attribute) {
 			if (value > 0) {
 				return `${game.i18n.localize(FU.attributeAbbreviations[attribute])} + ${value}`;
-			} else if (value < 0) {
-				return `${game.i18n.localize(FU.attributeAbbreviations[attribute])} - ${Math.abs(value)}`;
-			} else {
-				return game.i18n.localize(FU.attributeAbbreviations[attribute]);
 			}
-		} else {
-			return value;
+			if (value < 0) {
+				return `${game.i18n.localize(FU.attributeAbbreviations[attribute])} - ${Math.abs(value)}`;
+			}
+			return game.i18n.localize(FU.attributeAbbreviations[attribute]);
 		}
+		return value;
 	}
 
 	static #getInitiativeText(item) {
 		const bonus = item.system.init.value;
 		if (bonus > 0) {
 			return `+ ${bonus}`;
-		} else if (bonus < 0) {
-			return `- ${Math.abs(bonus)}`;
-		} else {
-			return '—';
 		}
+		if (bonus < 0) {
+			return `- ${Math.abs(bonus)}`;
+		}
+		return '—';
 	}
 
 	static #renderEquipStatus(item) {

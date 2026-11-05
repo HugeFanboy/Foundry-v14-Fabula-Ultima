@@ -82,7 +82,7 @@ export class ArcanumDataModel extends RollableClassFeatureDataModel {
 			dismiss: await TextEditor.enrichHTML(model.dismiss),
 		};
 
-		const speaker = ChatMessage.implementation.getSpeaker({ actor: actor });
+		const speaker = ChatMessage.implementation.getSpeaker({ actor });
 		const chatMessage = {
 			speaker,
 			flavor: await FoundryUtils.renderTemplate('chat/chat-check-flavor-item-v2', {

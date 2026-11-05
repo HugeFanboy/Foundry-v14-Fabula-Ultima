@@ -70,9 +70,9 @@ export function ItemBehaviourMixin(BaseClass) {
 		get transferredEffects() {
 			if (this.system.transferEffects ? this.system.transferEffects() : true) {
 				const effects = this.effects.filter((e) => e.transfer === true).filter((e) => (this.system.shouldApplyEffect ? this.system.shouldApplyEffect(e) : true));
-				for (let collection of Object.values(this.nestedCollections)) {
+				for (const collection of Object.values(this.nestedCollections)) {
 					if (collection.documentClass === PseudoItem) {
-						for (let item of collection) {
+						for (const item of collection) {
 							if (this.system.transferNestedItem ? this.system.transferNestedItem(item) : true) {
 								effects.push(...item.transferredEffects);
 							}
@@ -80,20 +80,19 @@ export function ItemBehaviourMixin(BaseClass) {
 					}
 				}
 				return effects;
-			} else {
-				return [];
 			}
+			return [];
 		}
 
 		*allEffects() {
-			for (let effect of this.effects) {
+			for (const effect of this.effects) {
 				yield effect;
 			}
-			for (let collection of Object.values(this.nestedCollections)) {
+			for (const collection of Object.values(this.nestedCollections)) {
 				if (foundry.utils.isSubclass(collection.documentClass, PseudoItem)) {
-					for (let item of collection) {
+					for (const item of collection) {
 						if (this.system.transferNestedItem ? this.system.transferNestedItem(item) : true) {
-							for (let effect of item.allEffects()) {
+							for (const effect of item.allEffects()) {
 								yield effect;
 							}
 						}
@@ -116,14 +115,14 @@ export function ItemBehaviourMixin(BaseClass) {
 			const ActiveEffect = foundry.documents.ActiveEffect.implementation;
 			if (typeof phase !== 'string') {
 				phase = this._completedActiveEffectPhases.has('initial') ? 'final' : 'initial';
-				const message = 'Actor#applyActiveEffects must be called with a string phase identifier, with "initial"' + ' as the first phase.';
+				const message = 'Actor#applyActiveEffects must be called with a string phase identifier, with "initial" as the first phase.';
 				foundry.utils.logCompatibilityWarning(message, { since: 14, until: 16, once: true });
 			} else if (!(phase in ActiveEffect.CHANGE_PHASES)) {
 				const error = new Error(`"${phase}" is not a registered ActiveEffect application phase.`);
 				Hooks.onError('Actor#applyActiveEffects', error, { log: 'error' });
 			}
 			if (this._completedActiveEffectPhases.has(phase)) {
-				const error = new Error(`ActiveEffect application phase "${phase}" has already completed and cannot be run again` + " in this Actor's data-preparation cycle.");
+				const error = new Error(`ActiveEffect application phase "${phase}" has already completed and cannot be run again in this Actor's data-preparation cycle.`);
 				Hooks.onError('Actor#applyActiveEffects', error, { log: 'error' });
 				return;
 			}
@@ -168,7 +167,7 @@ export function ItemBehaviourMixin(BaseClass) {
 		*allItems() {
 			for (const collection of Object.values(this.nestedCollections)) {
 				if (foundry.utils.isSubclass(collection.documentClass, PseudoItem)) {
-					for (let item of collection) {
+					for (const item of collection) {
 						if (this.system.transferNestedItem ? this.system.transferNestedItem(item) : true) {
 							yield item;
 							if ('allItems' in item) {
@@ -230,9 +229,8 @@ export function ItemBehaviourMixin(BaseClass) {
 				}
 				if (this.system.roll instanceof Function) {
 					return this.system.roll(modifiers);
-				} else {
-					return Checks.display(this.actor, this);
 				}
+				return Checks.display(this.actor, this);
 			}
 		}
 
@@ -274,7 +272,7 @@ export function ItemBehaviourMixin(BaseClass) {
 				return this.system.data.progress;
 			}
 			// ClassFeatureDataModel (some such as GardenDataModel)
-			else if (this.system.data?.clock) {
+			if (this.system.data?.clock) {
 				return this.system.data.clock;
 			}
 			// Search among active effects in the item

@@ -3,7 +3,7 @@
  */
 export const rolldataHtmlEnricher = {
 	pattern: /@DATA\[(.*?)]/g,
-	enricher: enricher,
+	enricher,
 };
 
 function enricher(text, options) {

@@ -55,13 +55,11 @@ export class BondRulePredicate extends RulePredicateDataModel {
 						}
 					}
 				}
-			} else {
-				if (context.targets.some((value) => value.actor === effectOriginActor)) {
-					if (bonds.some((value) => value.name === effectOriginActor.name)) {
-						for (const bond of bonds) {
-							if (bond.matches(this.bond)) {
-								return true;
-							}
+			} else if (context.targets.some((value) => value.actor === effectOriginActor)) {
+				if (bonds.some((value) => value.name === effectOriginActor.name)) {
+					for (const bond of bonds) {
+						if (bond.matches(this.bond)) {
+							return true;
 						}
 					}
 				}

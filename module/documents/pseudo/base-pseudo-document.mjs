@@ -5,10 +5,6 @@ import { PseudoDocumentCollectionField } from './pseudo-document-collection-fiel
  * It is maintained separately for easier synchronization with the core class.
  */
 export class BasePseudoDocument extends foundry.abstract.DataModel {
-	constructor(data, context) {
-		super(data, context);
-	}
-
 	/**
 	 * @override
 	 */
@@ -109,7 +105,7 @@ export class BasePseudoDocument extends foundry.abstract.DataModel {
 	static get baseDocument() {
 		let cls;
 		let parent = this;
-		let parents = [this];
+		const parents = [this];
 		while (parent) {
 			cls = parent;
 			parent = Object.getPrototypeOf(cls);
@@ -367,7 +363,7 @@ export class BasePseudoDocument extends foundry.abstract.DataModel {
 		// Require full replacement of system data if the document type changes
 		if (this.constructor.metadata.hasTypeData && 'type' in changes && !foundry.data.operators.ForcedReplacement.equals(changes.type, copy.type)) {
 			if (!(changes.system instanceof foundry.data.operators.ForcedReplacement)) {
-				throw new Error('The type of a Document may only be changed if the system field is also updated with a ' + 'ForcedReplacement operator.');
+				throw new Error('The type of a Document may only be changed if the system field is also updated with a ForcedReplacement operator.');
 			}
 		}
 		return super._updateDiff(copy, changes, options, _state);
@@ -389,7 +385,7 @@ export class BasePseudoDocument extends foundry.abstract.DataModel {
 		const documentClass = collection.documentClass;
 
 		const documents = [];
-		for (let initialData of data) {
+		for (const initialData of data) {
 			initialData._id = foundry.utils.randomID();
 			const document = collection.createDocument(initialData);
 			let proceed = (await document._preCreate(initialData, options, game.user)) ?? true;
@@ -406,7 +402,7 @@ export class BasePseudoDocument extends foundry.abstract.DataModel {
 		const preArgs = [documents, options, game.userId];
 		parentDocument._dispatchDescendantDocumentEvents?.('preCreate', collection.name, preArgs);
 
-		let { changeObject, nestedCollection } = this._gatherChangeData(parentDocument);
+		const { changeObject, nestedCollection } = this._gatherChangeData(parentDocument);
 		nestedCollection.push(...documents);
 		await parentFoundryDocument.update(changeObject);
 		const newDocuments = data.map((value) => collection.get(value._id));
@@ -506,7 +502,7 @@ export class BasePseudoDocument extends foundry.abstract.DataModel {
 
 		const documentsToDelete = [];
 		const idsToDelete = [];
-		for (let id of ids) {
+		for (const id of ids) {
 			const document = collection.get(id);
 			if (document) {
 				let proceed = (await document._preDelete(options, game.user)) ?? true;
@@ -525,7 +521,7 @@ export class BasePseudoDocument extends foundry.abstract.DataModel {
 		const preArgs = [idsToDelete, options, game.userId];
 		parentDocument._dispatchDescendantDocumentEvents?.('preDelete', collection.name, preArgs);
 
-		let { changeObject, nestedCollection } = this._gatherChangeData(parentDocument);
+		const { changeObject, nestedCollection } = this._gatherChangeData(parentDocument);
 		nestedCollection.splice(0, nestedCollection.length, ...nestedCollection.filter((value) => !idsToDelete.includes(value._id)));
 		await parentFoundryDocument.update(changeObject);
 		setTimeout(() => {
@@ -1173,7 +1169,7 @@ export class BasePseudoDocument extends foundry.abstract.DataModel {
 		const traversalLog = [];
 		current = parent instanceof foundry.abstract.Document ? parent.toObject(true) : parent.parentFoundryDocument.toObject(true);
 
-		for (let { type, index } of traversalInstructions) {
+		for (const { type, index } of traversalInstructions) {
 			if (type === 'object') {
 				current = current[index];
 				traversalLog.push({ type, index, value: current });

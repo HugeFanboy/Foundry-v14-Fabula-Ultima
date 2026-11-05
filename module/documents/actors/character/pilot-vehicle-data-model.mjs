@@ -67,22 +67,21 @@ export class PilotVehicleDataModel extends foundry.abstract.DataModel {
 			if (vehicle) {
 				return this.updateSource(
 					{
-						vehicle: vehicle,
-					},
-					{ dryRun: true },
-				);
-			} else {
-				return this.updateSource(
-					{
-						vehicle: null,
-						embarked: false,
-						weapons: [],
-						armor: null,
-						supports: [],
+						vehicle,
 					},
 					{ dryRun: true },
 				);
 			}
+			return this.updateSource(
+				{
+					vehicle: null,
+					embarked: false,
+					weapons: [],
+					armor: null,
+					supports: [],
+				},
+				{ dryRun: true },
+			);
 		}
 		return {};
 	}
@@ -106,7 +105,7 @@ export class PilotVehicleDataModel extends foundry.abstract.DataModel {
 			}
 			return this.updateSource(
 				{
-					armor: armor,
+					armor,
 				},
 				{ dryRun: true },
 			);
@@ -123,25 +122,24 @@ export class PilotVehicleDataModel extends foundry.abstract.DataModel {
 					},
 					{ dryRun: true },
 				);
-			} else {
-				const complexWeapon = weapon.system.data.complex;
-				const complexWeaponEquipped = this.weapons.some((value) => value.system.data.complex);
-
-				let newEquippedWeapons;
-				if (complexWeapon || complexWeaponEquipped) {
-					newEquippedWeapons = [weapon];
-				} else {
-					const maxActive = this.vehicle.system.data.weaponSlots;
-					newEquippedWeapons = [...this.weapons, weapon].slice(-maxActive).sort((a, b) => a.system.data.isShield - b.system.data.isShield);
-				}
-
-				return this.updateSource(
-					{
-						weapons: newEquippedWeapons,
-					},
-					{ dryRun: true },
-				);
 			}
+			const complexWeapon = weapon.system.data.complex;
+			const complexWeaponEquipped = this.weapons.some((value) => value.system.data.complex);
+
+			let newEquippedWeapons;
+			if (complexWeapon || complexWeaponEquipped) {
+				newEquippedWeapons = [weapon];
+			} else {
+				const maxActive = this.vehicle.system.data.weaponSlots;
+				newEquippedWeapons = [...this.weapons, weapon].slice(-maxActive).sort((a, b) => a.system.data.isShield - b.system.data.isShield);
+			}
+
+			return this.updateSource(
+				{
+					weapons: newEquippedWeapons,
+				},
+				{ dryRun: true },
+			);
 		}
 		return {};
 	}

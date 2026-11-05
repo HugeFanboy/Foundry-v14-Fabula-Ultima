@@ -82,7 +82,7 @@ export class ItemSelectionDialog {
 		// We cache the item descriptions here...
 		const descriptions = await Promise.all(this.data.items.map((item) => this.data.getDescription(item)));
 		// Additional columns
-		let columnData = {};
+		const columnData = {};
 		if (this.data.columns) {
 			for (const column of this.data.columns) {
 				columnData[column.label] = await Promise.all(this.data.items.map((item) => column.getContent(item)));
@@ -293,8 +293,8 @@ export class ItemSelectionDialog {
 			const returnValue = { selected: [], additionalInputs: {} };
 
 			result = foundry.utils.expandObject(result);
-			for (let [name, field] of Object.entries(this.data.additionalInputs ?? {})) {
-				let inputValue = result.additionalInputs[name];
+			for (const [name, field] of Object.entries(this.data.additionalInputs ?? {})) {
+				const inputValue = result.additionalInputs[name];
 				if (inputValue && Array.isArray(field.choices) && Number.isFinite(Number(inputValue))) {
 					returnValue.additionalInputs[name] = field.choices[Number(inputValue)];
 				} else {
@@ -308,8 +308,7 @@ export class ItemSelectionDialog {
 				returnValue.selected = this.#selectedItems;
 			}
 			return returnValue;
-		} else {
-			throw Error('Canceled by user.');
 		}
+		throw Error('Canceled by user.');
 	}
 }

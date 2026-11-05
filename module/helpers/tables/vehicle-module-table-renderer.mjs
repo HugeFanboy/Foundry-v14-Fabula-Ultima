@@ -37,12 +37,12 @@ export class VehicleModuleTableRenderer extends TradableTableRenderer {
 
 	static async #renderDescription(item) {
 		const featureTypeClass = item.system.data.constructor;
-		return foundry.applications.handlebars.renderTemplate(featureTypeClass.expandTemplate, { ...item, item: item, additionalData: await featureTypeClass.getAdditionalData(item.system.data) });
+		return foundry.applications.handlebars.renderTemplate(featureTypeClass.expandTemplate, { ...item, item, additionalData: await featureTypeClass.getAdditionalData(item.system.data) });
 	}
 
 	static async #renderDetails(item) {
 		const featureTypeClass = item.system.data.constructor;
-		return foundry.applications.handlebars.renderTemplate(featureTypeClass.previewTemplate, { ...item, item: item, additionalData: await featureTypeClass.getAdditionalData(item.system.data) });
+		return foundry.applications.handlebars.renderTemplate(featureTypeClass.previewTemplate, { ...item, item, additionalData: await featureTypeClass.getAdditionalData(item.system.data) });
 	}
 
 	static #getCost(item) {

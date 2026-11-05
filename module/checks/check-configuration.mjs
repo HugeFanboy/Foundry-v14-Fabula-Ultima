@@ -41,7 +41,7 @@ const HR_ZERO = 'hrZero';
  * @return {CheckCallback}
  */
 const initHrZero = (hrZero) => (check) => {
-	hrZero && (check.additionalData[HR_ZERO] = true);
+	if (hrZero) check.additionalData[HR_ZERO] = true;
 };
 
 /**
@@ -464,8 +464,8 @@ export class CheckConfigurer extends CheckInspector {
 	 */
 	addModifier(label, value) {
 		this.check.modifiers.push({
-			label: label,
-			value: value,
+			label,
+			value,
 		});
 		return this;
 	}

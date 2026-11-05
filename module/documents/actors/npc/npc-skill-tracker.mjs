@@ -90,9 +90,8 @@ export class NpcSkillTracker {
 		if (species === 'humanoid') {
 			if (getSystemSetting(SETTINGS.npcEquipment)) {
 				return 3;
-			} else {
-				return 4;
 			}
+			return 4;
 		}
 		if (species === 'demon' || species === 'plant') {
 			number = 3;
@@ -190,7 +189,7 @@ export class NpcSkillTracker {
 
 	#calcUsedSkillsFromImmunities(fromAbsorb) {
 		let sum = 0;
-		let species = this.#data.species.value;
+		const species = this.#data.species.value;
 		Object.entries(this.#data.affinities).forEach(([affinity, value]) => {
 			if (value.base === 2) {
 				// Don't count poison for construct, elemental, undead
