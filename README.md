@@ -13,6 +13,7 @@ Welcome to the ProjectFU system for [Foundry Virtual Tabletop](https://foundryvt
 
 - **Foundry v14.370 compatibility:** deprecated Foundry APIs replaced with their v14 equivalents. See the [changelog](CHANGELOG.md) for details.
 - **Ultima Power Rolls** (Settings → Homebrew, off by default): attacks always hit. Damage counts the High Roll as 0 (HR0) unless the result is strictly greater than the target's Defense or Magic Defense, or the roll is a critical.
+- **Import from Fultimator** (Project FU sidebar → Utilities): creates NPCs and player characters from JSON exported from [Fultimator](https://fultimator.com).
 - Releases are published on [GitHub](https://github.com/HugeFanboy/Foundry-v14-Fabula-Ultima/releases) only, not on the foundryvtt.com package listing.
 
 ProjectFU is an independent production by the [League of Fabulous Developers](https://github.com/League-of-Fabulous-Developers) and is not affiliated with Need Games or Rooster Games. Supplied game rules in the system compendium adhere to and are published under the [Fabula Ultima Third Party Tabletop License 1.0](https://need.games/wp-content/uploads/2024/06/Fabula-Ultima-Third-Party-Tabletop-License-1.0.pdf). We adhere to RoosterEma's guidelines, ensuring that the core book and its supplements remain integral to your experience. To fully utilize this system, you will need the [Fabula Ultima Core Rulebook](https://www.needgames.it/fabula-ultima-en/).

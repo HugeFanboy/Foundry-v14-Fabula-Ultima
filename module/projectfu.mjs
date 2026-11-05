@@ -98,6 +98,7 @@ import { RuleElements } from './pipelines/rule-elements.mjs';
 import { PseudoItem } from './documents/items/pseudo-item.mjs';
 import { PseudoActiveEffect } from './documents/effects/pseudo-active-effect.mjs';
 import { PdfPagerIntegration } from './integration/pdf-pager-integration.mjs';
+import { FultimatorImporter } from './integration/fultimator/fultimator-importer.mjs';
 import { ClassFeatureRegistry } from './documents/items/classFeature/class-feature-registry.mjs';
 import { OptionalFeatureRegistry } from './documents/items/optionalFeature/optional-feature-registry.mjs';
 import { RuleActionDataModel, RuleActionRegistry } from './documents/effects/actions/rule-action-data-model.mjs';
@@ -448,6 +449,7 @@ Hooks.once('init', () => {
 	SystemControls.initialize();
 	PlayerListEnhancements.initialize();
 	PdfPagerIntegration.initialize();
+	FultimatorImporter.initialize();
 	PressureSystem.initialize();
 	CompendiumBrowser.initialize();
 	Themes.initialize();
