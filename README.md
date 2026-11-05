@@ -2,7 +2,7 @@
 
 ![Fabula Ultima Mod Logo - White Background](https://github.com/League-of-Fabulous-Developers/FoundryVTT-Fabula-Ultima/assets/16845165/040a116d-3419-47ee-af36-5aed128bdb2d)
 
-![foundry-v13-green](https://img.shields.io/badge/foundry-v13-green)
+![foundry-v14-green](https://img.shields.io/badge/foundry-v13-green)
 
 Welcome to the ProjectFU system for [Foundry Virtual Tabletop](https://foundryvtt.com/).
 
