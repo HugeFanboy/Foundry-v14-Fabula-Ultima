@@ -143,7 +143,7 @@ export default class FoundryUtils {
 						}
 						const preview = imagePicker.querySelector('img');
 						const input = imagePicker.querySelector(`input[name="${name}"]`);
-						new FilePicker({
+						new foundry.applications.apps.FilePicker.implementation({
 							type: 'image',
 							current: input?.value,
 							callback: (path) => {
@@ -158,7 +158,7 @@ export default class FoundryUtils {
 					browse: (event, target, dialog) => {
 						const { name, type } = target.dataset;
 						const input = event.currentTarget.querySelector(`input[name="${name}"]`);
-						new FilePicker({
+						new foundry.applications.apps.FilePicker.implementation({
 							type: type,
 							current: input?.value,
 							callback: (path) => {
@@ -594,8 +594,7 @@ export default class FoundryUtils {
 	 */
 	static getFormData(target) {
 		const form = target.closest('form');
-		// eslint-disable-next-line no-undef
-		const formData = new FormDataExtended(form);
+		const formData = new foundry.applications.ux.FormDataExtended(form);
 		return foundry.utils.expandObject(formData.object);
 	}
 
@@ -629,12 +628,12 @@ export default class FoundryUtils {
 	 * @param {String} uuid
 	 */
 	static popoutImage(src, title, uuid = undefined) {
-		// eslint-disable-next-line no-undef
-		const popout = new ImagePopout(src, {
-			title: title,
+		const popout = new foundry.applications.apps.ImagePopout({
+			src,
+			window: { title: title },
 			uuid: uuid,
 		});
-		popout.render(true);
+		popout.render({ force: true });
 	}
 
 	/**
@@ -937,8 +936,7 @@ export default class FoundryUtils {
 		const scene = game.scenes.viewed;
 
 		// Get image dimensions to use as default tile size
-		// eslint-disable-next-line no-undef
-		const tex = await loadTexture(imagePath);
+		const tex = await foundry.canvas.loadTexture(imagePath);
 		let width, height;
 
 		const promptTitle = `${StringUtils.localize('CONTROLS.TilePlace')} - Preset`;

@@ -1105,7 +1105,7 @@ export class CombatHUD extends foundry.applications.api.HandlebarsApplicationMix
 			// But it doesn't attempt to regenerate them like this.
 			// Ultimately the token icon will be updated on the tracker the next time it refreshes.
 			combatant._thumb = null;
-			if (VideoHelper.hasVideoExtension(changes.texture.src)) {
+			if (foundry.helpers.media.VideoHelper.hasVideoExtension(changes.texture.src)) {
 				combatant.img = null;
 				combatant._videoSrc = changes.texture.src;
 			} else {

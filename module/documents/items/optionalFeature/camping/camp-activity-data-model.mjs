@@ -26,7 +26,7 @@ export class CampActivityDataModel extends OptionalFeatureDataModel {
 
 	static async getAdditionalData(model) {
 		return {
-			enrichedDescription: await TextEditor.enrichHTML(model.description),
+			enrichedDescription: await foundry.applications.ux.TextEditor.implementation.enrichHTML(model.description),
 		};
 	}
 }

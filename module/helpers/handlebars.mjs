@@ -224,7 +224,7 @@ export const FUHandlebars = Object.freeze({
 		});
 
 		Handlebars.registerHelper('pfuImage', (src, classes, label) => {
-			if (VideoHelper.hasVideoExtension(src)) {
+			if (foundry.helpers.media.VideoHelper.hasVideoExtension(src)) {
 				return new Handlebars.SafeString(`<video class="${classes}" autoplay loop muted playsinline src="${src}" data-tooltip="${label}"></video>`);
 			} else {
 				return new Handlebars.SafeString(`<img class="${classes}" src="${src}" data-tooltip="${label}" alt="${label}">`);

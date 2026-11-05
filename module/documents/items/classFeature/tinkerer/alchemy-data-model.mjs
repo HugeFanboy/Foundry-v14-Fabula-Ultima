@@ -188,8 +188,8 @@ export class AlchemyDataModel extends RollableClassFeatureDataModel {
 					results: [],
 				};
 				for (const die of roll.dice) {
-					const target = model.config.targetRollTable.getResultsForRoll(die.total).at(0).getChatText();
-					const effect = model.config.effectRollTable.getResultsForRoll(die.total).at(0).getChatText();
+					const target = await model.config.targetRollTable.getResultsForRoll(die.total).at(0).getHTML();
+					const effect = await model.config.effectRollTable.getResultsForRoll(die.total).at(0).getHTML();
 					data.results.push({ result: die.total, target, effect });
 				}
 

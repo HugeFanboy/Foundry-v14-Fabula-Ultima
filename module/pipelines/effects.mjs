@@ -81,7 +81,7 @@ function createTemporaryEffect(owner, effectType, name = undefined, data = {}) {
 			source: owner.uuid,
 			origin: owner.uuid,
 			system: system,
-			'duration.rounds': effectType === 'temporary' ? 1 : undefined,
+			...(effectType === 'temporary' ? { duration: { value: 1, units: 'rounds' } } : {}),
 			disabled: effectType === 'inactive',
 			...data,
 		},

@@ -513,7 +513,7 @@ export class CodexBrowser {
 			const filePattern = new RegExp(CodexBrowser.UPLOAD_FILE_PREFIX);
 
 			// Browse the directory to get all files
-			const browse = await FilePicker.browse('data', uploadDirectory);
+			const browse = await foundry.applications.apps.FilePicker.implementation.browse('data', uploadDirectory);
 			/** @type String[] **/
 			const imagesToDelete = browse.files.filter((file) => {
 				const filename = file.split('/').pop();

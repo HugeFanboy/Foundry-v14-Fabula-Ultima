@@ -793,7 +793,7 @@ export class PseudoDocument extends BasePseudoDocument {
 		}
 
 		name ??= this.name;
-		return TextEditor.implementation.createAnchor({ attrs, dataset, name, classes, icon: anchorIcon });
+		return foundry.applications.ux.TextEditor.implementation.createAnchor({ attrs, dataset, name, classes, icon: anchorIcon });
 	}
 
 	/**

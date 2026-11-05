@@ -671,12 +671,12 @@ export class FUStandardActorSheet extends FUActorSheet {
 						event.preventDefault();
 						const src = event.currentTarget.getAttribute('src');
 						if (src) {
-							// eslint-disable-next-line no-undef
-							const popout = new ImagePopout(src, {
-								title: this.actor.name,
+							const popout = new foundry.applications.apps.ImagePopout({
+								src,
+								window: { title: this.actor.name },
 								uuid: this.actor.uuid,
 							});
-							popout.render(true);
+							popout.render({ force: true });
 						}
 					});
 				}
@@ -890,11 +890,7 @@ export class FUStandardActorSheet extends FUActorSheet {
 		if (dataset.roll) {
 			const label = dataset.label ? `${dataset.label}` : '';
 			const roll = new Roll(dataset.roll, this.actor.getRollData());
-			roll.toMessage({
-				speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-				flavor: label,
-				rollMode: game.settings.get('core', 'rollMode'),
-			});
+			roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), flavor: label }, { messageMode: game.settings.get('core', 'messageMode') });
 			return roll;
 		}
 	}

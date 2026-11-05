@@ -57,7 +57,7 @@ async function uploadClipboardImage(directory, prefix) {
 	const filename = `${prefix}-${Date.now()}.${extension}`;
 	const file = new File([blob], filename, { type: imageType });
 
-	const response = await FilePicker.upload('data', directory, file, {});
+	const response = await foundry.applications.apps.FilePicker.implementation.upload('data', directory, file, {});
 	if (!response?.path) {
 		ui.notifications.error('Failed to upload clipboard image.');
 		return;

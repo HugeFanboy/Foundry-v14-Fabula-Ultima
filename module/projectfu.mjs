@@ -523,7 +523,7 @@ Hooks.once('ready', function () {
 
 	Hooks.on('rollEquipment', (actor, slot) => {
 		// Detect if the shift key is currently pressed
-		const isShift = game.keyboard.isModifierActive(KeyboardManager.MODIFIER_KEYS.SHIFT);
+		const isShift = game.keyboard.isModifierActive(foundry.helpers.interaction.KeyboardManager.MODIFIER_KEYS.SHIFT);
 
 		// Call the rollEquipment function
 		rollEquipment(actor, slot, isShift);

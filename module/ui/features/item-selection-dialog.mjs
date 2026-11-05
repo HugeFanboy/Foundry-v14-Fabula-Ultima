@@ -228,10 +228,10 @@ export class ItemSelectionDialog {
 										return;
 									}
 
-									Hooks.once('renderJournalSheet', (sheet) => {
+									Hooks.once('renderJournalEntrySheet', (sheet) => {
 										if (sheet === jSheet) goToPage();
 									});
-									jSheet.render(true, { pageId: page.id });
+									jSheet.render({ force: true, pageId: page.id });
 								}
 							}
 						}

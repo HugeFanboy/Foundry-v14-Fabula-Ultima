@@ -721,7 +721,7 @@ export class FUPartySheet extends FUActorSheet {
 	 * @returns {Promise<unknown>}
 	 */
 	async _onDrop(event) {
-		const data = TextEditor.getDragEventData(event);
+		const data = foundry.applications.ux.TextEditor.implementation.getDragEventData(event);
 		if (this.#isCodexDropZone(event) && data?.type === 'Folder') {
 			const folderFromUuid = data.uuid ? await fromUuid(data.uuid) : null;
 			if (folderFromUuid) {
