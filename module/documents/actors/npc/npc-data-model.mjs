@@ -22,9 +22,9 @@ Hooks.on('preUpdateActor', (document, changed) => {
 
 		// If role or level changed
 		const newRole = foundry.utils.getProperty(changed, 'system.role.value');
-		let roleChanged = newRole !== undefined && newRole !== document.system.role.value;
+		const roleChanged = newRole !== undefined && newRole !== document.system.role.value;
 		const newLevel = foundry.utils.getProperty(changed, 'system.level.value');
-		let levelChanged = newLevel !== undefined && newLevel !== document.system.level.value;
+		const levelChanged = newLevel !== undefined && newLevel !== document.system.level.value;
 		if (roleChanged || levelChanged) {
 			setRoleAttributes(document, newRole, newLevel);
 		}
@@ -267,18 +267,18 @@ async function setRoleAttributes(actor, newRole, newLevel) {
 	const updates = {};
 
 	// 1. Apply check and damage bonuses based on level
-	let accuracyBonus = Math.floor(level / 10);
+	const accuracyBonus = Math.floor(level / 10);
 	updates['system.bonuses.accuracy.accuracyCheck'] = accuracyBonus;
 	updates['system.bonuses.accuracy.magicCheck'] = accuracyBonus;
-	let damageBonus = Math.floor(level / 20) * 5;
+	const damageBonus = Math.floor(level / 20) * 5;
 	updates['system.bonuses.damage.melee'] = damageBonus;
 	updates['system.bonuses.damage.ranged'] = damageBonus;
 	updates['system.bonuses.damage.spell'] = damageBonus;
 
 	// 2. Apply attribute array based on role (except baseline)
 	if (role !== 'baseline') {
-		let roleData = Role.resolve(role);
-		let attributes = roleData.getAttributesForLevel(level);
+		const roleData = Role.resolve(role);
+		const attributes = roleData.getAttributesForLevel(level);
 		updates['system.attributes.dex.base'] = attributes.dex;
 		updates['system.attributes.ins.base'] = attributes.ins;
 		updates['system.attributes.mig.base'] = attributes.mig;

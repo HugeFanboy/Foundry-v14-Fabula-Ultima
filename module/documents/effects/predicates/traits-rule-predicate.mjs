@@ -31,7 +31,7 @@ export class TraitsRulePredicate extends RulePredicateDataModel {
 	 * @override
 	 */
 	validateContext(context) {
-		let _traits = new Set();
+		const _traits = new Set();
 
 		// Consumable
 		if (context.eventType === FUHooks.CONSUMABLE_CREATE_EVENT) {

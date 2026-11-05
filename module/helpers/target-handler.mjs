@@ -63,7 +63,8 @@ export async function getSelected(warn = true) {
 	if (targets.length === 0) {
 		if (!game.user.isGM && game.user.character) {
 			return [game.user.character];
-		} else if (warn) {
+		}
+		if (warn) {
 			ui.notifications.warn('FU.ChatApplyEffectNoActorsSelected', { localize: true });
 		}
 	}

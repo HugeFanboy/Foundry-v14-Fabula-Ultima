@@ -35,8 +35,8 @@ export class ToggleRuleTrigger extends RuleTriggerDataModel {
 	 * @returns {boolean}
 	 */
 	validateContext(context) {
-		let enabled = context.event.enabled === this.enabled;
-		let sameOrigin = context.event.uuid === context.effect.uuid;
+		const enabled = context.event.enabled === this.enabled;
+		const sameOrigin = context.event.uuid === context.effect.uuid;
 		return enabled && sameOrigin;
 	}
 }

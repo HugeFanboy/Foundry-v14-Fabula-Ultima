@@ -83,14 +83,14 @@ export class IngredientDataModel extends ClassFeatureDataModel {
 	}
 
 	static async getAdditionalData(model) {
-		let tastes = { ...TASTES };
+		const tastes = { ...TASTES };
 		if (model.actor) {
 			for (const taste of Object.keys(tastes)) {
 				tastes[taste] = String(model.actor.getFlag(SYSTEM, getTasteAliasFlag(taste)) || TASTES[taste]);
 			}
 		}
 		return {
-			tastes: tastes,
+			tastes,
 			enrichedDescription: await TextEditor.enrichHTML(model.description),
 		};
 	}

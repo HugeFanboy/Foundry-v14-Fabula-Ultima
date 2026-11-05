@@ -70,7 +70,7 @@ export class ApplyEffectRuleAction extends RuleActionDataModel {
 				partial: 'systems/projectfu/templates/chat/partials/chat-actions.hbs',
 				data: {
 					targets: targetData,
-					actions: actions,
+					actions,
 				},
 			}));
 		} else {

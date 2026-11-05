@@ -64,15 +64,15 @@ async function attack(inspector, actor, item) {
 	const event = {
 		item: toItemReference(item),
 		_item: item,
-		actor: actor,
-		source: source,
-		config: config,
-		check: check,
+		actor,
+		source,
+		config,
+		check,
 		type: inspector.getDamage()?.type,
 		token: source.token,
 		targets: eventTargets,
 		traits: new Set(traits),
-		result: result,
+		result,
 	};
 	await callHookWithCallbacks(FUHooks.ATTACK_EVENT, event);
 }
@@ -105,20 +105,20 @@ async function damage(targetActor, damageContext, damageType, origin, renderData
 
 	/** @type DamageEvent  **/
 	const damageEvent = {
-		damageContext: damageContext,
+		damageContext,
 		amount: damageContext.amount,
-		item: item,
+		item,
 		type: damageType,
-		affinity: affinity,
-		source: source,
+		affinity,
+		source,
 		sourceActor: damageContext.sourceActor,
-		itemGroup: itemGroup,
-		target: target,
+		itemGroup,
+		target,
 		actor: target.actor,
 		token: target.token,
 		traits: damageContext.traits,
-		origin: origin,
-		renderData: renderData,
+		origin,
+		renderData,
 	};
 	await callHookWithCallbacks(FUHooks.DAMAGE_EVENT, damageEvent);
 }
@@ -139,9 +139,9 @@ async function calculateDamage(actor, item, config) {
 	const event = {
 		source: CharacterInfo.fromActor(actor),
 		targets: CharacterInfo.fromTargetData(targets),
-		item: item,
-		itemGroup: itemGroup,
-		config: config,
+		item,
+		itemGroup,
+		config,
 		type: config.getDamage()?.type,
 	};
 	await callHookWithCallbacks(FUHooks.CALCULATE_DAMAGE_EVENT, event);
@@ -163,10 +163,10 @@ async function calculateResource(actor, item, config, data) {
 	const event = {
 		source: CharacterInfo.fromActor(actor),
 		targets: CharacterInfo.fromTargetData(targets),
-		item: item,
-		itemGroup: itemGroup,
-		data: data,
-		config: config,
+		item,
+		itemGroup,
+		data,
+		config,
 	};
 
 	await callHookWithCallbacks(FUHooks.CALCULATE_RESOURCE_EVENT, event);
@@ -208,11 +208,11 @@ async function status(actor, statusEffectId, enabled) {
 		FUHooks.STATUS_EVENT,
 		/** @type StatusEvent **/
 		{
-			source: source,
-			actor: actor,
+			source,
+			actor,
 			token: source.token,
 			status: statusEffectId,
-			enabled: enabled,
+			enabled,
 		},
 	);
 }
@@ -231,11 +231,11 @@ async function status(actor, statusEffectId, enabled) {
 async function gain(actor, resource, amount, origin) {
 	/** @type GainEvent  **/
 	const gainEvent = {
-		amount: amount,
-		resource: resource,
-		actor: actor,
+		amount,
+		resource,
+		actor,
 		token: actor.resolveToken(),
-		origin: origin,
+		origin,
 	};
 	await callHookWithCallbacks(FUHooks.GAIN_EVENT, gainEvent);
 }
@@ -254,11 +254,11 @@ async function gain(actor, resource, amount, origin) {
 async function loss(actor, resource, amount, origin) {
 	/** @type LossEvent  **/
 	const lossEvent = {
-		amount: amount,
-		resource: resource,
-		actor: actor,
+		amount,
+		resource,
+		actor,
 		token: actor.resolveToken(),
-		origin: origin,
+		origin,
 	};
 	await callHookWithCallbacks(FUHooks.LOSS_EVENT, lossEvent);
 }
@@ -284,14 +284,14 @@ async function resource(sourceActor, targetActors, sourceInfo, resource, amount,
 	const itemGroup = ItemUtils.resolveItemGroup(item);
 	/** @type ResourceUpdateEvent  **/
 	const event = {
-		amount: amount,
-		resource: resource,
-		source: source,
-		targets: targets,
-		origin: origin,
-		item: item,
-		itemGroup: itemGroup,
-		renderData: renderData,
+		amount,
+		resource,
+		source,
+		targets,
+		origin,
+		item,
+		itemGroup,
+		renderData,
 	};
 	await callHookWithCallbacks(FUHooks.RESOURCE_UPDATE, event);
 }
@@ -317,10 +317,10 @@ async function calculateExpense(actor, item, targetData, expense) {
 	const targets = CharacterInfo.fromTargetData(targetData);
 	/** @type CalculateExpenseEvent  **/
 	const event = {
-		expense: expense,
-		item: item,
-		source: source,
-		targets: targets,
+		expense,
+		item,
+		source,
+		targets,
 	};
 	await callHookWithCallbacks(FUHooks.CALCULATE_EXPENSE_EVENT, event);
 }
@@ -337,10 +337,10 @@ async function expense(actor, item, targetActors, expense) {
 	const targets = CharacterInfo.fromTargetData(targetActors);
 	/** @type CalculateExpenseEvent  **/
 	const event = {
-		expense: expense,
-		item: item,
-		source: source,
-		targets: targets,
+		expense,
+		item,
+		source,
+		targets,
 	};
 	await callHookWithCallbacks(FUHooks.EXPENSE_EVENT, event);
 }
@@ -376,12 +376,12 @@ async function spell(actor, item) {
 	/** @type SpellEvent  **/
 	const event = {
 		item: toItemReference(item),
-		source: source,
+		source,
 		actor: source.actor,
 		token: source.token,
-		spell: spell,
+		spell,
 		targets: eventTargets,
-		traits: traits,
+		traits,
 	};
 	await callHookWithCallbacks(FUHooks.SPELL_EVENT, event);
 }
@@ -413,11 +413,11 @@ async function skill(actor, item, targets = undefined) {
 	/** @type SpellEvent  **/
 	const event = {
 		item: toItemReference(item),
-		source: source,
+		source,
 		actor: source.actor,
 		token: source.token,
 		targets: eventTargets,
-		traits: traits,
+		traits,
 	};
 	await callHookWithCallbacks(FUHooks.SKILL_EVENT, event);
 }
@@ -446,7 +446,7 @@ async function item(actor, item) {
 	/** @type ItemEvent  **/
 	const event = {
 		item: toItemReference(item),
-		actor: actor,
+		actor,
 		type: consumable.subtype.value,
 		token: actor.resolveToken(),
 		targets: eventTargets,
@@ -474,7 +474,7 @@ async function study(actor, targets, studyValue) {
 
 	/** @type ItemEvent  **/
 	const event = {
-		actor: actor,
+		actor,
 		token: actor.resolveToken(),
 		targets: eventTargets,
 		result: studyValue,
@@ -490,7 +490,7 @@ async function study(actor, targets, studyValue) {
 async function rest(actor) {
 	/** @type RestEvent  **/
 	const event = {
-		actor: actor,
+		actor,
 	};
 	await callHookWithCallbacks(FUHooks.REST_EVENT, event);
 }
@@ -510,8 +510,8 @@ async function rest(actor) {
 async function reveal(actor, revealed) {
 	/** @type RevealEvent  **/
 	const event = {
-		actor: actor,
-		revealed: revealed,
+		actor,
+		revealed,
 	};
 	await callHookWithCallbacks(FUHooks.REVEAL_EVENT, event);
 }
@@ -528,11 +528,11 @@ async function reveal(actor, revealed) {
 async function opportunity(renderData, actor, type, item, fumble) {
 	/** @type OpportunityEvent  **/
 	const event = {
-		renderData: renderData,
-		actor: actor,
-		type: type,
-		item: item,
-		fumble: fumble,
+		renderData,
+		actor,
+		type,
+		item,
+		fumble,
 	};
 	await callHookWithCallbacks(FUHooks.OPPORTUNITY_EVENT, event);
 }
@@ -550,11 +550,11 @@ async function opportunity(renderData, actor, type, item, fumble) {
 async function progress(document, progress, action, increment = undefined, source = undefined) {
 	/** @type ProgressEvent  **/
 	const event = {
-		document: document,
-		progress: progress,
-		action: action,
-		increment: increment,
-		source: source,
+		document,
+		progress,
+		action,
+		increment,
+		source,
 	};
 	await callHookWithCallbacks(FUHooks.PROGRESS_EVENT, event);
 }
@@ -581,13 +581,13 @@ async function performCheck(check, actor, item) {
 	}
 	/** @type PerformCheckEvent  **/
 	const event = {
-		config: config,
-		check: check,
-		source: source,
-		item: item,
+		config,
+		check,
+		source,
+		item,
 		itemGroup: ItemUtils.resolveItemGroup(item),
-		sourceInfo: sourceInfo,
-		targets: targets,
+		sourceInfo,
+		targets,
 	};
 	await callHookWithCallbacks(FUHooks.PERFORM_CHECK_EVENT, event);
 }
@@ -611,11 +611,11 @@ async function resolveCheck(check, actor, item) {
 
 	/** @type ResolveCheckEvent  **/
 	const event = {
-		check: check,
-		source: source,
-		item: item,
+		check,
+		source,
+		item,
 		itemGroup: ItemUtils.resolveItemGroup(item),
-		sourceInfo: sourceInfo,
+		sourceInfo,
 		targets: CharacterInfo.fromTargetData(targets),
 	};
 	await callHookWithCallbacks(FUHooks.RESOLVE_CHECK_EVENT, event);
@@ -642,14 +642,14 @@ async function renderCheck(renderData, config, actor, item) {
 
 	/** @type RenderCheckEvent  **/
 	const event = {
-		renderData: renderData,
-		check: check,
-		source: source,
-		sourceInfo: sourceInfo,
-		config: config,
+		renderData,
+		check,
+		source,
+		sourceInfo,
+		config,
 		targets: CharacterInfo.fromTargetData(config.getTargets()),
 		actor: source,
-		item: item,
+		item,
 		itemGroup: ItemUtils.resolveItemGroup(item),
 	};
 	await callHookWithCallbacks(FUHooks.RENDER_CHECK_EVENT, event);
@@ -672,9 +672,9 @@ async function initializeCheck(configuration, actor, item) {
 	/** @type InitializeCheckEvent  **/
 	const event = {
 		config: configuration,
-		source: source,
+		source,
 		targets: CharacterInfo.fromTargetData(configuration.getTargets()),
-		sourceInfo: sourceInfo,
+		sourceInfo,
 		itemGroup: ItemUtils.resolveItemGroup(item),
 	};
 	await callHookWithCallbacks(FUHooks.INITIALIZE_CHECK_EVENT, event);
@@ -690,9 +690,9 @@ async function initializeCheck(configuration, actor, item) {
 async function notify(source, id, origin) {
 	/** @type NotificationEvent  **/
 	const event = {
-		source: source,
-		id: id,
-		origin: origin,
+		source,
+		id,
+		origin,
 	};
 	await callHookWithCallbacks(FUHooks.NOTIFICATION_EVENT, event);
 }
@@ -710,9 +710,9 @@ async function renderMessage(renderData, actor, document = undefined) {
 
 	/** @type RenderMessageEvent  **/
 	const event = {
-		renderData: renderData,
-		document: document,
-		source: source,
+		renderData,
+		document,
+		source,
 	};
 	await callHookWithCallbacks(FUHooks.RENDER_MESSAGE_EVENT, event);
 }
@@ -732,11 +732,11 @@ async function feature(actor, item, traits, targetData, renderData) {
 	const targets = CharacterInfo.fromTargetData(targetData);
 	/** @type FeatureEvent  **/
 	const event = {
-		source: source,
-		item: item,
-		traits: traits,
-		targets: targets,
-		renderData: renderData,
+		source,
+		item,
+		traits,
+		targets,
+		renderData,
 	};
 	await callHookWithCallbacks(FUHooks.FEATURE_EVENT, event);
 }
@@ -752,9 +752,9 @@ async function toggleEffect(actor, uuid, enabled) {
 	const source = CharacterInfo.fromActor(actor);
 	/** @type EffectToggledEvent  **/
 	const event = {
-		source: source,
-		uuid: uuid,
-		enabled: enabled,
+		source,
+		uuid,
+		enabled,
 	};
 	await callHookWithCallbacks(FUHooks.EFFECT_TOGGLED_EVENT, event);
 }
@@ -772,10 +772,10 @@ async function createConsumable(actor, item, targetData, actions) {
 	const targets = CharacterInfo.fromTargetData(targetData);
 	/** @type CreateConsumableEvent  **/
 	const event = {
-		source: source,
+		source,
 		consumable: item.system,
-		actions: actions,
-		targets: targets,
+		actions,
+		targets,
 	};
 	await callHookWithCallbacks(FUHooks.CONSUMABLE_CREATE_EVENT, event);
 }
@@ -810,8 +810,8 @@ async function itemRoll(config, actor) {
 	const source = actor !== undefined ? CharacterInfo.fromActor(actor) : undefined;
 	/** @type ItemRollEvent  **/
 	const event = {
-		config: config,
-		source: source,
+		config,
+		source,
 	};
 	await callHookWithCallbacks(FUHooks.ITEM_ROLL_EVENT, event);
 }

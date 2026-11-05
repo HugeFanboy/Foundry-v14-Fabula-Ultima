@@ -3,7 +3,7 @@ import { Flags } from '../../helpers/flags.mjs';
 import { CompendiumIndex } from '../../ui/compendium/compendium-index.mjs';
 
 async function convertClassAttributeFromClassLists(item, classes) {
-	let updates = {
+	const updates = {
 		flags: {
 			[SYSTEM]: {
 				[Flags.ClassConverted]: true,
@@ -14,7 +14,7 @@ async function convertClassAttributeFromClassLists(item, classes) {
 	const classAttribute = item.system?.class?.value;
 	if (classAttribute) {
 		const classNames = classAttribute.includes(',') ? classAttribute.split(',').map((v) => v.trim()) : [classAttribute];
-		let fuids = [];
+		const fuids = [];
 		for (const className of classNames) {
 			// If the class attribute matches the slugified version, we can assume it's already the intended value
 			const classNameSlug = game.projectfu.util.slugify(className);
@@ -55,7 +55,7 @@ async function convertActorItemsClassAttributes(actorSource) {
 		return (item.type === 'skill' || item.type === 'spell' || item.type === 'heroic') && !item.flags?.projectfu?.classConverted;
 	});
 
-	if (itemsToConvert.length == 0) {
+	if (itemsToConvert.length === 0) {
 		return;
 	}
 
@@ -78,7 +78,7 @@ async function convertGameItemsClassAttributes() {
 		return (item.type === 'skill' || item.type === 'spell' || item.type === 'heroic') && !item.flags?.projectfu?.classConverted;
 	});
 
-	if (itemsToConvert.length == 0) {
+	if (itemsToConvert.length === 0) {
 		return;
 	}
 

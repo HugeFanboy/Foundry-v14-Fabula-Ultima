@@ -7,9 +7,11 @@ import { FU } from './config.mjs';
 function getCharacterTier(level) {
 	if (level >= 60) {
 		return 3;
-	} else if (level >= 40) {
+	}
+	if (level >= 40) {
 		return 2;
-	} else if (level >= 20) {
+	}
+	if (level >= 20) {
 		return 1;
 	}
 	return 0;
@@ -67,15 +69,13 @@ function calculateAmountFromContext(effect, context) {
 	if (context.actor) {
 		level = context.actor.system.level.value;
 		console.debug(`Used the source actor to calculate level`);
+	} else if (context.targets.length > 0) {
+		console.debug(`Used the target actors to calculate level`);
+		level = context.targets.reduce((max, target) => {
+			return Math.max(max, target.system.level.value);
+		}, -Infinity);
 	} else {
-		if (context.targets.length > 0) {
-			console.debug(`Used the target actors to calculate level`);
-			level = context.targets.reduce((max, target) => {
-				return Math.max(max, target.system.level.value);
-			}, -Infinity);
-		} else {
-			console.warn(`No actor was given to determine level, thus used the default (5).`);
-		}
+		console.warn(`No actor was given to determine level, thus used the default (5).`);
 	}
 
 	return calculateAmount(level, effect);
@@ -91,13 +91,12 @@ function appendAmountToAnchor(anchor, amount) {
 		anchor.append(`${game.i18n.localize(FU.improvisedEffect[amount])}`);
 		anchor.dataset.effect = amount;
 		return true;
-	} else {
-		const amountNumber = Number(amount);
-		if (!Number.isNaN(amount)) {
-			anchor.dataset.amount = amountNumber;
-			anchor.append(`${amount} `);
-			return true;
-		}
+	}
+	const amountNumber = Number(amount);
+	if (!Number.isNaN(amount)) {
+		anchor.dataset.amount = amountNumber;
+		anchor.append(`${amount} `);
+		return true;
 	}
 
 	return false;

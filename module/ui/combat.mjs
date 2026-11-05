@@ -277,13 +277,11 @@ export class FUCombat extends foundry.documents.Combat {
 			// Notify
 			this.setupTurns();
 			this.notifyCombatTurnChange();
+		} else if (combatant.actor.isOwner) {
+			console.debug(`Executing message ${MESSAGES.RequestStartTurn} as GM`);
+			await game.projectfu.socket.requestStartTurn(this.id, combatant.id);
 		} else {
-			if (combatant.actor.isOwner) {
-				console.debug(`Executing message ${MESSAGES.RequestStartTurn} as GM`);
-				await game.projectfu.socket.requestStartTurn(this.id, combatant.id);
-			} else {
-				// TODO: Inform user?
-			}
+			// TODO: Inform user?
 		}
 
 		await combatant.clearMovementHistory();
@@ -320,13 +318,11 @@ export class FUCombat extends foundry.documents.Combat {
 			this.setupTurns();
 			await this.nextTurn();
 			this.notifyCombatTurnChange();
+		} else if (combatant.actor.isOwner) {
+			console.debug(`Executing message ${MESSAGES.RequestEndTurn} as GM`);
+			await game.projectfu.socket.requestEndTurn(this.id, combatant.id);
 		} else {
-			if (combatant.actor.isOwner) {
-				console.debug(`Executing message ${MESSAGES.RequestEndTurn} as GM`);
-				await game.projectfu.socket.requestEndTurn(this.id, combatant.id);
-			} else {
-				// TODO: Inform user?
-			}
+			// TODO: Inform user?
 		}
 
 		await combatant.clearMovementHistory();
@@ -366,11 +362,6 @@ export class FUCombat extends foundry.documents.Combat {
 			outOfTurns: game.settings.get(SYSTEM, SETTINGS.optionCombatHudTurnIconsOutOfTurns),
 			hiddenTurns: game.settings.get(SYSTEM, SETTINGS.optionCombatHudTurnIconsTurnsLeftHidden),
 		};
-
-		//console.debug(`Combat started? ${data.hasCombatStarted}, round: ${this.round}, currentTurn: ${data.currentTurn}, turnsLeft: ${JSON.stringify(data.turnsLeft)}`);
-		for (const combatant of this.combatants) {
-			console.debug(`- Combatant name: ${combatant.name}, id: ${combatant.id}, faction: ${combatant.faction}, isOwner: ${combatant.isOwner}, canStartTurn:}`);
-		}
 	}
 
 	/**
@@ -409,12 +400,10 @@ export class FUCombat extends foundry.documents.Combat {
 			const factionsWithTurnsLeft = turnsNotTaken.map((combatant) => combatant.faction);
 			if (factionsWithTurnsLeft.length > 0) {
 				return factionsWithTurnsLeft.includes(nextTurn) ? nextTurn : lastTurn;
-			} else {
-				return this.system.firstTurn;
 			}
-		} else {
 			return this.system.firstTurn;
 		}
+		return this.system.firstTurn;
 	}
 
 	/**
@@ -469,26 +458,25 @@ export class FUCombat extends foundry.documents.Combat {
 				},
 			});
 			return this;
-		} else {
-			const turnsTaken = this.system.rounds;
+		}
+		const turnsTaken = this.system.rounds;
 
-			if (turnsTaken[this.round]) {
-				turnsTaken[this.round].pop();
-				await this.update({
-					system: {
-						rounds: foundry.data.operators.ForcedReplacement.create(turnsTaken ?? {}),
-					},
-				});
-			}
-
-			await super.previousTurn();
+		if (turnsTaken[this.round]) {
+			turnsTaken[this.round].pop();
 			await this.update({
 				system: {
-					currentTurn: this.determineNextTurn(),
+					rounds: foundry.data.operators.ForcedReplacement.create(turnsTaken ?? {}),
 				},
 			});
-			return this;
 		}
+
+		await super.previousTurn();
+		await this.update({
+			system: {
+				currentTurn: this.determineNextTurn(),
+			},
+		});
+		return this;
 	}
 
 	/**
@@ -504,7 +492,7 @@ export class FUCombat extends foundry.documents.Combat {
 
 		let turn = this.round === 0 ? 0 : Math.max(this.totalTurns - 1, 0);
 		if (this.turn === null) turn = null;
-		let round = Math.max(this.round - 1, 0);
+		const round = Math.max(this.round - 1, 0);
 		if (round === 0) turn = null;
 		let advanceTime = -1 * (this.turn || 0) * CONFIG.time.turnTime;
 		if (round > 0) advanceTime -= CONFIG.time.roundTime;
@@ -549,7 +537,7 @@ export class FUCombat extends foundry.documents.Combat {
 		const next = turnsNotTaken.length ? turnsTaken.length : null;
 
 		// Maybe advance to the next round
-		let round = this.round;
+		const round = this.round;
 		if (this.round === 0 || next === null) {
 			return this.nextRound();
 		}
@@ -572,15 +560,15 @@ export class FUCombat extends foundry.documents.Combat {
 	 * @override
 	 */
 	async nextRound() {
-		let turn = this.turn === null ? null : 0; // Preserve the fact that it's no-one's turn currently.
+		const turn = this.turn === null ? null : 0; // Preserve the fact that it's no-one's turn currently.
 		let advanceTime = Math.max(this.totalTurns - this.turn, 0) * CONFIG.time.turnTime;
 		advanceTime += CONFIG.time.roundTime;
-		let nextRound = this.round + 1;
+		const nextRound = this.round + 1;
 
 		// Update the document, passing data through a hook first
 		const updateData = {
 			round: nextRound,
-			turn: turn,
+			turn,
 			system: {
 				currentTurn: this.system.firstTurn,
 			},
@@ -610,7 +598,8 @@ export class FUCombat extends foundry.documents.Combat {
 		const showTurnsMode = game.settings.get(SYSTEM, SETTINGS.optionCombatHudShowNPCTurnsLeftMode);
 		if (showTurnsMode === 'never') {
 			return false;
-		} else if (showTurnsMode === 'only-studied') {
+		}
+		if (showTurnsMode === 'only-studied') {
 			const studyJournal = game.journal.getName(combatant.actor.name);
 			if (showTurnsMode === 'only-studied' && !studyJournal) {
 				return false;
@@ -664,9 +653,8 @@ export class FUCombat extends foundry.documents.Combat {
 	async addTrack(track) {
 		if (track) {
 			return ProgressDataModel.addToDocument(this, 'system.tracks', track);
-		} else {
-			return ProgressPipeline.promptAddToDocument(this, 'system.tracks', true);
 		}
+		return ProgressPipeline.promptAddToDocument(this, 'system.tracks', true);
 	}
 
 	/**

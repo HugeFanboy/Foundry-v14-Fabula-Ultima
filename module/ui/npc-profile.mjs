@@ -93,7 +93,7 @@ export class NpcProfileWindow extends FUApplication {
 
 	/** @override */
 	async _prepareContext(options) {
-		let context = await super._prepareContext(options);
+		const context = await super._prepareContext(options);
 
 		let data = this.#data;
 		if (this.party) {
@@ -252,24 +252,22 @@ export class NpcProfileWindow extends FUApplication {
 				.map(([status]) => status);
 			const content = await foundry.applications.handlebars.renderTemplate('systems/projectfu/templates/ui/study/npc-profile-edit.hbs', {
 				actor,
-				existing: existing,
-				studyDifficulties: studyDifficulties,
-				affinities: affinities,
-				affinityMap: affinityMap,
+				existing,
+				studyDifficulties,
+				affinities,
+				affinityMap,
 				pressurePoints,
 				weaponCategories: FU.weaponCategories,
 				traits: traitsArray,
-				FU: FU,
-				statusImmunities: statusImmunities,
+				FU,
+				statusImmunities,
 			});
 			let updatedProfile = await FoundryUtils.input(game.i18n.localize('FU.NpcProfileUpdate'), content, {
 				render: (event, dialog) => {
 					// TODO: Have the current badge update?
-					//const studyValueDisplay = dialog.element.querySelector('#study-value');
 					const studyValueInput = dialog.element.querySelector('[name=study]');
 					studyValueInput.addEventListener('change', (e) => {
 						studyValueInput.setAttribute('data-tooltip', `${studyValueInput.value}`);
-						//studyValueDisplay.textContent = studyValueInput.value;
 					});
 				},
 				rejectClose: false,
@@ -360,7 +358,7 @@ export class NpcProfileWindow extends FUApplication {
 					changedAdversary.revealed.traits = foundry.data.operators.ForcedDeletion.create();
 				}
 			}
-			await party.parent.update({ system: { adversaries: adversaries } });
+			await party.parent.update({ system: { adversaries } });
 			ui.notifications.info(`Updated NPC profile of ${actor.name}.`);
 		}
 	}

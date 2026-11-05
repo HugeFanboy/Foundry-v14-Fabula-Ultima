@@ -75,7 +75,7 @@ export const FlagUtility = Object.freeze({
 		return {
 			key: `flags.${systemId}.${flag}`,
 			type: 'override',
-			value: value,
+			value,
 		};
 	},
 	hasSystemFlag: (document, flag) => {

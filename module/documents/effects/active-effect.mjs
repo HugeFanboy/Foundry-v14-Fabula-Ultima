@@ -71,7 +71,7 @@ Hooks.on('preCreateActiveEffect', (effect, options, userId) => {
 
 			ChatMessage.create({
 				content: message,
-				speaker: ChatMessage.getSpeaker({ actor: actor }),
+				speaker: ChatMessage.getSpeaker({ actor }),
 			});
 
 			return false; // Prevent the effect from being created

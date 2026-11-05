@@ -56,7 +56,7 @@ const details = {
 	accessory: CommonColumns.textColumn({ alignment: 'start', importance: 'low', getText: (item) => item.system.summary.value ?? '' }).renderCell,
 	armor: (item) => {
 		const data = {
-			FU: FU,
+			FU,
 			defense: {
 				attribute: item.system.def.attribute,
 				value: Math.abs(item.system.def.value),
@@ -76,7 +76,7 @@ const details = {
 	},
 	shield: (item) => {
 		const data = {
-			FU: FU,
+			FU,
 			defense: {
 				value: Math.abs(item.system.def.value),
 				signum: signum(item.system.def.value),
@@ -94,7 +94,7 @@ const details = {
 	},
 	weapon: (item) => {
 		const data = {
-			FU: FU,
+			FU,
 			check: {
 				primary: item.system.attributes.primary.value,
 				secondary: item.system.attributes.secondary.value,
@@ -113,7 +113,7 @@ const details = {
 	customWeapon: (item) => {
 		const _data = WeaponResolver.normalizeData(item);
 		const data = {
-			FU: FU,
+			FU,
 			check: {
 				primary: _data.accuracy.primary,
 				secondary: _data.accuracy.secondary,

@@ -37,7 +37,7 @@ export class FeatureTables {
 	async renderTable(document, options) {
 		const tables = Object.fromEntries(Object.entries(this.#featureTables).map(([key, table]) => [key, table.renderTable(document, options)]));
 
-		for (let key of Object.keys(tables)) {
+		for (const key of Object.keys(tables)) {
 			tables[key] = await tables[key];
 		}
 
@@ -129,10 +129,10 @@ export class FeaturesTableRenderer extends FUTableRenderer {
 	}
 
 	static async #renderFeatureInlay(item) {
-		return foundry.applications.handlebars.renderTemplate(this.#featureDataModel.previewTemplate, { ...item, item: item, additionalData: await this.#featureDataModel.getAdditionalData(item.system.data) });
+		return foundry.applications.handlebars.renderTemplate(this.#featureDataModel.previewTemplate, { ...item, item, additionalData: await this.#featureDataModel.getAdditionalData(item.system.data) });
 	}
 
 	static async #renderDescription(item) {
-		return foundry.applications.handlebars.renderTemplate(this.#featureDataModel.expandTemplate, { ...item, item: item, additionalData: await this.#featureDataModel.getAdditionalData(item.system.data) });
+		return foundry.applications.handlebars.renderTemplate(this.#featureDataModel.expandTemplate, { ...item, item, additionalData: await this.#featureDataModel.getAdditionalData(item.system.data) });
 	}
 }

@@ -8,7 +8,7 @@ import { ExpressionContext, Expressions } from '../expressions/expressions.mjs';
 const inlineIconEnricher = {
 	id: 'inlineIconEnricher',
 	pattern: InlineHelper.compose('(?:ICON|TOOLTIP)', '(?<icon>\\w+)(?:\\s+"(?<tooltip>[^"]*)")?'),
-	enricher: enricher,
+	enricher,
 };
 
 function enricher(text, options) {
@@ -44,7 +44,7 @@ const inlineCompendiumEnricher = {
 		// Tooltip
 		InlineHelper.appendSystemIcon(anchor, 'compendium');
 		const tooltip = StringUtils.localize('FU.CompendiumBrowserOpen', {
-			tab: tab,
+			tab,
 		});
 
 		// Label
@@ -84,7 +84,7 @@ const inlineEvalEnricher = {
 			try {
 				// If it's an expression
 				if (rollData.sourceInfo && Expressions.isExpression(expression)) {
-					let context = ExpressionContext.fromSourceInfo(rollData.sourceInfo, []);
+					const context = ExpressionContext.fromSourceInfo(rollData.sourceInfo, []);
 					textContent = await Expressions.evaluateAsync(expression, context);
 				}
 				// Execute a roll directly

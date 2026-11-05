@@ -27,8 +27,8 @@ export class ExecuteMacroRuleAction extends RuleActionDataModel {
 			this.macro.execute({
 				actor: context?.source?.actor ?? null,
 				token: context?.source?.token ?? null,
-				context: context,
-				selected: selected,
+				context,
+				selected,
 			});
 		}
 	}

@@ -46,7 +46,7 @@ function descriptionWithCustomEnrichment(descriptionEnricher, getTags) {
 async function renderDescription(item, descriptionKey = 'system.description', tags = []) {
 	return foundry.applications.handlebars.renderTemplate('systems/projectfu/templates/table/expand/expand-item-description-with-tags.hbs', {
 		description: await TextEditor.enrichHTML(foundry.utils.getProperty(item, descriptionKey), { rollData: item.getRollData && item.getRollData() }),
-		tags: tags,
+		tags,
 	});
 }
 
@@ -71,14 +71,13 @@ function descriptionWithTechnospheres(getTechnosphereData, getTags, layout = 'gr
 		if (game.settings.get(SYSTEM, SETTINGS.technospheres)) {
 			const { slotted, totalSlots, maxMnemospheres } = getTechnosphereData(item);
 			return foundry.applications.handlebars.renderTemplate('systems/projectfu/templates/table/expand/expand-item-description-with-slots.hbs', {
-				layout: layout,
+				layout,
 				description: await TextEditor.enrichHTML(foundry.utils.getProperty(item, descriptionKey), { rollData: item.getRollData && item.getRollData() }),
-				tags: tags,
+				tags,
 				slots: getTechnosphereSlotInfo(slotted, totalSlots, maxMnemospheres),
 			});
-		} else {
-			return renderDescription(item, descriptionKey, tags);
 		}
+		return renderDescription(item, descriptionKey, tags);
 	};
 }
 

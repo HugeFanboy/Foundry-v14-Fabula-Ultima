@@ -355,7 +355,7 @@ function onProgressEvent(e, registerCallback) {
  */
 function getSceneCharacters(targets) {
 	/** @type CharacterInfo[] **/
-	let sceneCharacters = [];
+	const sceneCharacters = [];
 	sceneCharacters.push(...targets);
 
 	if (FUCombat.hasActiveEncounter) {
@@ -411,14 +411,14 @@ async function evaluate(type, event, source, targets, data = {}) {
 				continue;
 			}
 			/** @type RuleElementContext **/
-			let contextData = {
-				type: type,
-				effect: effect,
-				event: event,
-				character: character,
-				source: source,
-				targets: targets,
-				sceneCharacters: sceneCharacters,
+			const contextData = {
+				type,
+				effect,
+				event,
+				character,
+				source,
+				targets,
+				sceneCharacters,
 				data,
 			};
 

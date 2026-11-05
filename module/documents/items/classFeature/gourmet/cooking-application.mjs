@@ -73,8 +73,8 @@ export class CookingApplication extends FUApplication {
 
 		for (let i = 0; i < tastes.length - 1; i++) {
 			for (let j = i + 1; j < tastes.length; j++) {
-				let firstTaste = tastes[i];
-				let secondTaste = tastes[j];
+				const firstTaste = tastes[i];
+				const secondTaste = tastes[j];
 				if (!combinations.some(([t1, t2]) => t1 === firstTaste && t2 === secondTaste)) {
 					combinations.push([firstTaste, secondTaste]);
 				}
@@ -116,8 +116,8 @@ export class CookingApplication extends FUApplication {
 
 		return {
 			recipe: this.#recipe,
-			ingredients: ingredients,
-			effects: effects,
+			ingredients,
+			effects,
 			options: selectOptions,
 		};
 	}

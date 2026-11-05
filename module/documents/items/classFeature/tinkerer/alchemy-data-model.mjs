@@ -183,13 +183,13 @@ export class AlchemyDataModel extends RollableClassFeatureDataModel {
 			if (model.config.targetRollTable && model.config.effectRollTable) {
 				const data = {
 					rank: alchemyRanks[rank],
-					description: description,
+					description,
 					alwaysAvailableEffects: [...model.config.alwaysAvailableEffects],
 					results: [],
 				};
 				for (const die of roll.dice) {
-					const target = model.config.targetRollTable.getResultsForRoll(die.total).at(0).getChatText();
-					const effect = model.config.effectRollTable.getResultsForRoll(die.total).at(0).getChatText();
+					const target = await model.config.targetRollTable.getResultsForRoll(die.total).at(0).getHTML();
+					const effect = await model.config.effectRollTable.getResultsForRoll(die.total).at(0).getHTML();
 					data.results.push({ result: die.total, target, effect });
 				}
 

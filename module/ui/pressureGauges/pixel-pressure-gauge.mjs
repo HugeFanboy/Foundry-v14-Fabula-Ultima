@@ -70,9 +70,8 @@ export class FUPixelPressureGauge extends FUPressureGauge {
 			if (!this.shouldDrawPressureGauge) {
 				this.visible = false;
 				return;
-			} else {
-				this.visible = true;
 			}
+			this.visible = true;
 
 			const elems = ['BG', 'FG'].map((name) => this._getChildElement(name));
 			if (elems.some((elem) => !elem)) throw new Error(`Pressure gauge PIXI elements not created for ${this.token.id}`);

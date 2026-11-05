@@ -190,7 +190,6 @@ export class CompendiumIndex {
 			this.#itemsByType = await this.getEntries('Item', null, Object.values(CompendiumIndex.itemFields));
 		}
 		if (!this.#itemsByFuid || force) {
-			// const entries = await this.getEntries('Item', null, Object.values(CompendiumIndex.itemFields));
 			this.#itemsByFuid = Object.fromEntries(
 				Object.values(this.#itemsByType)
 					.flat()
@@ -289,7 +288,7 @@ export class CompendiumIndex {
 	async getEffectIdList() {
 		if (!this.#effectIdList) {
 			const effects = await this.getEffects();
-			let result = new Set();
+			const result = new Set();
 			for (const effect of effects) {
 				const fuid = effect.system.fuid;
 				if (fuid) {

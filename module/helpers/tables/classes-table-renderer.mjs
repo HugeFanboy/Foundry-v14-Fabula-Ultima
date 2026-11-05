@@ -49,7 +49,7 @@ export class ClassesTableRenderer extends FUTableRenderer {
 			const actor = item.parent;
 			const skillTracker = new CharacterSkillTracker(actor.system);
 			const current = skillTracker.getClassLevel(item);
-			data = { current: current, max: ClassDataModel.MAX_LEVEL };
+			data = { current, max: ClassDataModel.MAX_LEVEL };
 		}
 		if (item.type === 'mnemosphere') {
 			data = { current: item.system.level, max: item.system.maxLevel, action: 'modifyLevel' };

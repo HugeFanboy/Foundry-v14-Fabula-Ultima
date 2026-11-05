@@ -36,9 +36,11 @@ function toValue(level) {
 function fromValue(value) {
 	if (value >= difficultyLevelData.veryHard.value) {
 		return difficultyLevelData.veryHard.key;
-	} else if (value >= difficultyLevelData.hard.value) {
+	}
+	if (value >= difficultyLevelData.hard.value) {
 		return difficultyLevelData.hard.key;
-	} else if (value >= difficultyLevelData.normal.value) {
+	}
+	if (value >= difficultyLevelData.normal.value) {
 		return difficultyLevelData.normal.key;
 	}
 	return difficultyLevelData.easy.key;

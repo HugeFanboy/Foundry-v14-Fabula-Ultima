@@ -71,9 +71,7 @@ function findItemConfig(sourceActor, type, subtype) {
 		{
 			// Effects are handled separately
 			types: ['effect'],
-			update: async (itemData) => {
-				return;
-			},
+			update: async () => {},
 		},
 	];
 
@@ -138,9 +136,8 @@ function activateDefaultListeners(html, sheet) {
 				if (sheet.actor.isOwner && sheet.actor.type === 'npc' && game.settings.get('projectfu', 'optionBehaviorRoll')) {
 					const item = getItemFromHtml(html, sheet.actor);
 					return item && item.system.isBehavior && item.system.isBehavior.value;
-				} else {
-					return false;
 				}
+				return false;
 			},
 		});
 
@@ -152,9 +149,8 @@ function activateDefaultListeners(html, sheet) {
 				if (sheet.actor.isOwner && sheet.actor.type === 'npc' && game.settings.get('projectfu', 'optionBehaviorRoll')) {
 					const item = getItemFromHtml(html, sheet.actor);
 					return item && item.system.isBehavior && !item.system.isBehavior.value;
-				} else {
-					return false;
 				}
+				return false;
 			},
 		});
 	}
@@ -329,13 +325,13 @@ function prepareCharacterData(context) {
 	}
 
 	// Handle ability scores.
-	for (let [k, v] of Object.entries(context.system.attributes)) {
+	for (const [k, v] of Object.entries(context.system.attributes)) {
 		v.label = game.i18n.localize(CONFIG.FU.attributes[k]) ?? k;
 		v.abbr = game.i18n.localize(CONFIG.FU.attributeAbbreviations[k]) ?? k;
 	}
 
 	// Handle affinity
-	for (let [k, v] of Object.entries(context.system.affinities)) {
+	for (const [k, v] of Object.entries(context.system.affinities)) {
 		v.label = game.i18n.localize(CONFIG.FU.damageTypes[k]) ?? k;
 		v.affTypeBase = game.i18n.localize(CONFIG.FU.affType[v.base]) ?? v.base;
 		v.affTypeBaseAbbr = game.i18n.localize(CONFIG.FU.affTypeAbbr[v.base]) ?? v.base;
@@ -345,7 +341,7 @@ function prepareCharacterData(context) {
 	}
 
 	// Handle immunity
-	for (let [k, v] of Object.entries(context.system.immunities)) {
+	for (const [k, v] of Object.entries(context.system.immunities)) {
 		v.label = game.i18n.localize(CONFIG.FU.temporaryEffects[k]) ?? k;
 	}
 }
@@ -443,7 +439,7 @@ function prepareStatusEffectToggles(actor) {
  */
 function prepareStudyRollMap() {
 	const studyRollTiers = game.settings.get(SYSTEM, SETTINGS.useRevisedStudyRule) ? FU.studyRoll.revised : FU.studyRoll.core;
-	let studyRoll = studyRollTiers.map((value) => value + '+');
+	const studyRoll = studyRollTiers.map((value) => value + '+');
 	studyRoll.unshift('-');
 	return studyRoll.reduce((agg, curr, idx) => (agg[idx] = curr) && agg, {});
 }

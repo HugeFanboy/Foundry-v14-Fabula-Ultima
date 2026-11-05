@@ -146,8 +146,8 @@ const getRerollParams = async (check, actor) => {
 				return {
 					trait: trait?.value,
 					value: trait?.dataset.value ?? '',
-					selection: selection,
-					ignoreFp: ignoreFp,
+					selection,
+					ignoreFp,
 				};
 			},
 		},
@@ -178,19 +178,19 @@ function getReplacementTerm(reroll, term) {
 	if (reroll) {
 		if (term instanceof DiceTerm) {
 			return new Die({ faces: term.faces, options: term.options });
-		} else if (term instanceof NumericTerm) {
-			return new Die({ faces: term.options.faces, options: term.options });
-		} else {
-			throw new Error('Unexpected term');
 		}
+		if (term instanceof NumericTerm) {
+			return new Die({ faces: term.options.faces, options: term.options });
+		}
+		throw new Error('Unexpected term');
 	} else {
 		if (term instanceof DiceTerm) {
 			return new NumericTerm({ number: term.total, options: { ...term.options, faces: term.faces } });
-		} else if (term instanceof NumericTerm) {
-			return new NumericTerm({ number: term.number, options: term.options });
-		} else {
-			throw new Error('Unexpected term');
 		}
+		if (term instanceof NumericTerm) {
+			return new NumericTerm({ number: term.number, options: term.options });
+		}
+		throw new Error('Unexpected term');
 	}
 }
 
@@ -212,9 +212,8 @@ const handleReroll = async (result, actor, item) => {
 		}
 
 		return { roll };
-	} else {
-		return false;
 	}
+	return false;
 };
 
 function initialize() {

@@ -178,12 +178,7 @@ export class FUBondChart {
 			});
 		});
 
-		//setTimeout(() => this.#drawLines(), 420);
-
-		// Before
-		//setTimeout(() => this.#drawLines(), 420);
-
-		// After — positions are already known, no need to wait
+		// Positions are already known, so lines can be drawn immediately
 		this.#drawLines();
 	}
 
@@ -251,15 +246,6 @@ export class FUBondChart {
 		const pos = this.#positions.get(id);
 		if (!pos) return null;
 		return { x: pos.x, y: pos.y };
-
-		// const node = this.#container.querySelector(`.pfu-bond-chart__node[data-id="${id}"]`);
-		// if (!node) return null;
-		// const cr = this.#container.getBoundingClientRect();
-		// const nr = node.getBoundingClientRect();
-		// return {
-		// 	x: nr.left + nr.width / 2 - cr.left,
-		// 	y: nr.top + nr.height / 2 - cr.top,
-		// };
 	}
 
 	#bondColor(pairings) {

@@ -59,9 +59,8 @@ export class AbilitiesTableRenderer extends FUTableRenderer {
 	static #getItemIcon(item) {
 		if (item.parent.type === 'npc') {
 			return itemTypeIcons[item.type] || '';
-		} else {
-			return '';
 		}
+		return '';
 	}
 
 	static #getItemType() {
@@ -109,8 +108,8 @@ export class AbilitiesTableRenderer extends FUTableRenderer {
 		}
 
 		return foundry.applications.handlebars.renderTemplate(systemTemplatePath('table/cell/cell-ability-combined-progress'), {
-			resource: resource,
-			clock: clock,
+			resource,
+			clock,
 		});
 	}
 }

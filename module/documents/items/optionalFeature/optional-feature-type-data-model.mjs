@@ -38,9 +38,8 @@ export class OptionalFeatureTypeDataModel extends EmbeddedFeatureDataModel {
 	async roll(modifiers) {
 		if (this.data instanceof RollableOptionalFeatureDataModel) {
 			return this.data.constructor.roll(this.data, this.parent, modifiers.shift);
-		} else {
-			return Checks.display(this.parent.actor, this.parent);
 		}
+		return Checks.display(this.parent.actor, this.parent);
 	}
 
 	static migrateData(source) {

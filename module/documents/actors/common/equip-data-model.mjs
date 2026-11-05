@@ -42,7 +42,7 @@ export class EquipDataModel extends foundry.abstract.DataModel {
 	 * @returns {String[]} The ids of the default equipped items (in the actor).
 	 */
 	getDefaultItems() {
-		let equipment = [];
+		const equipment = [];
 		if (this.mainHand) {
 			equipment.push(this.mainHand);
 		}
@@ -129,13 +129,15 @@ export class EquipDataModel extends foundry.abstract.DataModel {
 		if (item.type === 'weapon') {
 			if (itemId === this.mainHand) {
 				return 'ra ra-sword ra-1xh ra-flip-horizontal';
-			} else if (itemId === this.offHand) {
+			}
+			if (itemId === this.offHand) {
 				return 'ra ra-plain-dagger ra-1xh ra-rotate-180';
 			}
 		} else if (item.type === 'shield') {
 			if (itemId === this.offHand) {
 				return 'ra ra-shield ra-1xh';
-			} else if (itemId === this.mainHand) {
+			}
+			if (itemId === this.mainHand) {
 				return 'ra ra-heavy-shield ra-1xh';
 			}
 		} else if (item.type === 'armor') {

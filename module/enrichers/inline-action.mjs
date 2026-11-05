@@ -43,7 +43,7 @@ const editorEnricher = {
 
 		return null;
 	},
-	onRender: onRender,
+	onRender,
 };
 
 /**

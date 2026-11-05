@@ -23,7 +23,7 @@ export class CharacterSkillTracker {
 
 		// Count the number of skills in the actor
 		const skills = actor.getItemsByType('skill');
-		let _classSkills = {};
+		const _classSkills = {};
 		for (const skill of skills) {
 			/** @type SkillDataModel **/
 			const skillData = skill.system;

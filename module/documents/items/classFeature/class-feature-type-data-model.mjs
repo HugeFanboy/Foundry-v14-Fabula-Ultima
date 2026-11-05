@@ -38,13 +38,12 @@ export class ClassFeatureTypeDataModel extends EmbeddedFeatureDataModel {
 	async roll(modifiers) {
 		if (this.data instanceof RollableClassFeatureDataModel) {
 			return this.data.constructor.roll(this.data, this.parent, modifiers.shift);
-		} else {
-			return Checks.display(this.parent.actor, this.parent);
 		}
+		return Checks.display(this.parent.actor, this.parent);
 	}
 
 	get onActorDrop() {
-		let onActorDrop = this.data.onActorDrop;
+		const onActorDrop = this.data.onActorDrop;
 		if (onActorDrop) {
 			return onActorDrop.bind(this.data);
 		}

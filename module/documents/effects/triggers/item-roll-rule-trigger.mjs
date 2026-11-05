@@ -2,8 +2,6 @@ import { systemTemplatePath } from '../../../helpers/system-utils.mjs';
 import { RuleTriggerDataModel } from './rule-trigger-data-model.mjs';
 import { FUHooks } from '../../../hooks.mjs';
 
-//const fields = foundry.data.fields;
-
 /**
  * @description Trigger based when the active effect is enabled or disabled
  * @property {Boolean} enabled

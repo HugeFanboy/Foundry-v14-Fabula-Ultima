@@ -50,10 +50,10 @@ async function promptExpiredEffectRemoval(event) {
 	ChatMessage.create({
 		flags: Pipeline.initializedFlags(Flags.ChatMessage.Effects, true),
 		content: await foundry.applications.handlebars.renderTemplate('systems/projectfu/templates/chat/chat-combat-end.hbs', {
-			message: message,
+			message,
 			actors: JSON.stringify(serializedActors),
 			round: event.round,
-			count: count,
+			count,
 		}),
 	});
 }
@@ -176,42 +176,37 @@ async function manageEffectDuration(event) {
 function onCombatEvent(event, registerCallback) {
 	if (!game.settings.get(SYSTEM, SETTINGS.optionAutomationManageEffects)) {
 		return;
-	} else {
-		registerCallback(async (event) => {
-			switch (event.type) {
-				case FU.combatEvent.startOfCombat:
-				case FU.combatEvent.endOfCombat:
-					{
-						if (game.settings.get(SYSTEM, SETTINGS.optionAutomationRemoveExpiredEffects)) {
-							for (const actor of event.actors) {
-								await actor.clearTemporaryEffects({
-									status: false,
-									rest: false,
-									duration: true,
-									predicate: (effect) => {
-										// It's handled by the pressure system
-										if (effect.statuses.has('pressure')) {
-											return false;
-										}
-										return true;
-									},
-								});
-							}
-							return;
-						}
-
-						await promptExpiredEffectRemoval(event);
-					}
-					break;
-
-				case FU.combatEvent.startOfTurn:
-				case FU.combatEvent.endOfTurn:
-				case FU.combatEvent.endOfRound:
-					await manageEffectDuration(event);
-					break;
-			}
-		});
 	}
+
+	registerCallback(async (event) => {
+		switch (event.type) {
+			case FU.combatEvent.startOfCombat:
+			case FU.combatEvent.endOfCombat:
+				{
+					if (game.settings.get(SYSTEM, SETTINGS.optionAutomationRemoveExpiredEffects)) {
+						for (const actor of event.actors) {
+							await actor.clearTemporaryEffects({
+								status: false,
+								rest: false,
+								duration: true,
+								// Pressure is handled by the pressure system
+								predicate: (effect) => !effect.statuses.has('pressure'),
+							});
+						}
+						return;
+					}
+
+					await promptExpiredEffectRemoval(event);
+				}
+				break;
+
+			case FU.combatEvent.startOfTurn:
+			case FU.combatEvent.endOfTurn:
+			case FU.combatEvent.endOfRound:
+				await manageEffectDuration(event);
+				break;
+		}
+	});
 }
 
 function initialize() {

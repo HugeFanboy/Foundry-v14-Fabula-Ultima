@@ -33,10 +33,7 @@ async function handleSupportCheck(groupCheck, character) {
 
 	const bonds = (character.system.bonds ?? [])
 		.map((bond) => {
-			const feelings = [];
-			bond.admInf.length && feelings.push(bond.admInf);
-			bond.loyMis.length && feelings.push(bond.loyMis);
-			bond.affHat.length && feelings.push(bond.affHat);
+			const feelings = [bond.admInf, bond.loyMis, bond.affHat].filter((feeling) => feeling.length);
 			return { name: bond.name, feelings };
 		})
 		.filter((value) => value.feelings.length);
@@ -78,7 +75,7 @@ async function handleSupportCheck(groupCheck, character) {
 		}
 		check.additionalData[supportCheckKey] = {
 			groupCheck: groupCheck.id,
-			bond: bond,
+			bond,
 		};
 		CheckConfiguration.configure(check).setDifficulty(groupCheck.supportDifficulty || 10);
 	});
@@ -143,7 +140,7 @@ const onRenderSupportCheck = (data, check, actor) => {
 					modifier: modifierTotal,
 					total: result,
 					crit: critical,
-					fumble: fumble,
+					fumble,
 				},
 				check: {
 					attr1: {

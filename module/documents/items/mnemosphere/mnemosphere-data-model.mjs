@@ -17,7 +17,7 @@ import { PseudoDocumentEnabledTypeDataModel } from '../../pseudo/pseudo-document
  */
 export class MnemosphereDataModel extends PseudoDocumentEnabledTypeDataModel {
 	constructor(data, options) {
-		for (let item of data.items) {
+		for (const item of data.items) {
 			if (item.type === 'skill' && item.system.level === 1) {
 				throw new Error();
 			}
@@ -72,9 +72,8 @@ export class MnemosphereDataModel extends PseudoDocumentEnabledTypeDataModel {
 		}
 		if (item.system instanceof SkillDataModel) {
 			return item.system.level.value > 0;
-		} else {
-			return true;
 		}
+		return true;
 	}
 
 	modifyLevel(event, target) {

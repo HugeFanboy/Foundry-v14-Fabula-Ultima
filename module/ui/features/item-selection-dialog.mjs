@@ -82,7 +82,7 @@ export class ItemSelectionDialog {
 		// We cache the item descriptions here...
 		const descriptions = await Promise.all(this.data.items.map((item) => this.data.getDescription(item)));
 		// Additional columns
-		let columnData = {};
+		const columnData = {};
 		if (this.data.columns) {
 			for (const column of this.data.columns) {
 				columnData[column.label] = await Promise.all(this.data.items.map((item) => column.getContent(item)));
@@ -217,21 +217,8 @@ export class ItemSelectionDialog {
 								const page = fromUuidSync(pageUuid);
 
 								if (journal && page) {
-									const jSheet = journal.sheet;
-									const goToPage = () => {
-										if (typeof jSheet.goToPage === 'function') return jSheet.goToPage(page.id);
-										if (typeof jSheet.navigatePage === 'function') return jSheet.navigatePage(page.id);
-									};
-
-									if (jSheet.rendered) {
-										goToPage();
-										return;
-									}
-
-									Hooks.once('renderJournalSheet', (sheet) => {
-										if (sheet === jSheet) goToPage();
-									});
-									jSheet.render(true, { pageId: page.id });
+									// Opens the sheet (or brings it to front) already turned to the requested page
+									journal.sheet.render({ force: true, pageId: page.id });
 								}
 							}
 						}
@@ -306,8 +293,8 @@ export class ItemSelectionDialog {
 			const returnValue = { selected: [], additionalInputs: {} };
 
 			result = foundry.utils.expandObject(result);
-			for (let [name, field] of Object.entries(this.data.additionalInputs ?? {})) {
-				let inputValue = result.additionalInputs[name];
+			for (const [name, field] of Object.entries(this.data.additionalInputs ?? {})) {
+				const inputValue = result.additionalInputs[name];
 				if (inputValue && Array.isArray(field.choices) && Number.isFinite(Number(inputValue))) {
 					returnValue.additionalInputs[name] = field.choices[Number(inputValue)];
 				} else {
@@ -321,8 +308,7 @@ export class ItemSelectionDialog {
 				returnValue.selected = this.#selectedItems;
 			}
 			return returnValue;
-		} else {
-			throw Error('Canceled by user.');
 		}
+		throw Error('Canceled by user.');
 	}
 }

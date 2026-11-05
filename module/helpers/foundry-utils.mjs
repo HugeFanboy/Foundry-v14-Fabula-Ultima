@@ -90,9 +90,9 @@ export default class FoundryUtils {
 	 * @returns {Promise<*>}
 	 */
 	static async input(title, content, options = {}) {
-		let defaultOptions = {
-			window: { title: title, icon: 'fas fa-comment' },
-			content: content,
+		const defaultOptions = {
+			window: { title, icon: 'fas fa-comment' },
+			content,
 			classes: ['projectfu', 'sheet', 'backgroundstyle', 'fu-dialog'],
 			rejectClose: false,
 			ok: {
@@ -143,7 +143,7 @@ export default class FoundryUtils {
 						}
 						const preview = imagePicker.querySelector('img');
 						const input = imagePicker.querySelector(`input[name="${name}"]`);
-						new FilePicker({
+						new foundry.applications.apps.FilePicker.implementation({
 							type: 'image',
 							current: input?.value,
 							callback: (path) => {
@@ -158,8 +158,8 @@ export default class FoundryUtils {
 					browse: (event, target, dialog) => {
 						const { name, type } = target.dataset;
 						const input = event.currentTarget.querySelector(`input[name="${name}"]`);
-						new FilePicker({
-							type: type,
+						new foundry.applications.apps.FilePicker.implementation({
+							type,
 							current: input?.value,
 							callback: (path) => {
 								if (input) input.value = path;
@@ -201,7 +201,7 @@ export default class FoundryUtils {
 	 */
 	static async selectOptionDialog(title, options, selected) {
 		const selectInput = fields.createSelectInput({
-			options: options,
+			options,
 			name: 'option',
 			type: 'checkboxes',
 			value: selected,
@@ -216,9 +216,9 @@ export default class FoundryUtils {
 		const content = `${selectGroup.outerHTML}`;
 
 		const data = await api.DialogV2.input({
-			window: { title: title, icon: 'fas fa-comment' },
+			window: { title, icon: 'fas fa-comment' },
 			classes: ['projectfu', 'unique-dialog', 'backgroundstyle'],
-			content: content,
+			content,
 		});
 		return data?.option ?? null;
 	}
@@ -233,13 +233,13 @@ export default class FoundryUtils {
 	 */
 	static async selectIconOptionDialog(title, options, configuration = {}) {
 		const content = await FoundryUtils.renderTemplate('dialog/dialog-select-option-icon', {
-			options: options,
+			options,
 			message: configuration.message,
 		});
 
 		// TODO: Set initial selected
 		const data = await api.DialogV2.input({
-			window: { title: title },
+			window: { title },
 			actions: {
 				/** @param {Event} event
 				 *  @param {HTMLElement} dialog **/
@@ -255,7 +255,7 @@ export default class FoundryUtils {
 				},
 			},
 			classes: ['projectfu', 'unique-dialog', 'backgroundstyle'],
-			content: content,
+			content,
 		});
 
 		return data?.option ?? null;
@@ -338,11 +338,11 @@ export default class FoundryUtils {
 		};
 		const content = await handlebars.renderTemplate(systemTemplatePath('dialog/dialog-selection-radio'), context);
 		const result = await api.DialogV2.input({
-			window: { title: title, icon: 'fas fa-question-circle' },
+			window: { title, icon: 'fas fa-question-circle' },
 			label: game.i18n.localize('FU.Submit'),
 			rejectClose: false,
 			classes: ['projectfu', 'sheet', 'backgroundstyle', 'fu-dialog'],
-			content: content,
+			content,
 			ok: {
 				label: 'FU.Confirm',
 			},
@@ -350,9 +350,8 @@ export default class FoundryUtils {
 
 		if (result && result.index) {
 			return options[result.index];
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -408,7 +407,7 @@ export default class FoundryUtils {
 			},
 			classes: ['projectfu', 'sheet', 'backgroundstyle', 'fu-dialog'],
 			content: await FoundryUtils.renderTemplate('dialog/dialog-layout', {
-				sections: sections,
+				sections,
 			}),
 			buttons,
 			actions: {
@@ -417,12 +416,12 @@ export default class FoundryUtils {
 					const title = dialog.dataset.title;
 					const flavor = await FoundryUtils.renderTemplate('chat/chat-check-flavor-item-v2', {
 						subtitle: title,
-						item: item,
+						item,
 					});
 					const speaker = FoundryUtils.resolveSpeaker(actor);
 					const chatMessage = {
-						speaker: speaker,
-						flavor: flavor,
+						speaker,
+						flavor,
 						content: await FoundryUtils.renderTemplate('chat/chat-description-v2', {
 							description: text,
 						}),
@@ -450,9 +449,9 @@ export default class FoundryUtils {
 			});
 		}
 		const content = await this.renderTemplate('dialog/dialog-item-prompt', {
-			item: item,
-			description: description,
-			message: message,
+			item,
+			description,
+			message,
 		});
 		const action = await FoundryUtils.promptActionChoice({ title, content, buttons });
 		return action ?? null;
@@ -466,12 +465,12 @@ export default class FoundryUtils {
 	static async confirmDialog(title, message) {
 		return foundry.applications.api.DialogV2.confirm({
 			window: {
-				title: title,
+				title,
 				icon: 'fas fa-comment',
 			},
 			classes: ['projectfu', 'sheet', 'backgroundstyle'],
 			content: await this.renderTemplate('dialog/dialog-common', {
-				message: message,
+				message,
 			}),
 			rejectClose: false,
 			yes: {
@@ -491,10 +490,10 @@ export default class FoundryUtils {
 	static async confirm(title, content) {
 		return foundry.applications.api.DialogV2.confirm({
 			window: {
-				title: title,
+				title,
 			},
 			classes: ['projectfu', 'sheet', 'backgroundstyle', 'fu-dialog'],
-			content: content,
+			content,
 			rejectClose: false,
 			yes: {
 				label: 'FU.Confirm',
@@ -579,8 +578,8 @@ export default class FoundryUtils {
 					await FoundryUtils.migrateItem(compendiumItem, item, options);
 				};
 				updates.push({
-					item: item,
-					compendiumItem: compendiumItem,
+					item,
+					compendiumItem,
 					procedure,
 				});
 			}
@@ -594,8 +593,7 @@ export default class FoundryUtils {
 	 */
 	static getFormData(target) {
 		const form = target.closest('form');
-		// eslint-disable-next-line no-undef
-		const formData = new FormDataExtended(form);
+		const formData = new foundry.applications.ux.FormDataExtended(form);
 		return foundry.utils.expandObject(formData.object);
 	}
 
@@ -629,12 +627,7 @@ export default class FoundryUtils {
 	 * @param {String} uuid
 	 */
 	static popoutImage(src, title, uuid = undefined) {
-		// eslint-disable-next-line no-undef
-		const popout = new ImagePopout(src, {
-			title: title,
-			uuid: uuid,
-		});
-		popout.render(true);
+		new foundry.applications.apps.ImagePopout({ src, uuid, window: { title } }).render({ force: true });
 	}
 
 	/**
@@ -685,7 +678,7 @@ export default class FoundryUtils {
 	 */
 	static contextMenu(html, className, entries, eventName = 'contextmenu') {
 		new foundry.applications.ux.ContextMenu(html, className, entries, {
-			eventName: eventName,
+			eventName,
 			fixed: true,
 			jQuery: false,
 		});
@@ -751,7 +744,7 @@ export default class FoundryUtils {
 		const title = `${StringUtils.localize('CONTROLS.CommonSelect')} ${StringUtils.localize('DOCUMENT.JournalEntry')}`;
 
 		const data = {
-			title: title,
+			title,
 			style: 'list',
 			items: journals,
 			getDescription: async (item) => {
@@ -776,7 +769,7 @@ export default class FoundryUtils {
 		const title = `${StringUtils.localize('CONTROLS.CommonSelect')} ${StringUtils.localize('DOCUMENT.Actor')}`;
 
 		const data = {
-			title: title,
+			title,
 			style: 'list',
 			items: actors,
 			getDescription: async (item) => {
@@ -937,8 +930,7 @@ export default class FoundryUtils {
 		const scene = game.scenes.viewed;
 
 		// Get image dimensions to use as default tile size
-		// eslint-disable-next-line no-undef
-		const tex = await loadTexture(imagePath);
+		const tex = await foundry.canvas.loadTexture(imagePath);
 		let width, height;
 
 		const promptTitle = `${StringUtils.localize('CONTROLS.TilePlace')} - Preset`;

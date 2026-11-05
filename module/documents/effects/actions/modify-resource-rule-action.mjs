@@ -77,7 +77,7 @@ export class ModifyResourceRuleAction extends RuleActionDataModel {
 			}
 
 			case FUHooks.CONSUMABLE_CREATE_EVENT: {
-				let resource = context.data.actions?.resource;
+				const resource = context.data.actions?.resource;
 				if (resource) {
 					switch (this.operation) {
 						case 'add': {

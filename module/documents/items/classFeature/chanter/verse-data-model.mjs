@@ -48,7 +48,7 @@ async function enrichDescription(model) {
 	}
 
 	return TextEditor.enrichHTML(tone.system.data.description, {
-		rollData: rollData,
+		rollData,
 	});
 }
 
@@ -99,7 +99,7 @@ export class VerseDataModel extends RollableClassFeatureDataModel {
 
 	static async getAdditionalData(model) {
 		return {
-			volumes: volumes,
+			volumes,
 			keys: model.parent.parent?.actor?.itemTypes.classFeature.filter((item) => item.system.data instanceof KeyDataModel) ?? [],
 			tones: model.parent.parent?.actor?.itemTypes.classFeature.filter((item) => item.system.data instanceof ToneDataModel) ?? [],
 			description: await enrichDescription(model),

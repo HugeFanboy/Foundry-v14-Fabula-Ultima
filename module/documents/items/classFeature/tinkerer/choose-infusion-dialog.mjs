@@ -36,7 +36,7 @@ async function prompt(infusions) {
 		classes: ['projectfu', 'unique-dialog', 'backgroundstyle'],
 		label: game.i18n.localize('FU.Submit'),
 		rejectClose: false,
-		content: content,
+		content,
 		ok: {
 			label: 'FU.Confirm',
 		},

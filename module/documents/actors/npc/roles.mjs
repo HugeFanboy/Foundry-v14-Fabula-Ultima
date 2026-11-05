@@ -56,7 +56,7 @@ export class Role {
 	 */
 	getAttributesForLevel(level) {
 		// There's steps at levels: BASE, 20, 40, 60
-		let step = Math.floor(level / 20);
+		const step = Math.floor(level / 20);
 		console.info(`Getting attributes for level ${level}, step ${step}`);
 		return this.attributeSteps[step];
 	}
@@ -84,62 +84,62 @@ export class Role {
 	}
 
 	static get brute() {
-		let attributeSteps = {};
+		const attributeSteps = {};
 		attributeSteps[0] = new AttributeArray(8, 6, 10, 8);
 		attributeSteps[1] = new AttributeArray(8, 8, 10, 8);
 		attributeSteps[2] = new AttributeArray(8, 8, 12, 8);
 		attributeSteps[3] = new AttributeArray(8, 8, 12, 10);
-		let role = new Role(attributeSteps);
+		const role = new Role(attributeSteps);
 		return role;
 	}
 
 	static get hunter() {
-		let attributeSteps = {};
+		const attributeSteps = {};
 		attributeSteps[0] = new AttributeArray(10, 8, 8, 6);
 		attributeSteps[1] = new AttributeArray(10, 8, 8, 8);
 		attributeSteps[2] = new AttributeArray(12, 8, 8, 8);
 		attributeSteps[3] = new AttributeArray(12, 10, 8, 8);
-		let role = new Role(attributeSteps);
+		const role = new Role(attributeSteps);
 		return role;
 	}
 
 	static get mage() {
-		let attributeSteps = {};
+		const attributeSteps = {};
 		attributeSteps[0] = new AttributeArray(8, 8, 6, 10);
 		attributeSteps[1] = new AttributeArray(8, 10, 6, 10);
 		attributeSteps[2] = new AttributeArray(8, 10, 6, 12);
 		attributeSteps[3] = new AttributeArray(8, 10, 8, 12);
-		let role = new Role(attributeSteps);
+		const role = new Role(attributeSteps);
 		return role;
 	}
 
 	static get saboteur() {
-		let attributeSteps = {};
+		const attributeSteps = {};
 		attributeSteps[0] = new AttributeArray(8, 8, 8, 8);
 		attributeSteps[1] = new AttributeArray(8, 8, 8, 10);
 		attributeSteps[2] = new AttributeArray(8, 10, 8, 10);
 		attributeSteps[3] = new AttributeArray(10, 10, 8, 10);
-		let role = new Role(attributeSteps);
+		const role = new Role(attributeSteps);
 		return role;
 	}
 
 	static get sentinel() {
-		let attributeSteps = {};
+		const attributeSteps = {};
 		attributeSteps[0] = new AttributeArray(8, 8, 8, 8);
 		attributeSteps[1] = new AttributeArray(8, 8, 10, 8);
 		attributeSteps[2] = new AttributeArray(8, 8, 10, 10);
 		attributeSteps[3] = new AttributeArray(10, 8, 10, 10);
-		let role = new Role(attributeSteps);
+		const role = new Role(attributeSteps);
 		return role;
 	}
 
 	static get support() {
-		let attributeSteps = {};
+		const attributeSteps = {};
 		attributeSteps[0] = new AttributeArray(8, 8, 6, 10);
 		attributeSteps[1] = new AttributeArray(8, 10, 6, 10);
 		attributeSteps[2] = new AttributeArray(8, 10, 8, 10);
 		attributeSteps[3] = new AttributeArray(8, 12, 8, 10);
-		let role = new Role(attributeSteps);
+		const role = new Role(attributeSteps);
 		return role;
 	}
 }

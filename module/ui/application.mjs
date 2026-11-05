@@ -29,7 +29,7 @@ export default class FUApplication extends HandlebarsApplicationMixin(Applicatio
 		const field = target.dataset.target;
 		const current = this.element.querySelector(`[name="${field}"]`)?.value ?? '';
 
-		new FilePicker({
+		new foundry.applications.apps.FilePicker.implementation({
 			type: 'image',
 			current,
 			callback: (path) => {

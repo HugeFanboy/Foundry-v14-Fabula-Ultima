@@ -98,10 +98,9 @@ export class WeaponsTableRenderer extends FUTableRenderer {
 		const descriptionRenderer = renderDescriptionByType[item.type];
 		if (descriptionRenderer) {
 			return descriptionRenderer(item);
-		} else {
-			console.warn('Item type is missing description renderer', item.type);
-			return '';
 		}
+		console.warn('Item type is missing description renderer', item.type);
+		return '';
 	}
 
 	static #renderCaption(item) {
@@ -138,13 +137,12 @@ export class WeaponsTableRenderer extends FUTableRenderer {
 				secondary: item.system.attributes.secondary,
 				bonus: item.system.accuracy,
 			};
-		} else {
-			return {
-				primary: item.system.attributes.primary.value,
-				secondary: item.system.attributes.secondary.value,
-				bonus: item.system.accuracy.value,
-			};
 		}
+		return {
+			primary: item.system.attributes.primary.value,
+			secondary: item.system.attributes.secondary.value,
+			bonus: item.system.accuracy.value,
+		};
 	}
 
 	static #getDamage(item) {
@@ -154,13 +152,12 @@ export class WeaponsTableRenderer extends FUTableRenderer {
 				type: item.system.damage.type,
 				bonus: false,
 			};
-		} else {
-			return {
-				damage: item.system.damage.value,
-				type: item.system.damageType.value,
-				hrZero: item.system.rollInfo.useWeapon.hrZero.value,
-			};
 		}
+		return {
+			damage: item.system.damage.value,
+			type: item.system.damageType.value,
+			hrZero: item.system.rollInfo.useWeapon.hrZero.value,
+		};
 	}
 
 	static #renderEquipStatus(item) {

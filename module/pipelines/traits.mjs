@@ -154,7 +154,7 @@ export const TraitUtils = Object.freeze({
 	getOptions(traits) {
 		return Object.entries(traits).map(([key, value]) => ({
 			label: key,
-			value: value,
+			value,
 		}));
 	},
 

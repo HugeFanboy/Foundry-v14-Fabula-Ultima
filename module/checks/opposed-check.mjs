@@ -64,7 +64,7 @@ const onRenderCheck = (data, check, actor, item, flags) => {
 					},
 					type: check.type,
 				},
-				initialCheck: initialCheck,
+				initialCheck,
 				difficulty: initialCheck ? initialCheck.result : null,
 				modifiers: check.modifiers,
 			},
@@ -75,7 +75,7 @@ const onRenderCheck = (data, check, actor, item, flags) => {
 			const initialActor = fromUuidSync(initialCheck.actorUuid);
 			// Resolve winner
 			let winner;
-			let margin = Math.abs(check.result - initialCheck.result);
+			const margin = Math.abs(check.result - initialCheck.result);
 			if ((initialCheck.fumble && check.fumble) || (initialCheck.critical && check.critical) || initialCheck.result === check.result) {
 				winner = null;
 			} else if (initialCheck.fumble || check.critical || initialCheck.result < check.result) {
@@ -145,7 +145,7 @@ function onRenderChatMessage(message, html) {
 			return CheckPrompt.opposedCheck(
 				actor,
 				{
-					item: item,
+					item,
 				},
 				{
 					initialConfig: {
@@ -201,7 +201,7 @@ function getAction(actor, item, config) {
 		/** @type PromptCheckData **/ {
 			actorId: actor.uuid,
 			itemId: item.uuid,
-			config: config,
+			config,
 		},
 	)
 		.setFlag(Flags.ChatMessage.PromptCheck)

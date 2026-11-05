@@ -28,7 +28,7 @@ const enricher = {
 	id: 'inlineProgressEnricher',
 	pattern: InlineHelper.compose('(CLOCK|PROGRESS)', '\\s*(?<id>[a-zA-Z-,]+)\\s+(?<command>[a-zA-Z]+?)(\\s+(?<value>.*?))?', creationProperties),
 	enricher: checkEnricher,
-	onRender: onRender,
+	onRender,
 };
 
 /**

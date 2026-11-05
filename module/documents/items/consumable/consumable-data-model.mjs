@@ -129,7 +129,7 @@ export class ConsumableDataModel extends FUSubTypedItemDataModel {
 			const cost = new ActionCostDataModel({ resource: 'ip', amount: item.system.ipCost.value, perTarget: false });
 			await ResourcePipeline.configureExpense(config, actor, item, cost);
 
-			let actions = {};
+			const actions = {};
 			if (consumable.resource.enabled) {
 				actions.resource = new ConsumableBuilder('resource', consumable.resource.amount, consumable.resource.type);
 			}

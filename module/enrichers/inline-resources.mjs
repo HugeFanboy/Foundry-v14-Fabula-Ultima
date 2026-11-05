@@ -20,7 +20,7 @@ const inlineRecoveryEnricher = {
 	id: 'InlineRecovery',
 	pattern: InlineHelper.compose('(?:HEAL|GAIN)', '\\s*(?<amount>\\(?.*?\\)*?)\\s(?<type>\\w+?)'),
 	enricher: recoveryEnricher,
-	onRender: onRender,
+	onRender,
 };
 
 /**
@@ -30,7 +30,7 @@ const inlineLossEnricher = {
 	id: 'InlineLoss',
 	pattern: InlineHelper.compose('LOSS', '\\s*(?<amount>\\(?.*?\\)*?)\\s(?<type>\\w+?)'),
 	enricher: lossEnricher,
-	onRender: onRender,
+	onRender,
 };
 
 function getCurrencyLocalizationKey() {
@@ -76,9 +76,8 @@ function createReplacementElement(amount, type, elementClass, uncapped, tooltip,
 		InlineHelper.appendSystemIcon(anchor, type);
 
 		return anchor;
-	} else {
-		return null;
 	}
+	return null;
 }
 
 function recoveryEnricher(text, options) {
@@ -117,7 +116,7 @@ async function onRender(element) {
 		if (targets.length > 0) {
 			let context = ExpressionContext.fromSourceInfo(renderContext.sourceInfo, targets);
 
-			let check = renderContext.document.getFlag(SYSTEM, Flags.ChatMessage.Check);
+			const check = renderContext.document.getFlag(SYSTEM, Flags.ChatMessage.Check);
 			if (check) {
 				context = context.withCheck(check);
 			}
@@ -176,7 +175,8 @@ async function onDropActor(actor, sheet, { type, recoveryType, amount, sourceInf
 		amount = await Expressions.evaluateAsync(amount, context);
 		await applyRecovery(sourceInfo, [actor], recoveryType, amount, uncapped);
 		return false;
-	} else if (type === INLINE_LOSS && !Number.isNaN(amount)) {
+	}
+	if (type === INLINE_LOSS && !Number.isNaN(amount)) {
 		const context = ExpressionContext.fromSourceInfo(sourceInfo, [actor]);
 		amount = await Expressions.evaluateAsync(amount, context);
 		await applyLoss(sourceInfo, [actor], recoveryType, amount);

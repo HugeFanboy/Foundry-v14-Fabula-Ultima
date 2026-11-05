@@ -1,3 +1,4 @@
+import { TextEditor } from '../../../../helpers/text-editor.mjs';
 import { OptionalFeatureDataModel } from '../optional-feature-data-model.mjs';
 
 /**

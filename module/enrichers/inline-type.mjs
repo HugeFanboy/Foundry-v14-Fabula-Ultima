@@ -63,7 +63,8 @@ const editorEnricher = {
 				icon.className = FU.affIcon[damageType] ?? '';
 				anchor.append(icon);
 				return anchor;
-			} else if (type === 'affinity') {
+			}
+			if (type === 'affinity') {
 				const split = args.split(' ');
 				const damageTypes = parseDamageTypes(split[0]);
 				if (damageTypes.length === 0) {
@@ -91,7 +92,7 @@ const editorEnricher = {
 
 		return null;
 	},
-	onRender: onRender,
+	onRender,
 };
 
 /**
@@ -201,7 +202,7 @@ function composeEffectData(type, args) {
 				const includeAll = args[0] === 'all';
 				const damageTypes = parseDamageTypes(args[0]);
 				const affinity = args[1];
-				let localizedTypes = [];
+				const localizedTypes = [];
 				if (includeAll) {
 					localizedTypes.push(game.i18n.localize('FU.All'));
 				}
@@ -233,10 +234,10 @@ function composeEffectData(type, args) {
 	}
 
 	return {
-		name: name,
-		img: img,
+		name,
+		img,
 		transfer: false,
-		changes: changes,
+		changes,
 	};
 }
 
@@ -250,7 +251,6 @@ function composeEffectData(type, args) {
  */
 async function applyEffect(actor, sourceInfo, type, args, config) {
 	if (actor.system instanceof CharacterDataModel || actor.system instanceof NpcDataModel) {
-		//const source = sourceInfo.resolve();
 		const effectData = composeEffectData(type, args.split(' '));
 		Effects.applyEffect(actor, effectData, sourceInfo, config);
 	} else {

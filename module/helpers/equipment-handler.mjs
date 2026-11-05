@@ -32,7 +32,7 @@ export class EquipmentHandler {
 
 		const equippedData = this.actor.system.equipped.toObject();
 
-		let slot = EquipmentHandler.resolveSlotFromEvent(ev);
+		const slot = EquipmentHandler.resolveSlotFromEvent(ev);
 
 		const itemType = item.type;
 
@@ -55,10 +55,12 @@ export class EquipmentHandler {
 		if (itemType === 'weapon') {
 			EquipmentHandler.handleWeapon(actor, item, equippedData, slot);
 			return true;
-		} else if (itemType === 'customWeapon') {
+		}
+		if (itemType === 'customWeapon') {
 			EquipmentHandler.handleCustomWeapon(item, equippedData, slot);
 			return true;
-		} else if (itemType === 'shield') {
+		}
+		if (itemType === 'shield') {
 			EquipmentHandler.handleShield(actor, item, equippedData, slot);
 			return true;
 		}
@@ -147,13 +149,11 @@ export class EquipmentHandler {
 				}
 				equippedData.mainHand = item.id;
 			}
-		} else {
-			if (slot === 'phantom' && !unequipped.includes('phantom')) {
-				equippedData.phantom = item.id;
-			} else if (!unequipped.includes('mainHand')) {
-				equippedData.mainHand = item.id;
-				equippedData.offHand = item.id;
-			}
+		} else if (slot === 'phantom' && !unequipped.includes('phantom')) {
+			equippedData.phantom = item.id;
+		} else if (!unequipped.includes('mainHand')) {
+			equippedData.mainHand = item.id;
+			equippedData.offHand = item.id;
 		}
 	}
 
@@ -218,7 +218,7 @@ export class EquipmentHandler {
 	}
 
 	static getHandEquipment(actor) {
-		let items = [];
+		const items = [];
 		items.push(...actor.getItemsByType('weapon'));
 		items.push(...actor.getItemsByType('customWeapon'));
 		// TODO: Support?

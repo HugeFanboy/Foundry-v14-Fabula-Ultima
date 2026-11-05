@@ -32,7 +32,8 @@ export class ActionCostDataModel extends foundry.abstract.DataModel {
 			const _amount = Number.parseInt(this.amount);
 			if (_amount >= 0) {
 				return true;
-			} else if (Expressions.isExpression(this.amount)) {
+			}
+			if (Expressions.isExpression(this.amount)) {
 				return false;
 			}
 		}

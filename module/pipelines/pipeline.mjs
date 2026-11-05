@@ -141,8 +141,6 @@ async function getSingleTarget(event) {
 	const actor = fromUuidSync(dataId);
 	if (!actor) {
 		return await getSelected();
-		//ui.notifications.warn('FU.ChatApplyEffectNoActorsTargeted', { localize: true });
-		//return [];
 	}
 	return [actor];
 }
@@ -153,7 +151,7 @@ async function getSingleTarget(event) {
  */
 async function getTargetsFromAction(dataset) {
 	let targets = [];
-	let actorId = dataset ? (dataset.actorId ?? dataset.id) : undefined;
+	const actorId = dataset ? (dataset.actorId ?? dataset.id) : undefined;
 	if (actorId) {
 		const actor = await fromUuid(actorId);
 		targets.push(actor);

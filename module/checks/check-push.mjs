@@ -52,14 +52,11 @@ const onRenderCheck = (data, checkResult, actor, item, additionalFlags) => {
 const getPushParams = async (actor) => {
 	/** @type CheckPush[] */
 	const bonds = actor.system.bonds.map((value) => {
-		const feelings = [];
-		value.admInf.length && feelings.push(value.admInf);
-		value.loyMis.length && feelings.push(value.loyMis);
-		value.affHat.length && feelings.push(value.affHat);
+		const feelings = [value.admInf, value.loyMis, value.affHat].filter((feeling) => feeling.length);
 
 		return {
 			with: value.name,
-			feelings: feelings,
+			feelings,
 			strength: value.strength,
 		};
 	});
@@ -81,7 +78,7 @@ const getPushParams = async (actor) => {
 				}
 				return {
 					...bonds[index],
-					ignoreFp: ignoreFp,
+					ignoreFp,
 				};
 			},
 		},
@@ -103,11 +100,11 @@ const getPushParams = async (actor) => {
 function getReplacementTerm(term) {
 	if (term instanceof DiceTerm) {
 		return new NumericTerm({ number: term.total, options: { ...term.options, faces: term.faces } });
-	} else if (term instanceof NumericTerm) {
-		return new NumericTerm({ number: term.number, options: term.options });
-	} else {
-		throw new Error(`Unexpected term: ${term.constructor.name}`);
 	}
+	if (term instanceof NumericTerm) {
+		return new NumericTerm({ number: term.number, options: term.options });
+	}
+	throw new Error(`Unexpected term: ${term.constructor.name}`);
 }
 
 /**
@@ -141,9 +138,8 @@ const handlePush = async (check, actor, item) => {
 		}
 
 		return { roll: Roll.fromTerms(terms) };
-	} else {
-		return false;
 	}
+	return false;
 };
 
 function initialize() {

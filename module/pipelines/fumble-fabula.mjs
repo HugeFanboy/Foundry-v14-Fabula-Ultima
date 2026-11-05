@@ -19,7 +19,7 @@ function onRenderCheck(event) {
 			flags: Pipeline.initializedFlags(Flags.ChatMessage.FumbleFabula, true),
 			speaker: ChatMessage.getSpeaker({ actor }),
 			content: await FoundryUtils.renderTemplate('chat/chat-apply-fumble-fabula', {
-				actor: actor,
+				actor,
 			}),
 		});
 	}

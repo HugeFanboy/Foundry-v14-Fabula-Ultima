@@ -58,18 +58,6 @@ export class FUStandardItemSheet extends FUItemSheet {
 		return context;
 	}
 
-	/**
-	 * @description Allow subclasses to dynamically configure render parts.
-	 * @param {HandlebarsRenderOptions} options
-	 * @returns {Record<string, HandlebarsTemplatePart>}
-	 * @protected
-	 */
-	_configureRenderParts(options) {
-		const parts = super._configureRenderParts(options);
-		//parts.main.template = systemPath(`item-${this.item.type}-sheet.hbs`);
-		return parts;
-	}
-
 	/** @override
 	 * @type Record<ApplicationTab>
 	 * */
@@ -97,7 +85,7 @@ export class FUStandardItemSheet extends FUItemSheet {
 	}
 
 	generateAttributePartials() {
-		let attributePartials = {
+		const attributePartials = {
 			flex: [],
 			settings: [],
 			section: [],
@@ -153,7 +141,7 @@ export class FUStandardItemSheet extends FUItemSheet {
 			if (selectedValue && !currentTraits.includes(selectedValue)) {
 				console.debug(`Adding trait '${selectedValue}' to ${this.item.name}`);
 				currentTraits.push(selectedValue);
-				this.item.update({ ['system.traits']: currentTraits });
+				this.item.update({ 'system.traits': currentTraits });
 			}
 			traitsSelector.value = '';
 		});

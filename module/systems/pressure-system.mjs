@@ -79,8 +79,8 @@ async function processVulnerability(context) {
  * @returns {Promise<void>}
  */
 async function createStaggerChatMessage(context) {
-	let builder = new FUChatBuilder(context.sourceActor, context.item);
-	let content = await FoundryUtils.renderTemplate('chat/chat-stagger-message', {
+	const builder = new FUChatBuilder(context.sourceActor, context.item);
+	const content = await FoundryUtils.renderTemplate('chat/chat-stagger-message', {
 		sourceActor: context.sourceActor,
 		actor: context.actor,
 	});
@@ -129,10 +129,10 @@ async function applyPressureEffect(actor) {
 				// Toggle it on
 				const segments = rank.value === 'champion' ? 2 + rank.replacedSoldiers * 2 : 4;
 				const updates = {
-					['system.rules.progress.max']: segments,
+					'system.rules.progress.max': segments,
 				};
 				await Effects.createStatusEffect(actor, 'pressure', InlineSourceInfo.scene, {
-					updates: updates,
+					updates,
 				});
 			}
 			break;

@@ -175,7 +175,7 @@ export class AdvancementBrowser extends FUApplication {
 	getSkillMap() {
 		const skills = AdvancementTracker.getSkillAdvancements(this.#actor, this.#index + 1);
 		/** @type {Record<String, AdvancementSkillReference>} **/
-		let list = {};
+		const list = {};
 		for (const skill of skills) {
 			if (list[skill.id] === undefined) {
 				list[skill.id] = {
@@ -312,7 +312,7 @@ export class AdvancementBrowser extends FUApplication {
 				return {
 					name: item.name,
 					type: 'item',
-					item: item,
+					item,
 					classes: CompendiumIndex.getClassRequirements(item),
 				};
 			}),
@@ -322,7 +322,7 @@ export class AdvancementBrowser extends FUApplication {
 				return {
 					name: entry.name,
 					type: 'entry',
-					entry: entry,
+					entry,
 					classes: CompendiumIndex.getClassRequirements(entry),
 				};
 			}),
@@ -450,7 +450,6 @@ export class AdvancementBrowser extends FUApplication {
 	static async #assignItem(event, target) {
 		const { id } = target.dataset;
 		const item = this.#actor.getItemById(id);
-		//ui.notifications.info(`Assigning ${item.name} to advancement of level ${this.level}`);
 
 		return AdvancementTracker.updateEntry(this.#actor, this.#index, (entry) => {
 			AdvancementBrowser.#updateEntry(this, entry, item);

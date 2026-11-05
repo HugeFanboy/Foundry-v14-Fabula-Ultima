@@ -121,9 +121,7 @@ export async function DamageCustomizer(damage, targets, callback, onCancel) {
 
 		// Execute the callback with the extra damage information and targets
 		callback(damageOverride, targets);
-	} else {
-		if (typeof onCancel === 'function') {
-			onCancel();
-		}
+	} else if (typeof onCancel === 'function') {
+		onCancel();
 	}
 }

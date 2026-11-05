@@ -27,9 +27,9 @@ function onOpportunity(event) {
 			flags: Pipeline.initializedFlags(Flags.ChatMessage.Opportunity, true),
 			speaker: ChatMessage.getSpeaker({ actor }),
 			content: await FoundryUtils.renderTemplate('chat/chat-apply-opportunity', {
-				actor: actor,
+				actor,
 				item: event.item,
-				message: message,
+				message,
 				type: event.type,
 			}),
 		});
@@ -71,7 +71,7 @@ async function promptOpportunity(actor, type, item = undefined) {
 			ChatMessage.create({
 				speaker: ChatMessage.getSpeaker(),
 				content: await FoundryUtils.renderTemplate('chat/chat-opportunity', {
-					actor: actor,
+					actor,
 					opportunity: selected,
 				}),
 			});

@@ -49,9 +49,8 @@ export class MnemosphereReceptacleDataModel extends PseudoDocumentEnabledTypeDat
 				promises.push(item.delete());
 			}
 			return Promise.all(promises);
-		} else {
-			ui.notifications.error('FU.TechnospheresSlottingErrorMnemosphereOnly', { localize: true });
 		}
+		ui.notifications.error('FU.TechnospheresSlottingErrorMnemosphereOnly', { localize: true });
 	}
 
 	removeMnemosphere(mnemosphere) {

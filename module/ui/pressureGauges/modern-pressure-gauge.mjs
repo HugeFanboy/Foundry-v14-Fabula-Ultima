@@ -162,9 +162,8 @@ export class FUModernPressureGauge extends FUPressureGauge {
 			if (!this.shouldDrawPressureGauge) {
 				this.visible = false;
 				return;
-			} else {
-				this.visible = true;
 			}
+			this.visible = true;
 
 			const elems = ['BG', 'FG', 'Border', 'Mask'].map((name) => this._getChildElement(name));
 			if (elems.some((elem) => !elem)) throw new Error(`Pressure gauge PIXI elements not created for ${this.id}!`);
@@ -181,7 +180,6 @@ export class FUModernPressureGauge extends FUPressureGauge {
 
 			bg.x = bg.y = fg.y = border.x = border.y = mask.x = mask.y = 0;
 
-			// fg.texture = this._createProgressTexture(width, this.barHeight);
 			this._setFGPosition(current === this.lastValue);
 			this.lastValue = current;
 			this._positionGauge();

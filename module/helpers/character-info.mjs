@@ -10,8 +10,8 @@
 
 const dispositions = {
 	[-1]: 'hostile',
-	[0]: 'neutral',
-	[1]: 'friendly',
+	0: 'neutral',
+	1: 'friendly',
 };
 
 /**
@@ -33,9 +33,9 @@ function fromActor(actor) {
 	const token = actor.resolveToken();
 	const disposition = resolveDisposition(actor, token);
 	return {
-		actor: actor,
-		token: token,
-		disposition: disposition,
+		actor,
+		token,
+		disposition,
 	};
 }
 
@@ -72,7 +72,7 @@ function fromCombatant(combatant) {
 	return {
 		actor: combatant.actor,
 		token: combatant.token,
-		combatant: combatant,
+		combatant,
 		disposition: resolveDisposition(combatant.actor, combatant.token),
 	};
 }
@@ -88,10 +88,10 @@ function fromTargetData(targets) {
 		const disposition = resolveDisposition(actor, token);
 		/** @type {CharacterInfo} */
 		return {
-			actor: actor,
-			token: token,
+			actor,
+			token,
 			data: t,
-			disposition: disposition,
+			disposition,
 		};
 	});
 }

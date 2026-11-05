@@ -41,7 +41,7 @@ export const SheetUtils = Object.freeze({
 			ui.notifications.error(`Failed to enrich the text: ${StringUtils.truncate(description, 15)}. Please check it.`, { localize: true });
 		}
 		return {
-			description: description,
+			description,
 		};
 	},
 
@@ -49,6 +49,6 @@ export const SheetUtils = Object.freeze({
 	 * @desc Common actions across sheets.
 	 */
 	actions: {
-		openCompendium: openCompendium,
+		openCompendium,
 	},
 });

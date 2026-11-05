@@ -75,51 +75,49 @@ export class ModifyDamageRuleAction extends RuleActionDataModel {
 
 		if (this.variant) {
 			this.#variantHandlers[this.variant]?.(context, _amount);
+		} else if (this.damageTypes.size > 0 || this.cost.amount > 0 || !this.traits.empty) {
+			this.modifyDamage(context, context.label, _amount, this.cost, !this.cost?.assigned);
 		} else {
-			if (this.damageTypes.size > 0 || this.cost.amount > 0 || !this.traits.empty) {
-				this.modifyDamage(context, context.label, _amount, this.cost, !this.cost?.assigned);
-			} else {
-				switch (context.eventType) {
-					case FUHooks.CALCULATE_DAMAGE_EVENT: {
+			switch (context.eventType) {
+				case FUHooks.CALCULATE_DAMAGE_EVENT: {
+					switch (this.operation) {
+						case 'add': {
+							if (_amount !== 0) context.data.config.addDamageBonus(context.label, _amount);
+							break;
+						}
+						case 'multiply': {
+							if (_amount !== 1) context.data.config?.addDamageMulti(context.label, _amount);
+							break;
+						}
+					}
+					break;
+				}
+				case FUHooks.DAMAGE_EVENT: {
+					switch (this.operation) {
+						case 'add': {
+							if (_amount !== 0) context.event.damageContext.addBonus(context.label, _amount);
+							break;
+						}
+						case 'multiply': {
+							if (_amount !== 1) context.event.damageContext.addModifier(context.label, _amount);
+							break;
+						}
+					}
+					break;
+				}
+				case FUHooks.CONSUMABLE_CREATE_EVENT: {
+					const damageActions = context.data.actions.damage ?? {};
+					for (const builder of Object.values(damageActions)) {
 						switch (this.operation) {
-							case 'add': {
-								if (_amount !== 0) context.data.config.addDamageBonus(context.label, _amount);
+							case 'add':
+								builder.bonus += _amount;
 								break;
-							}
-							case 'multiply': {
-								if (_amount !== 1) context.data.config?.addDamageMulti(context.label, _amount);
+							case 'multiply':
+								builder.multiplier *= _amount;
 								break;
-							}
 						}
-						break;
 					}
-					case FUHooks.DAMAGE_EVENT: {
-						switch (this.operation) {
-							case 'add': {
-								if (_amount !== 0) context.event.damageContext.addBonus(context.label, _amount);
-								break;
-							}
-							case 'multiply': {
-								if (_amount !== 1) context.event.damageContext.addModifier(context.label, _amount);
-								break;
-							}
-						}
-						break;
-					}
-					case FUHooks.CONSUMABLE_CREATE_EVENT: {
-						const damageActions = context.data.actions.damage ?? {};
-						for (const builder of Object.values(damageActions)) {
-							switch (this.operation) {
-								case 'add':
-									builder.bonus += _amount;
-									break;
-								case 'multiply':
-									builder.multiplier *= _amount;
-									break;
-							}
-						}
-						break;
-					}
+					break;
 				}
 			}
 		}
@@ -131,9 +129,9 @@ export class ModifyDamageRuleAction extends RuleActionDataModel {
 		switch (context.eventType) {
 			case FUHooks.CALCULATE_DAMAGE_EVENT: {
 				const data = {
-					expense: expense,
-					traits: traits,
-					enabled: enabled,
+					expense,
+					traits,
+					enabled,
 				};
 				switch (this.operation) {
 					case 'add': {

@@ -442,7 +442,7 @@ export class CompendiumBrowser extends FUApplication {
 	 * @param {Record<string, CompendiumFilterCategory>} filters
 	 */
 	async onRenderTables(tables, filters) {
-		let result = [];
+		const result = [];
 
 		if (filters && Object.keys(filters).length > 0) {
 			if (this.#configureFilters) {
@@ -466,7 +466,7 @@ export class CompendiumBrowser extends FUApplication {
 			const tableData = {
 				id: trd.renderer.id,
 				entries: trd.entries,
-				html: html,
+				html,
 				visible: new Set(trd.entries.map((e) => e._id)),
 			};
 			result.push(tableData);
@@ -474,7 +474,7 @@ export class CompendiumBrowser extends FUApplication {
 
 		this.#tabData = {
 			tables: result,
-			filters: filters,
+			filters,
 		};
 	}
 
@@ -862,11 +862,11 @@ export class CompendiumBrowser extends FUApplication {
 				break;
 		}
 
-		let parts = [tabId];
+		const parts = [tabId];
 		if (sidebar) {
 			parts.push('sidebar');
 		}
-		this.render(false, { parts: parts });
+		this.render(false, { parts });
 	}
 
 	static initialize() {
@@ -936,7 +936,7 @@ export class CompendiumBrowser extends FUApplication {
 			}
 		});
 		instance.render(true, {
-			tab: tab,
+			tab,
 		});
 	}
 

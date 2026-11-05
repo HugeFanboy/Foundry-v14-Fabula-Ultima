@@ -16,7 +16,7 @@ const onRenderCheck = (data, check) => {
 				difficulty: inspector.getDifficulty(),
 				result: {
 					crit: critical,
-					fumble: fumble,
+					fumble,
 					total: result,
 				},
 			},

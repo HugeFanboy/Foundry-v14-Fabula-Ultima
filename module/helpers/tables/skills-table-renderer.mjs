@@ -41,7 +41,7 @@ export class SkillsTableRenderer extends FUTableRenderer {
 			data.class = clazz.name;
 		}
 
-		let mainWeapon = SkillLikeTableHelper.resolveMainWeapon(item);
+		const mainWeapon = SkillLikeTableHelper.resolveMainWeapon(item);
 		if (mainWeapon) {
 			data.weapon = mainWeapon.name;
 		}
@@ -63,6 +63,6 @@ export class SkillsTableRenderer extends FUTableRenderer {
 				level: index + 1,
 				reached: current > index,
 			}));
-		return foundry.applications.handlebars.renderTemplate(systemTemplatePath('table/cell/cell-skill-level'), { skillArr: skillArr });
+		return foundry.applications.handlebars.renderTemplate(systemTemplatePath('table/cell/cell-skill-level'), { skillArr });
 	}
 }

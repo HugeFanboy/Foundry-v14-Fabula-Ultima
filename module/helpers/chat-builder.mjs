@@ -84,7 +84,7 @@ export class FUChatBuilder {
 	 */
 	getMergedFlags() {
 		// Merge all current flags
-		let merged = {};
+		const merged = {};
 		for (const current of this.#flags) {
 			foundry.utils.mergeObject(merged, current, { overwrite: false });
 		}
@@ -147,7 +147,7 @@ export class FUChatBuilder {
 
 		// Tag Support: We need to run the functions above first which could end up adding tags
 		if (this.#renderData.tags.length > 0) {
-			let secondPassSections = [];
+			const secondPassSections = [];
 			CommonSections.tags(secondPassSections, this.#renderData.tags, ChatSectionOrder.tags);
 			for (let value of secondPassSections) {
 				value = await (value instanceof Function ? value() : value);
@@ -186,7 +186,7 @@ export class FUChatBuilder {
 		let flavor;
 		if (flavorSections.length) {
 			flavor = '';
-			for (let flavorSection of flavorSections) {
+			for (const flavorSection of flavorSections) {
 				if (flavorSection.content) {
 					flavor = flavor + flavorSection.content;
 				} else {
@@ -202,21 +202,21 @@ export class FUChatBuilder {
 			} else {
 				flavor = item
 					? await FoundryUtils.renderTemplate('chat/chat-check-flavor-item-v2', {
-							item: item,
+							item,
 						})
 					: '';
 			}
 		}
 
 		// Resolve speaker
-		let speaker = FoundryUtils.resolveSpeaker(actor);
+		const speaker = FoundryUtils.resolveSpeaker(actor);
 
 		// Prepare data
 		const chatMessage = {
-			flavor: flavor,
+			flavor,
 			content: await FoundryUtils.renderTemplate('chat/partials/chat-common-sections', { sections: bodySections }),
-			speaker: speaker,
-			flags: flags,
+			speaker,
+			flags,
 		};
 		const options = {
 			chatBubble: false,

@@ -54,7 +54,7 @@ const editorEnricher = {
 
 		return null;
 	},
-	onRender: onRender,
+	onRender,
 };
 
 /**
@@ -113,10 +113,10 @@ function createAlterDamageTypeEffect(weapon, type, label) {
 		key = 'system.data.damage.type';
 	}
 	const localizedDamageType = game.i18n.localize(`FU.Damage${StringUtils.capitalize(type)}`);
-	let changes = [];
+	const changes = [];
 	if (key) {
 		changes.push({
-			key: key,
+			key,
 			type: 'override',
 			value: type,
 		});
@@ -127,7 +127,7 @@ function createAlterDamageTypeEffect(weapon, type, label) {
 		name: label ? `${label} (${localizedDamageType})` : game.i18n.format('FU.InlineWeaponActiveEffectName', { damageType: localizedDamageType }),
 		img: type === 'untyped' ? 'icons/svg/circle.svg' : `systems/projectfu/styles/static/affinities/${type}.svg`,
 		transfer: false,
-		changes: changes,
+		changes,
 	};
 }
 

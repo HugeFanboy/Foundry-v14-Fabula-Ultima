@@ -286,7 +286,7 @@ export class FUActiveEffectConfig extends foundry.applications.sheets.ActiveEffe
 						elements: {
 							[foundry.utils.randomID()]: {
 								trigger: {
-									type: type,
+									type,
 								},
 							},
 						},
@@ -356,7 +356,7 @@ export class FUActiveEffectConfig extends foundry.applications.sheets.ActiveEffe
 					rules: {
 						elements: {
 							[id]: {
-								trigger: foundry.data.operators.ForcedReplacement.create({ type: type }),
+								trigger: foundry.data.operators.ForcedReplacement.create({ type }),
 							},
 						},
 					},
@@ -390,7 +390,7 @@ export class FUActiveEffectConfig extends foundry.applications.sheets.ActiveEffe
 							elements: {
 								[id]: {
 									actions: {
-										[foundry.utils.randomID()]: { type: type },
+										[foundry.utils.randomID()]: { type },
 									},
 								},
 							},
@@ -457,7 +457,7 @@ export class FUActiveEffectConfig extends foundry.applications.sheets.ActiveEffe
 							elements: {
 								[id]: {
 									predicates: {
-										[foundry.utils.randomID()]: { type: type },
+										[foundry.utils.randomID()]: { type },
 									},
 								},
 							},
@@ -583,10 +583,6 @@ function getAttributeKeys(document) {
 			for (const attr of Object.keys(FU.attributes)) {
 				attributeKeys.push(`system.attributes.${attr}`);
 			}
-			// Stats
-			// for (const stat of ['def', 'mdef', 'init']) {
-			// 	attributeKeys.push(`system.derived.${stat}.value`);
-			// }
 			// Affinities
 			for (const aff of Object.keys(FU.damageTypes)) {
 				attributeKeys.push(`system.affinities.${aff}`);

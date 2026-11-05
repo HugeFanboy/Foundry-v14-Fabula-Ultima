@@ -22,7 +22,7 @@ const inlineDamageEnricher = {
 	id: 'InlineDamageEnricher',
 	pattern: InlineHelper.compose('DMG', '\\s*(?<amount>\\(?.*?\\)*?)\\s(?<type>\\w+?)'),
 	enricher: damageEnricher,
-	onRender: onRender,
+	onRender,
 };
 
 // TODO: Add onRender, but need to pass sourceInfo onto the dataset
@@ -49,8 +49,8 @@ function damageEnricher(text, options) {
 		anchor.setAttribute(
 			'data-tooltip',
 			StringUtils.localize('FU.ChatApplyDamageTooltip', {
-				amount: amount,
-				type: type,
+				amount,
+				type,
 			}),
 		);
 		if (label) {
@@ -81,14 +81,14 @@ async function onRender(element) {
 
 	element.addEventListener('click', async function (event) {
 		const keyboardModifiers = HTMLUtils.getKeyboardModifiers(event);
-		let targets = await targetHandler();
+		const targets = await targetHandler();
 		if (targets.length > 0) {
 			let context = ExpressionContext.fromSourceInfo(renderContext.sourceInfo, targets);
-			let check = renderContext.document.getFlag(SYSTEM, Flags.ChatMessage.Check);
+			const check = renderContext.document.getFlag(SYSTEM, Flags.ChatMessage.Check);
 			if (check) {
 				context = context.withCheck(check);
 			}
-			let amount = await Expressions.evaluateAsync(renderContext.dataset.amount, context);
+			const amount = await Expressions.evaluateAsync(renderContext.dataset.amount, context);
 
 			// TODO: Can the source check be used?
 			const eventCheck = Checks.constructDisplayCheck(context.actor, context.item);
@@ -108,7 +108,7 @@ async function onRender(element) {
 				await CommonEvents.calculateDamage(context.actor, context.item, config);
 			}
 
-			let traits = [];
+			const traits = [];
 			// SHIFT: Ignore resistances
 			if (keyboardModifiers.shift) {
 				traits.push(DamageTraits.IgnoreResistances);

@@ -27,7 +27,7 @@ const enricher = {
 	// ID|UUID|Base64String
 	pattern: InlineHelper.compose('EFFECT', '(?<id>[a-zA-Z0-9+/.-]+={0,3})', effectPropertyGroups),
 	enricher: inlineEffectEnricher,
-	onRender: onRender,
+	onRender,
 };
 
 /**
@@ -121,9 +121,9 @@ function parseConfigData(match) {
 	const tracking = match.groups.tracking;
 	const label = match.groups.label;
 	return {
-		event: event,
-		interval: interval,
-		tracking: tracking,
+		event,
+		interval,
+		tracking,
 		name: label,
 	};
 }

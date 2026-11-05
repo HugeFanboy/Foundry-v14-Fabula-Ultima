@@ -52,14 +52,14 @@ export class CookbookDataModel extends RollableClassFeatureDataModel {
 	}
 
 	static getAdditionalData(model) {
-		let tastes = { ...TASTES };
+		const tastes = { ...TASTES };
 		if (model.actor) {
 			for (const taste of Object.keys(tastes)) {
 				tastes[taste] = String(model.actor.getFlag(SYSTEM, getTasteAliasFlag(taste)) || TASTES[taste]);
 			}
 		}
 		return {
-			tastes: tastes,
+			tastes,
 			recipes: Object.values(model.combinations).filter((combination) => combination.effect).length,
 		};
 	}

@@ -176,9 +176,8 @@ export class RitualDataModel extends FUStandardItemDataModel {
 	async roll() {
 		if (this.hasRoll.value) {
 			return Checks.magicCheck(this.parent.actor, this.parent);
-		} else {
-			return Checks.display(this.parent.actor, this.parent);
 		}
+		return Checks.display(this.parent.actor, this.parent);
 	}
 
 	get attributePartials() {

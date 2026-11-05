@@ -146,7 +146,8 @@ export class DamagePipelineContext extends PipelineContext {
 	}
 
 	calculateAmount() {
-		let result = this.damageOverride.hrZero || this.damageData.hrZero ? this.damageData.modifierTotal : this.damageData.total;
+		const hrZero = this.damageOverride.hrZero || this.damageData.hrZero || this.damageData.hrZeroTargets?.includes(this.actor.uuid);
+		let result = hrZero ? this.damageData.modifierTotal : this.damageData.total;
 		result += this.damageOverride.extraDamage || 0;
 		this.amount = result;
 	}
@@ -175,8 +176,8 @@ export class DamagePipelineContext extends PipelineContext {
 	recordStep(step, effect, total) {
 		this.breakdown.push({
 			step: this.#localizeStep(step),
-			effect: effect,
-			total: total,
+			effect,
+			total,
 		});
 	}
 
@@ -427,11 +428,11 @@ async function process(request) {
 		}
 
 		// Create an initial context then run the pipeline
-		let context = new DamagePipelineContext(request, actor);
+		const context = new DamagePipelineContext(request, actor);
 		resolveAffinity(context);
 		const originalTraits = new Set(request.traits);
 		/** @type FURenderData **/
-		let renderData = {
+		const renderData = {
 			tags: [],
 			sections: [],
 			postRenderActions: [],
@@ -441,7 +442,7 @@ async function process(request) {
 
 		// Reevaluate affinities if the damage type or traits changed from the event
 		const diffTraits = originalTraits.symmetricDifference(context.traits);
-		if ((context.damageType && context.damageType != request.damageType) || (diffTraits && diffTraits.size > 0)) {
+		if ((context.damageType && context.damageType !== request.damageType) || (diffTraits && diffTraits.size > 0)) {
 			resolveAffinity(context);
 		}
 
@@ -490,7 +491,7 @@ async function process(request) {
 			continue;
 		}
 
-		let content = [];
+		const content = [];
 		/** @type PressureProcessResult **/
 		let pressureProcess;
 		if (game.settings.get(SYSTEM, SETTINGS.pressureSystem) && context.pressured) {
@@ -531,8 +532,8 @@ async function process(request) {
 						// TODO: Replace damage with amount in the localizations
 						damage: damageTaken,
 						amount: damageTaken,
-						affinityMessage: affinityMessage,
-						content: content,
+						affinityMessage,
+						content,
 						pressureContent: pressureProcess?.content,
 						from: request.sourceInfo.name,
 						sourceActorUuid: request.sourceInfo.actorUuid,
@@ -548,7 +549,7 @@ async function process(request) {
 
 				// Reveal information about this adversary
 				/** @type NpcProfileRevealData **/
-				let revealData = {
+				const revealData = {
 					affinities: {
 						[context.damageType]: true,
 					},
@@ -695,14 +696,13 @@ async function absorbDamage(resource, amount, sourceInfo, targets) {
 		if (target.isOwner) {
 			const request = new ResourceRequest(sourceInfo, targets, resource, amount, false);
 			return ResourcePipeline.processRecovery(request);
-		} else {
-			return game.projectfu.socket.requestPipeline('resource', {
-				sourceInfo: sourceInfo,
-				targets: targets.map((a) => a.uuid),
-				resource: resource,
-				amount: amount,
-			});
 		}
+		return game.projectfu.socket.requestPipeline('resource', {
+			sourceInfo,
+			targets: targets.map((a) => a.uuid),
+			resource,
+			amount,
+		});
 	}
 }
 
@@ -720,20 +720,20 @@ async function promptApply(request) {
 	});
 	const actions = [
 		new ChatAction('applyDamage', icon, tooltip, {
-			damageData: damageData,
+			damageData,
 			sourceInfo: request.sourceInfo,
 		}).requiresOwner(),
 	];
 	let flags = Pipeline.initializedFlags(Flags.ChatMessage.Damage, damageData.total);
 	flags = Pipeline.setFlag(flags, Flags.ChatMessage.Check, true);
 	ChatMessage.create({
-		flags: flags,
+		flags,
 		content: await FoundryUtils.renderTemplate('chat/chat-apply-damage-prompt', {
 			type: damageData.type,
 			amount: damageData.total,
 			source: request.sourceInfo.name,
-			targets: targets,
-			actions: actions,
+			targets,
+			actions,
 		}),
 	});
 }
@@ -751,9 +751,9 @@ function getTargetedAction(damageData, sourceInfo, traits) {
 		type: StringUtils.localize(FU.damageTypes[damageData.type]),
 	});
 	return new ChatAction('applyDamage', icon, tooltip, {
-		damageData: damageData,
-		sourceInfo: sourceInfo,
-		traits: traits,
+		damageData,
+		sourceInfo,
+		traits,
 	})
 		.setFlag(Flags.ChatMessage.Damage, damageData.total)
 		.withSelected()
@@ -766,7 +766,7 @@ function getTargetedAction(damageData, sourceInfo, traits) {
  * @type {Record<Number, Function<Number>>}
  * @description Index : Multiplier
  */
-let affinityDamageModifier = {
+const affinityDamageModifier = {
 	[FU.affValue.vulnerability]: () => game.settings.get(SYSTEM, SETTINGS.affinityVulnerability),
 	[FU.affValue.none]: () => 1,
 	[FU.affValue.resistance]: () => game.settings.get(SYSTEM, SETTINGS.affinityResistance),

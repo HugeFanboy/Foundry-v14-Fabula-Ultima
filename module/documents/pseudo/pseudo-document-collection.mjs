@@ -77,7 +77,7 @@ export default class PseudoDocumentCollection extends foundry.utils.Collection {
 	initialize(options = {}) {
 		// Repeat initialization
 		if (this._initialized) {
-			for (let doc of this.values()) {
+			for (const doc of this.values()) {
 				const sourceDoc = this._source.find((srcDoc) => srcDoc._id === doc._id);
 				if (!sourceDoc) {
 					this.delete(doc._id, { modifySource: false });
@@ -170,7 +170,7 @@ export default class PseudoDocumentCollection extends foundry.utils.Collection {
 			result = this.getInvalid(id, { strict: false });
 		}
 		if (!result && strict) {
-			throw new Error(`${this.constructor.documentName} id [${id}] does not exist in the ` + `${this.constructor.name} collection.`);
+			throw new Error(`${this.constructor.documentName} id [${id}] does not exist in the ${this.constructor.name} collection.`);
 		}
 		return result;
 	}
@@ -266,7 +266,7 @@ export default class PseudoDocumentCollection extends foundry.utils.Collection {
 	 */
 	toObject(source = true) {
 		const arr = [];
-		for (let doc of this.values()) {
+		for (const doc of this.values()) {
 			arr.push(doc.toObject(source));
 		}
 		return arr;

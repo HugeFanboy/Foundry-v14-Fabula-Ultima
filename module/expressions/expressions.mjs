@@ -145,14 +145,14 @@ export class ExpressionContext {
 	resolveActorOrHighestLevelTarget() {
 		if (this.actor) {
 			return this.actor;
-		} else {
-			if (this.targets.length > 1) {
-				return this.targets.reduce((prev, current) => {
-					return prev.system.level.value > current.system.level.value ? prev : current;
-				});
-			} else if (this.targets.length === 1) {
-				return this.targets[0];
-			}
+		}
+		if (this.targets.length > 1) {
+			return this.targets.reduce((prev, current) => {
+				return prev.system.level.value > current.system.level.value ? prev : current;
+			});
+		}
+		if (this.targets.length === 1) {
+			return this.targets[0];
 		}
 
 		ui.notifications.warn('FU.ChatEvaluateAmountNoActor', { localize: true });
@@ -505,7 +505,6 @@ function evaluateMacros(expression, context) {
 				throw new Error(`Unsupported macro ${name}`);
 		}
 	}
-	//return replaceAsync(expression, pattern, evaluateMacro);
 	return expression.replace(pattern, evaluateMacro);
 }
 
@@ -597,9 +596,11 @@ function getHighRoll(check) {
 	if (check) {
 		if (check.primary == null && check.secondary == null) {
 			return 0;
-		} else if (check.primary == null) {
+		}
+		if (check.primary == null) {
 			return check.secondary.result;
-		} else if (check.secondary == null) {
+		}
+		if (check.secondary == null) {
 			return check.primary.result;
 		}
 
@@ -768,7 +769,7 @@ function stepByLevel(context, first, second, third, fourth) {
  */
 async function replaceAsync(str, regExp, replacerFunction) {
 	const matches = str.matchAll(regExp);
-	let replacements = [];
+	const replacements = [];
 	for (const match of matches) {
 		replacements.push(await replacerFunction(...match));
 	}

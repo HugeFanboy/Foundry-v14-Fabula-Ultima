@@ -33,7 +33,7 @@ export class SettingsConfigurationApp extends FUApplication {
 
 		const isGM = game.user.isGM;
 		const fields = foundry.data.fields;
-		for (let settingKey of settings || []) {
+		for (const settingKey of settings || []) {
 			const settingDocument = game.settings.get(SYSTEM, settingKey, { document: true });
 			const setting = game.settings.settings.get(settingDocument.key);
 

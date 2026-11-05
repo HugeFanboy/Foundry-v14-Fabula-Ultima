@@ -46,7 +46,7 @@ export class StudyRollHandler {
 	 */
 	async handleStudyTarget() {
 		/** @type {FUActor[]} **/
-		let targets = this.targets;
+		const targets = this.targets;
 		if (targets.length < 1) {
 			console.debug('No targets to study have been given');
 			return;

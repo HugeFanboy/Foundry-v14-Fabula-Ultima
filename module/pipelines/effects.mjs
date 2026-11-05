@@ -80,8 +80,8 @@ function createTemporaryEffect(owner, effectType, name = undefined, data = {}) {
 			img: owner instanceof FUItem ? owner.img : 'icons/svg/aura.svg',
 			source: owner.uuid,
 			origin: owner.uuid,
-			system: system,
-			'duration.rounds': effectType === 'temporary' ? 1 : undefined,
+			system,
+			...(effectType === 'temporary' ? { duration: { value: 1, units: 'rounds' } } : {}),
 			disabled: effectType === 'inactive',
 			...data,
 		},
@@ -248,7 +248,7 @@ export function prepareActiveEffectCategories(effects) {
 	};
 
 	// Iterate over active effects, classifying them into categories
-	for (let e of effects) {
+	for (const e of effects) {
 		if (e.disabled) categories.inactive.effects.push(e);
 		else if (e.isTemporary) categories.temporary.effects.push(e);
 		else categories.passive.effects.push(e);
@@ -357,10 +357,9 @@ export async function toggleStatusEffect(actor, statusEffectId, sourceInfo = und
 			}),
 		);
 		return false;
-	} else {
-		await createStatusEffect(actor, statusEffectId, sourceInfo, config);
-		return true;
 	}
+	await createStatusEffect(actor, statusEffectId, sourceInfo, config);
+	return true;
 }
 
 /**
@@ -439,7 +438,7 @@ async function applyEffect(document, effect, sourceInfo, config = undefined) {
 		const instance = await ActiveEffect.create(
 			{
 				...effect,
-				flags: flags,
+				flags,
 			},
 			{ parent: document },
 		);
@@ -489,9 +488,9 @@ async function sendToChatEffectAdded(effect, document, source) {
 			flags: Pipeline.initializedFlags(Flags.ChatMessage.Effects, true),
 			content: await FoundryUtils.renderTemplate('chat/chat-apply-effect', {
 				message: 'FU.ChatApplyEffect',
-				document: document,
-				effect: effect,
-				source: source,
+				document,
+				effect,
+				source,
 			}),
 			speaker: ChatMessage.getSpeaker({ actor: document }),
 		});
@@ -582,15 +581,15 @@ async function promptApplyEffect(actor, targets, effectIds, sourceInfo) {
 	const targetData = Targeting.serializeTargetData(targets);
 
 	ChatMessage.create({
-		speaker: ChatMessage.getSpeaker({ actor: actor }),
-		flags: flags,
+		speaker: ChatMessage.getSpeaker({ actor }),
+		flags,
 		content: await FoundryUtils.renderTemplate('chat/chat-apply-effect-prompt', {
-			actor: actor,
+			actor,
 			source: sourceInfo.name,
-			actions: actions,
+			actions,
 			targets: targetData,
 			fields: StringUtils.toBase64({
-				sourceInfo: sourceInfo,
+				sourceInfo,
 			}),
 		}),
 	});
@@ -602,11 +601,11 @@ async function promptRemoveEffect(actor, source) {
 		return;
 	}
 	ChatMessage.create({
-		speaker: ChatMessage.getSpeaker({ actor: actor }),
+		speaker: ChatMessage.getSpeaker({ actor }),
 		flags: Pipeline.initializedFlags(Flags.ChatMessage.Effects, true),
 		content: await FoundryUtils.renderTemplate('chat/chat-remove-effect-prompt', {
-			actor: actor,
-			source: source,
+			actor,
+			source,
 			effects: tempEffects,
 		}),
 	});
@@ -626,12 +625,10 @@ async function getTargetedAction(id, sourceInfo, duration = undefined) {
 	if (effectData) {
 		if (effectData.img) {
 			img = effectData.img;
+		} else if (resolveBaseEffect(id)) {
+			icon = `fuk fu-${id}`;
 		} else {
-			if (resolveBaseEffect(id)) {
-				icon = `fuk fu-${id}`;
-			} else {
-				icon = 'ra ra-biohazard';
-			}
+			icon = 'ra ra-biohazard';
 		}
 		name = StringUtils.localize(effectData.name);
 	} else {
@@ -646,8 +643,8 @@ async function getTargetedAction(id, sourceInfo, duration = undefined) {
 	});
 
 	return new ChatAction('applyEffect', icon, tooltip, {
-		sourceInfo: sourceInfo,
-		duration: duration,
+		sourceInfo,
+		duration,
 	})
 		.requiresOwner()
 		.setFlag(Flags.ChatMessage.Effects)
@@ -655,7 +652,7 @@ async function getTargetedAction(id, sourceInfo, duration = undefined) {
 		.withLabel(label)
 		.withImage(img)
 		.withDataset({
-			['effect-id']: id,
+			'effect-id': id,
 		});
 }
 
@@ -675,12 +672,10 @@ async function getClearAction(id, sourceInfo) {
 		if (effectData) {
 			if (effectData.img) {
 				img = effectData.img;
+			} else if (resolveBaseEffect(id)) {
+				icon = `fuk fu-${id}`;
 			} else {
-				if (resolveBaseEffect(id)) {
-					icon = `fuk fu-${id}`;
-				} else {
-					icon = 'ra ra-biohazard';
-				}
+				icon = 'ra ra-biohazard';
 			}
 			name = StringUtils.localize(effectData.name);
 		}
@@ -699,7 +694,7 @@ async function getClearAction(id, sourceInfo) {
 	});
 
 	return new ChatAction('clearEffect', icon, tooltip, {
-		sourceInfo: sourceInfo,
+		sourceInfo,
 	})
 		.requiresOwner()
 		.setFlag(Flags.ChatMessage.Effects)
@@ -708,7 +703,7 @@ async function getClearAction(id, sourceInfo) {
 		.withClasses('fu-chat__clear-effect')
 		.withImage(img)
 		.withDataset({
-			['effect-id']: id,
+			'effect-id': id,
 		});
 }
 
@@ -723,12 +718,12 @@ async function promptEffectChoices(effectData, sourceInfo) {
 	}
 
 	/** @type DialogSelectableItem[] **/
-	let choices = [];
+	const choices = [];
 	for (const id of effectData.entries) {
 		const effect = await getEffectData(id);
 		if (effect) {
-			let choice = {
-				id: id,
+			const choice = {
+				id,
 				name: StringUtils.localize(effect.name),
 				img: effect.img,
 			};
@@ -840,7 +835,7 @@ function onRenderChatMessage(message, element) {
 		const actor = fromUuidSync(actorId);
 		await ChatMessage.create({
 			content: description,
-			speaker: ChatMessage.getSpeaker({ actor: actor }),
+			speaker: ChatMessage.getSpeaker({ actor }),
 		});
 	});
 

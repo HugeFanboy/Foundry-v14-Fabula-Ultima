@@ -50,7 +50,7 @@ export class OtherItemsTableRenderer extends TradableTableRenderer {
 		(options.includeFeatures ?? []).forEach((excludedType) => excludedFeatureTypes.delete(excludedType));
 
 		const items = [];
-		for (let item of document.allItems()) {
+		for (const item of document.allItems()) {
 			if (!excludedTypes.has(item.type)) {
 				if (featureItemTypes.has(item.type)) {
 					if (!excludedFeatureTypes.has(item.system.data.type)) {
@@ -67,8 +67,7 @@ export class OtherItemsTableRenderer extends TradableTableRenderer {
 	static #getItemTypeLabel(item) {
 		if (featureItemTypes.has(item.type)) {
 			return item.system.data.constructor.translation;
-		} else {
-			return CONFIG.Item.typeLabels[item.type] ?? item.constructor.metadata.label;
 		}
+		return CONFIG.Item.typeLabels[item.type] ?? item.constructor.metadata.label;
 	}
 }

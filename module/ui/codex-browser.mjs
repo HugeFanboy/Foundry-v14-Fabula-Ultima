@@ -240,7 +240,7 @@ export class CodexBrowser {
 					await this.#enrichEntryDescription(entry);
 					const chatMessage = {
 						content: await FoundryUtils.renderTemplate('chat/chat-codex-entry', {
-							entry: entry,
+							entry,
 							enrichedDescription,
 						}),
 					};
@@ -325,11 +325,11 @@ export class CodexBrowser {
 		const enrichedDescription = await this.#enrichEntryDescription(entry);
 
 		const [width, height] = await HTMLUtils.resolveImageDimensions(entry.img);
-		let layout = HTMLUtils.getViewerLayout(width, height, enrichedDescription.length);
+		const layout = HTMLUtils.getViewerLayout(width, height, enrichedDescription.length);
 		const layoutClass = layout ? `--${layout}` : null;
 
 		const content = await FoundryUtils.renderTemplate('actor/party/actor-party-view-codex-entry', {
-			entry: entry,
+			entry,
 			enrichedDescription,
 			layoutClass,
 		});
@@ -347,7 +347,7 @@ export class CodexBrowser {
 		/** @type CodexEntryDataModel[] **/
 		const entries = this.party.codex.entries;
 		/** @type CodexEntryDataModel **/
-		let entry = {
+		const entry = {
 			img: CodexEntryDataModel.DEFAULT_IMAGE_PATH,
 			tags: [],
 		};
@@ -371,7 +371,7 @@ export class CodexBrowser {
 		const description = typeof actor?.system?.description === 'string' ? actor.system.description : (actor?.system?.description?.value ?? actor?.system?.description?.content ?? '');
 
 		/** @type CodexEntryDataModel **/
-		let entry = {
+		const entry = {
 			name: actor.name,
 			img: actor.img,
 			description,
@@ -389,7 +389,7 @@ export class CodexBrowser {
 	 */
 	async importJournalEntryPage(page) {
 		const journalName = page.parent?.name;
-		let entryName = journalName ? `${page.name} (${journalName})` : page.name;
+		const entryName = journalName ? `${page.name} (${journalName})` : page.name;
 
 		if (this.party.codex.resolveEntry(entryName)) {
 			ui.notifications.warn(`Failed to import journal entry page "${page.name}" from "${journalName}" as there's already an entry with that name.`);
@@ -397,7 +397,7 @@ export class CodexBrowser {
 		}
 
 		/** @type CodexEntryDataModel **/
-		let entry = {
+		const entry = {
 			name: entryName,
 			tags: [],
 		};
@@ -513,7 +513,7 @@ export class CodexBrowser {
 			const filePattern = new RegExp(CodexBrowser.UPLOAD_FILE_PREFIX);
 
 			// Browse the directory to get all files
-			const browse = await FilePicker.browse('data', uploadDirectory);
+			const browse = await foundry.applications.apps.FilePicker.implementation.browse('data', uploadDirectory);
 			/** @type String[] **/
 			const imagesToDelete = browse.files.filter((file) => {
 				const filename = file.split('/').pop();

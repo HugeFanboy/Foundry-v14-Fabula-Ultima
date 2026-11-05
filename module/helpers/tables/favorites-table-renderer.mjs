@@ -38,7 +38,7 @@ const nameCssClassCustomizers = {
 
 async function renderFeatureDescription(item) {
 	const FeatureDataModel = item.system.data.constructor;
-	return foundry.applications.handlebars.renderTemplate(FeatureDataModel.expandTemplate, { ...item, item: item, additionalData: await FeatureDataModel.getAdditionalData(item.system.data) });
+	return foundry.applications.handlebars.renderTemplate(FeatureDataModel.expandTemplate, { ...item, item, additionalData: await FeatureDataModel.getAdditionalData(item.system.data) });
 }
 
 /**
@@ -274,9 +274,8 @@ function getCheckData(item, baseCheck) {
 	const getter = checkDataGetter[item?.type];
 	if (getter) {
 		return getter(item, baseCheck);
-	} else {
-		return null;
 	}
+	return null;
 }
 
 /**
@@ -311,9 +310,8 @@ function getDamageData(item, base) {
 	const getter = damageDataGetter[item?.type];
 	if (getter) {
 		return getter(item, base);
-	} else {
-		return null;
 	}
+	return null;
 }
 
 const renderSkillLikeCaption = async (item) => {
@@ -438,7 +436,7 @@ const captionRenderers = {
 
 async function renderFeatureDetails(item) {
 	const FeatureDataModel = item.system.data.constructor;
-	return foundry.applications.handlebars.renderTemplate(FeatureDataModel.previewTemplate, { ...item, item: item, additionalData: await FeatureDataModel.getAdditionalData(item.system.data) });
+	return foundry.applications.handlebars.renderTemplate(FeatureDataModel.previewTemplate, { ...item, item, additionalData: await FeatureDataModel.getAdditionalData(item.system.data) });
 }
 
 const classDetailsRenderer = CommonColumns.textColumn({
@@ -497,12 +495,11 @@ function renderAbilityDetails() {
 
 		if (resource || clock) {
 			return foundry.applications.handlebars.renderTemplate(systemTemplatePath('table/cell/cell-ability-combined-progress'), {
-				resource: resource,
-				clock: clock,
+				resource,
+				clock,
 			});
-		} else {
-			return summaryRenderer(item);
 		}
+		return summaryRenderer(item);
 	};
 }
 
@@ -522,9 +519,8 @@ function renderSkillDetails() {
 
 		if (resource) {
 			return foundry.applications.handlebars.renderTemplate(systemTemplatePath('table/cell/cell-resource'), resource);
-		} else {
-			return summaryRenderer(item);
 		}
+		return summaryRenderer(item);
 	};
 }
 

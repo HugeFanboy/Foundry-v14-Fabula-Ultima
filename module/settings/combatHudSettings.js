@@ -89,7 +89,7 @@ export class CombatHudSettings extends FUApplication {
 				always: 'FU.CombatHudShowNPCTurnsLeftModeAlways',
 				'only-studied': 'FU.CombatHudShowNPCTurnsLeftModeOnlyStudied',
 			},
-			combatHudTurnIconsHint: new Handlebars.SafeString(game.i18n.format('FU.CombatHudTurnIconsHint', { materialSymbolsLink: materialSymbolsLink })),
+			combatHudTurnIconsHint: new Handlebars.SafeString(game.i18n.format('FU.CombatHudTurnIconsHint', { materialSymbolsLink })),
 		};
 	}
 

@@ -53,8 +53,8 @@ async function handleArcanum(actor, item) {
 		const currentArcanumData = currentArcanum.system.data;
 
 		/** @type FUDialogContentSection[] **/
-		let sections = [];
-		let buttons = [];
+		const sections = [];
+		const buttons = [];
 
 		// FOR REFERENCE: Merge
 		sections.push({
@@ -98,10 +98,10 @@ async function handleArcanum(actor, item) {
 
 		const dialogData = {
 			title: `${title} - ${currentArcanum.name}`,
-			actor: actor,
-			buttons: buttons,
+			actor,
+			buttons,
 			item: currentArcanum,
-			sections: sections,
+			sections,
 		};
 
 		const choice = await FoundryUtils.promptChoiceSections(dialogData);
@@ -166,7 +166,6 @@ async function handleArcanum(actor, item) {
 		if (result && result.length > 0) {
 			/** @type FUItem **/
 			const selectedArcana = result[0];
-			//const selectedArcanaEffect = selectedArcana.effects.size === 1 ? Array.from(selectedArcana.effects.values())[0] : null;
 			if (selectedArcana) {
 				// Equip the arcana
 				await actor.update({
@@ -187,7 +186,7 @@ async function handleArcanum(actor, item) {
 					sections: [],
 					postRenderActions: [],
 				};
-				let flags = {};
+				const flags = {};
 
 				CommonSections.itemFlavor(renderData.sections, selectedArcana);
 				const content = await FoundryUtils.renderTemplate('feature/arcanist/feature-arcanum-chat-message-v2', {
@@ -256,11 +255,11 @@ async function handleTheriomorphosis(actor, item) {
 			postRenderActions: [],
 			flags: [],
 		};
-		let flags = {};
+		const flags = {};
 
 		CommonSections.itemFlavor(renderData.sections, item);
 		const content = await FoundryUtils.renderTemplate('feature/mutant/chat-therioform-manifest', {
-			actor: actor,
+			actor,
 			description: item.system.description,
 			forms: selectedForms,
 		});
@@ -308,7 +307,7 @@ function getChatAction(actor, item, name) {
 	const icon = 'fa fa-window-restore';
 	const tooltip = StringUtils.localize(application.label);
 	return new ChatAction('openApplication', icon, tooltip, {
-		name: name,
+		name,
 		actor: actor.uuid,
 		item: item.uuid,
 	})

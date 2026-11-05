@@ -30,33 +30,33 @@ export class ShieldsTableRenderer extends FUTableRenderer {
 		const bonus = item.system.def.value;
 		if (bonus > 0) {
 			return `+ ${bonus}`;
-		} else if (bonus < 0) {
-			return `- ${Math.abs(bonus)}`;
-		} else {
-			return '—';
 		}
+		if (bonus < 0) {
+			return `- ${Math.abs(bonus)}`;
+		}
+		return '—';
 	}
 
 	static #getMagicDefenseText(item) {
 		const bonus = item.system.mdef.value;
 		if (bonus > 0) {
 			return `+ ${bonus}`;
-		} else if (bonus < 0) {
-			return `- ${Math.abs(bonus)}`;
-		} else {
-			return '—';
 		}
+		if (bonus < 0) {
+			return `- ${Math.abs(bonus)}`;
+		}
+		return '—';
 	}
 
 	static #getInitiativeText(item) {
 		const bonus = item.system.init.value;
 		if (bonus > 0) {
 			return `+ ${bonus}`;
-		} else if (bonus < 0) {
-			return `- ${Math.abs(bonus)}`;
-		} else {
-			return '—';
 		}
+		if (bonus < 0) {
+			return `- ${Math.abs(bonus)}`;
+		}
+		return '—';
 	}
 
 	static #renderEquipStatus(item) {
