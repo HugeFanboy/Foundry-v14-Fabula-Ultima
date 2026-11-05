@@ -89,6 +89,9 @@ class CheckInspector {
 			// Have to rebuild certain properties
 			data.hr = this.getHighRoll();
 			data.hrZero = this.getHrZero();
+			data.hrZeroTargets = this.getTargetsOrDefault()
+				.filter((target) => target.hrZero)
+				.map((target) => target.uuid);
 
 			if (this.hasTrait(Traits.Base)) {
 				data.base = true;
@@ -577,22 +580,36 @@ export class CheckConfigurer extends CheckInspector {
 			}
 			const targetedDefense = this.getTargetedDefense();
 			if (targetedDefense) {
+				const powerRolls = this.#usesUltimaPowerRolls();
 				for (let t = 0; t < targets.length; t++) {
 					const target = targets[t];
 					const difficulty = target.defenses[targetedDefense];
-					let targetResult;
-					if (this.check.critical) {
-						targetResult = 'hit';
-					} else if (this.check.fumble) {
-						targetResult = 'miss';
-					} else {
-						targetResult = this.check.result >= difficulty ? 'hit' : 'miss';
-					}
 					// Update the original
-					this.check.additionalData[TARGETS][t].result = targetResult;
+					const original = this.check.additionalData[TARGETS][t];
+					if (powerRolls) {
+						// Always a hit; the high roll only counts on a critical or when strictly beating the defense
+						original.result = 'hit';
+						original.hrZero = !this.check.critical && this.check.result <= difficulty;
+						continue;
+					}
+					delete original.hrZero;
+					if (this.check.critical) {
+						original.result = 'hit';
+					} else if (this.check.fumble) {
+						original.result = 'miss';
+					} else {
+						original.result = this.check.result >= difficulty ? 'hit' : 'miss';
+					}
 				}
 			}
 		}
+	}
+
+	/**
+	 * @returns {boolean} Whether the Ultima Power Rolls homebrew applies to this check (attacks that deal damage)
+	 */
+	#usesUltimaPowerRolls() {
+		return ['accuracy', 'magic'].includes(this.check.type) && this.hasDamage && game.settings.get(SYSTEM, SETTINGS.optionUltimaPowerRolls);
 	}
 
 	/**

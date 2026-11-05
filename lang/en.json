@@ -1661,6 +1661,8 @@
 		"HoplosphereEffectFreeTextDefaultName": "Effect Name",
 		"CrisisMultiplier": "Crisis Multiplier",
 		"CrisisMultiplierHint": "Multiplier used to calculate base Crisis Score",
+		"UltimaPowerRolls": "Ultima Power Rolls",
+		"UltimaPowerRollsHint": "Attacks always hit. Damage counts its High Roll as 0 (HR0) unless the result is strictly greater than the targeted Defense or Magic Defense, or the roll is a critical success.",
 		"EventRelation": "Event Relation",
 		"EventRelationHint": "The context in which the the character fits in the event",
 		"FactionRelation": "Faction Relation",

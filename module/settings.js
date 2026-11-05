@@ -104,6 +104,7 @@ export const SETTINGS = Object.freeze({
 	affinityResistance: 'affinityResistance',
 	affinityVulnerability: 'affinityVulnerability',
 	optionCrisisMultiplier: 'optionCrisisMultiplier',
+	optionUltimaPowerRolls: 'optionUltimaPowerRolls',
 	// Party
 	activeParty: 'optionActiveParty',
 	codexUploadDirectory: 'optionCodexUploadDirectory',
@@ -1046,7 +1047,15 @@ export const registerSystemSettings = function () {
 		label: game.i18n.localize('FU.HomebrewOptions'),
 		hint: game.i18n.localize('FU.HomebrewHint'),
 		icon: 'fa fa-coffee',
-		type: createConfigurationApp('FU.HomebrewOptions', [SETTINGS.optionRenameCurrency, SETTINGS.optionBondMaxLength, SETTINGS.affinityResistance, SETTINGS.affinityVulnerability, SETTINGS.opportunities, SETTINGS.optionCrisisMultiplier]),
+		type: createConfigurationApp('FU.HomebrewOptions', [
+			SETTINGS.optionRenameCurrency,
+			SETTINGS.optionBondMaxLength,
+			SETTINGS.affinityResistance,
+			SETTINGS.affinityVulnerability,
+			SETTINGS.opportunities,
+			SETTINGS.optionCrisisMultiplier,
+			SETTINGS.optionUltimaPowerRolls,
+		]),
 		restricted: true,
 	});
 
@@ -1109,6 +1118,15 @@ export const registerSystemSettings = function () {
 			blank: true,
 			idOnly: true,
 		}),
+	});
+
+	game.settings.register(SYSTEM, SETTINGS.optionUltimaPowerRolls, {
+		name: 'FU.UltimaPowerRolls',
+		hint: 'FU.UltimaPowerRollsHint',
+		scope: 'world',
+		config: false,
+		type: Boolean,
+		default: false,
 	});
 
 	game.settings.register(SYSTEM, SETTINGS.optionCrisisMultiplier, {

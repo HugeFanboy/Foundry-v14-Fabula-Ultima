@@ -27,6 +27,7 @@ import { ChatAction } from './chat-action.mjs';
  * @property {DefenseData} defenses
  * @property {number} difficulty
  * @property {"none", "hit", "miss"} result
+ * @property {Boolean} [hrZero] Whether damage against this target treats the high roll as zero (Ultima Power Rolls)
  * @property {Boolean} isOwner
  */
 

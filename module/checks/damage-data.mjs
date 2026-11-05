@@ -19,6 +19,7 @@ import { FU } from '../helpers/config.mjs';
  * @property {DamageModifier[]} modifiers
  * @property {String} extra An expression to evaluate to add extra damage
  * @property {Boolean} hrZero Whether to treat the high roll as zero.
+ * @property {String[]} [hrZeroTargets] UUIDs of targets for which the high roll is treated as zero (Ultima Power Rolls).
  * @property {Boolean} base Whether to return the total damage without any modifiers.
  * @property {Boolean} unlock Whether to unlock full modification of the damage.
  */
