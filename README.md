@@ -2,9 +2,18 @@
 
 ![Fabula Ultima Mod Logo - White Background](https://github.com/League-of-Fabulous-Developers/FoundryVTT-Fabula-Ultima/assets/16845165/040a116d-3419-47ee-af36-5aed128bdb2d)
 
-![foundry-v14-green](https://img.shields.io/badge/foundry-v13-green)
+![foundry-v14.370-green](https://img.shields.io/badge/foundry-v14.370-green)
 
 Welcome to the ProjectFU system for [Foundry Virtual Tabletop](https://foundryvtt.com/).
+
+> [!NOTE]
+> This repository is a fork of [FoundryVTT-Fabula-Ultima](https://github.com/League-of-Fabulous-Developers/FoundryVTT-Fabula-Ultima), updated and verified for **Foundry VTT v14 (build 14.370)**. It is not maintained by the League of Fabulous Developers, so please report problems with this version [here](https://github.com/HugeFanboy/Foundry-v14-Fabula-Ultima/issues) rather than to the upstream project.
+
+## What's Different in This Fork
+
+- **Foundry v14.370 compatibility:** deprecated Foundry APIs replaced with their v14 equivalents. See the [changelog](CHANGELOG.md) for details.
+- **Ultima Power Rolls** (Settings → Homebrew, off by default): attacks always hit. Damage counts the High Roll as 0 (HR0) unless the result is strictly greater than the target's Defense or Magic Defense, or the roll is a critical.
+- Releases are published on [GitHub](https://github.com/HugeFanboy/Foundry-v14-Fabula-Ultima/releases) only, not on the foundryvtt.com package listing.
 
 ProjectFU is an independent production by the [League of Fabulous Developers](https://github.com/League-of-Fabulous-Developers) and is not affiliated with Need Games or Rooster Games. Supplied game rules in the system compendium adhere to and are published under the [Fabula Ultima Third Party Tabletop License 1.0](https://need.games/wp-content/uploads/2024/06/Fabula-Ultima-Third-Party-Tabletop-License-1.0.pdf). We adhere to RoosterEma's guidelines, ensuring that the core book and its supplements remain integral to your experience. To fully utilize this system, you will need the [Fabula Ultima Core Rulebook](https://www.needgames.it/fabula-ultima-en/).
 
@@ -22,16 +31,22 @@ Fabula Ultima is a roleplaying game created by Emanuele Galletto and published b
 
 1. Open the Foundry Setup screen and navigate to the Game Systems tab.
 2. Click the "Install System" button.
-3. Use the following Manifest URL: `https://github.com/League-of-Fabulous-Developers/FoundryVTT-Fabula-Ultima/releases/latest/download/system.json`
+3. Use the following Manifest URL: `https://github.com/HugeFanboy/Foundry-v14-Fabula-Ultima/releases/latest/download/system.json`
 4. Click "Install."
 
 ### Manual Installation
 
-1. Visit the [Release](https://github.com/League-of-Fabulous-Developers/FoundryVTT-Fabula-Ultima/releases '‌') page to find your desired version.
+1. Visit the [Release](https://github.com/HugeFanboy/Foundry-v14-Fabula-Ultima/releases) page to find your desired version.
 2. Download the `projectfu.zip` file for your chosen version.
 3. Unzip the downloaded file to your FoundryVTT Data systems folder. (For more details, refer to the [FoundryVTT Configuration Guide](https://foundryvtt.com/article/configuration/#where-user-data '‌')).
-4. [Mandatory] Ensure that you have the `socketLib` module installed.
-5. Restart FoundryVTT if necessary.
+4. Restart FoundryVTT if necessary.
+
+### Switching from the Upstream System
+
+This fork uses the same system id (`projectfu`), so existing worlds open with it unchanged. Because the id is shared, Foundry can only have one of the two installed at a time.
+
+1. Uninstall the upstream Project FU system in FoundryVTT (your worlds are kept).
+2. Install this fork using the Manifest URL above.
 
 ### Updating from Legacy Build
 
@@ -48,7 +63,7 @@ If you have any questions or concerns, feel free to reach out to us through the 
 
 ## Submitting Issues
 
-Issues reported on [GitHub](https://github.com/League-of-Fabulous-Developers/FoundryVTT-Fabula-Ultima/issues) and support channels will be reviewed and tracked on our [Trello Board](https://trello.com/b/VEa8VQHc/fabula-ultima-system). Please follow the guidelines below for different types of issues. If you wish to contribute to the project, refer to the [Contributing Guidelines](https://github.com/League-of-Fabulous-Developers/FoundryVTT-Fabula-Ultima/blob/main/CONTRIBUTING.md) page.
+Issues specific to this v14 fork should be reported on [this repository's issue tracker](https://github.com/HugeFanboy/Foundry-v14-Fabula-Ultima/issues). Issues reported on the upstream [GitHub](https://github.com/League-of-Fabulous-Developers/FoundryVTT-Fabula-Ultima/issues) and support channels will be reviewed and tracked on our [Trello Board](https://trello.com/b/VEa8VQHc/fabula-ultima-system). Please follow the guidelines below for different types of issues. If you wish to contribute to the project, refer to the [Contributing Guidelines](https://github.com/League-of-Fabulous-Developers/FoundryVTT-Fabula-Ultima/blob/main/CONTRIBUTING.md) page.
 
 ### Bugs
 
